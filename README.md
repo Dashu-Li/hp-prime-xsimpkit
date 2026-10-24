@@ -51,7 +51,7 @@ Actual output may use equivalent coefficients or arguments.
 
 The native program is also stored at [native/XSIMPKIT.hpprgm](native/XSIMPKIT.hpprgm). The `.ppl` and `.cas` files in `src/` are development sources.
 
-Use the CAS functions below for calculations. `XSIMPKIT()` itself is only the installation container.
+Use the CAS functions in this guide for calculations. `XSIMPKIT()` itself is only the installation container.
 
 ## Input evaluation matters
 
@@ -61,7 +61,7 @@ Native `2^A` can mean elementwise powers. `XPOW(2,A)` computes the matrix functi
 
 ## Validation and limits
 
-The frozen 1.7 source was installed and checked in the official HP Prime Linux Virtual Calculator **2.1.14290 (2019)**. The quoted complex example, direct `XEXP`, and direct `XEXPT` all completed with no floating-point leaves. Earlier hyperbolic, rotation, and Pauli examples passed as well.
+The frozen 1.7 source was installed and checked in the official HP Prime Linux Virtual Calculator **2.1.14290 (2019)**. The quoted complex example, direct `XEXP`, and direct `XEXPT` all completed with no floating-point leaves. Hyperbolic, rotation, and Pauli matrix examples also passed.
 
 Upstream Giac regression records contain 125 existing primary cases, 97 additional primary cases, and 33 quoted/unquoted pairs. Representation checks, numerical agreement, symbolic equality, and native execution are recorded separately; they are not interchangeable proofs. See [TESTING.md](docs/TESTING.md).
 
@@ -85,7 +85,7 @@ python3 src/build_and_test.py
 
 For upstream tests, place the author's Giac JavaScript runtime at `test_runtime/giac.js` in this repository, then run the scripts listed in [TESTING.md](docs/TESTING.md), using `node src/<script>.cjs`. The external runtime is not distributed here. Existing test records accompany the source; rebuilding after edits does not automatically revalidate them.
 
-The full ZIP attached to the GitHub Release contains the previously validated full distribution, including native evidence. Its manifest lists the files and checksums in that ZIP. The calculator code is the same as the validated 1.7 source.
+The full ZIP attached to the GitHub Release contains the program, source, documentation and validation evidence. Its manifest lists the files and checksums in that ZIP. The calculator code is the same as the validated 1.7 source.
 
 ## Version history
 
