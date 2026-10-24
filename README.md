@@ -8,11 +8,12 @@ Version **1.7** preserves exact complex radicals in supported matrix-function pa
 
 ## Installation
 
-1. In the HP Connectivity Kit, create or open an ordinary PPL program named `XSIMPKIT`.
-2. Replace its contents with the entire [src/XSIMPKIT.txt](src/XSIMPKIT.txt). This file already contains its `#cas` block.
-3. Save, check, and transfer the program to the calculator.
-4. In CAS settings, select **Simplify: None**, **Exact: ON**, **Complex: ON**, and **Radians**.
-5. Run `XSCHECK(0)`. The expected reply is `XSIMP 1.7 CHECK OK`.
+1. Download **XSIMPKIT.hpprgm** from the v1.7.0 Release assets.
+2. Open the HP Connectivity Kit and drag the file into your connected calculator's **Programs** area.
+3. In CAS settings, select **Simplify: None**, **Exact: ON**, **Complex: ON**, and **Radians**.
+4. Run `XSCHECK(0)`. The expected reply is `XSIMP 1.7 CHECK OK`.
+
+The native program is also stored at [native/XSIMPKIT.hpprgm](native/XSIMPKIT.hpprgm). The `.ppl` and `.cas` files in `src/` are development sources.
 
 Use the CAS functions below for calculations. `XSIMPKIT()` itself is only the installation container.
 
@@ -70,7 +71,7 @@ The frozen installer SHA-256 is:
 
 ## Development
 
-The five modules and test scripts are in `src/`. Build the combined installer with:
+The five modules and test scripts are in `src/`. Build the combined PPL source with:
 
 ```sh
 python3 src/build_and_test.py

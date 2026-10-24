@@ -1,0 +1,31 @@
+{
+  "native": "Official HP Prime Linux Virtual Calculator 2.1.14290",
+  "origin": "Unmodified program file saved by the official simulator",
+  "hpprgm_sha256": "85bb0141f2d5a6e70f9540f81bbd6159a5763c57294b38fc2cbf1b9829b58aff",
+  "embedded_source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930",
+  "embedded_source_offset": 248,
+  "reimport": {
+    "method": "Separate simulator work directory, native hpprgm copied into Programs storage; no source pasted. Home initialization settings reused; no original CAS settings copied.",
+    "checks": [
+      {
+        "command": "XSCHECK(0)",
+        "result": "XSIMP 1.7 CHECK OK"
+      },
+      {
+        "command": "XSIMP((x^2-1)/(x-1))",
+        "result": "x+1"
+      },
+      {
+        "command": "xsisapprox(XEXP(i*[[1,-2*i],[1+2*i,1]]))",
+        "result": 0
+      }
+    ],
+    "screenshots": [
+      "native_import_check0.png",
+      "native_import_check1.png",
+      "native_import_check2.png",
+      "native_import_check3.png"
+    ]
+  },
+  "scope": "Simulator native-file reload, not a physical G2 Connectivity Kit transfer test."
+}

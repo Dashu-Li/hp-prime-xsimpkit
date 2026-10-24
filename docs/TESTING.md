@@ -120,3 +120,7 @@ node parity_proofs.cjs
 - 作者对用户函数参数求值的说明：https://www.hpmuseum.org/forum/archive/index.php?thread-7051.html=
 - 作者的指数转双曲函数例子：https://www.hpmuseum.org/forum/archive/index.php?thread-13942.html=
 - 官方旧模拟器下载页：https://www.hpcalc.org/details/8917
+
+## 原生文件补充验证
+
+当前安装文件为官方模拟器保存的 XSIMPKIT.hpprgm；未修改二进制。已在独立工作目录重新载入，通过版本、标量化简及复数矩阵指数类型检查。嵌入源码与原始发布源码逐字节一致，仅将开发用合并源码文件改名为 XSIMPKIT.ppl。详见 NATIVE_FORMAT.json。此补充验证不等同于 G2 实机 Connectivity Kit 传输测试。

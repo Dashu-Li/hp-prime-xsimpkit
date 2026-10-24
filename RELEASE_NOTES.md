@@ -2,7 +2,7 @@
 
 Exact complex-radical matrix functions and a fix for the native complex-radical denominator simplification stall.
 
-Install the complete `src/XSIMPKIT.txt` into an ordinary PPL program named `XSIMPKIT`. Use CAS Simplify=None, Exact ON, Complex ON, and Radians; `XSCHECK(0)` should return `XSIMP 1.7 CHECK OK`.
+Import `XSIMPKIT.hpprgm` through the HP Connectivity Kit into the calculator Programs area. Use CAS Simplify=None, Exact ON, Complex ON, and Radians; `XSCHECK(0)` should return `XSIMP 1.7 CHECK OK`.
 
 For the reported example, use `XEXP(i*[[1,-2*i],[1+2*i,1]])`, `XEXPT([[1,-2*i],[1+2*i,1]],i)`, or `XSIMP("exp(i*[[1,-2*i],[1+2*i,1]])")`. Unprotected native evaluation may lose exactness before `XSIMP` receives its argument.
 

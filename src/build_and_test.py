@@ -5,7 +5,7 @@ import re
 ROOT = Path(__file__).resolve().parent
 parts = [ROOT / (s + '.cas') for s in ['scalar', 'matrix', 'presentation', 'posthoc', 'unified']]
 source = '\n\n'.join(p.read_text() for p in parts)
-(ROOT / 'XSIMPKIT.txt').write_text(
+(ROOT / 'XSIMPKIT.ppl').write_text(
     '// XSIMPKIT 1.7 - exact complex radicals and guarded simplification.\n'
     '// Paste the entire file into an ordinary PPL program named XSIMPKIT.\n'
     '// CAS radians / exact / Simplify=None. Entry: XSIMP(expression).\n'

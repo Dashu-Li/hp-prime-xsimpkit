@@ -88,6 +88,6 @@ async function worker(){
 }
 Promise.all([worker(),worker()]).then(()=>{
  results.sort((a,b)=>a.index-b.index);
- const package_sha256=require('crypto').createHash('sha256').update(fs.readFileSync(path.join(__dirname,'XSIMPKIT.txt'))).digest('hex');
+ const package_sha256=require('crypto').createHash('sha256').update(fs.readFileSync(path.join(__dirname,'XSIMPKIT.ppl'))).digest('hex');
  fs.writeFileSync(path.join(__dirname,'parity_results.json'),JSON.stringify({runtime:'Upstream Giac, calc_mode(-38), original one-based current1.7 modules; not HP firmware.',package_sha256,summary:{package_sha256,timeouts:results.filter(r=>r.status==='15s audit timeout').length},cases:results},null,2));
 });

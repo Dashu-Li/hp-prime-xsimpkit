@@ -8,8 +8,8 @@
 
 ## 替换安装
 
-1. 在连接软件中打开普通 PPL 程序 `XSIMPKIT`，用本包 `XSIMPKIT.txt` 全文覆盖。文件自带 `#cas` 块，不另建 CAS 程序。
-2. 保存、检查并传输。按 Shift+CAS，将 Simplify（化简）设为 **None（无）**，使用精确模式、弧度制。Complex 可以开启。None 关闭的是原生界面对返回结果的再次自动化简，XSIMP 内部显式调用的化简仍会执行。本程序不会修改这些设置。
+1. 下载 Release 中的 `XSIMPKIT.hpprgm`，在 HP Connectivity Kit 中拖入已连接计算器的 Programs（程序）区域。
+2. 传输后，按 Shift+CAS，将 Simplify（化简）设为 **None（无）**，使用精确模式、弧度制。Complex 可以开启。None 关闭的是原生界面对返回结果的再次自动化简，XSIMP 内部显式调用的化简仍会执行。本程序不会修改这些设置。
 3. 在 CAS 输入 `XSCHECK(0)`，应返回 `XSIMP 1.7 CHECK OK`。计算调用 `XSIMP(...)`，不要传给安装容器 `XSIMPKIT()`。
 
 ## 本次复数矩阵例子
