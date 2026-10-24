@@ -1,0 +1,55 @@
+{
+  "runtime": "Upstream Giac calc_mode(-38), complex_variables(1); not HP firmware.",
+  "rows": [
+    {
+      "name": "unknown complex base displayed as a power",
+      "text": "\"(a)^((((-(sqrt(3))))+(2)))\"",
+      "target": "a^(-(√3)+2)",
+      "passed": true
+    },
+    {
+      "name": "principal-power check a=2",
+      "delta": "0.0",
+      "proof": "true",
+      "passed": true
+    },
+    {
+      "name": "principal-power check a=-2",
+      "delta": "3.05615986457E-14",
+      "proof": "true",
+      "passed": true
+    },
+    {
+      "name": "principal-power check a=i",
+      "delta": "0.0",
+      "proof": "true",
+      "passed": true
+    },
+    {
+      "name": "squared base kept intact",
+      "text": "\"exp(((ln(((a)^(2))))/(2)))\"",
+      "target": "e^(ln(a^2)/2)",
+      "proof": "true",
+      "passed": true
+    },
+    {
+      "name": "product base kept intact",
+      "text": "\"exp(((ln(((a)*(b))))/(2)))\"",
+      "target": "e^(ln(a*b)/2)",
+      "proof": "",
+      "passed": true
+    },
+    {
+      "name": "nested power base kept intact",
+      "text": "\"exp(((ln(sqrt(a)))/(2)))\"",
+      "target": "e^(ln(√a)/2)",
+      "proof": "true",
+      "passed": true
+    },
+    {
+      "name": "complex coefficient keeps exponential preference",
+      "text": "\"exp((((i))*(ln(a))))\"",
+      "passed": true
+    }
+  ]
+}

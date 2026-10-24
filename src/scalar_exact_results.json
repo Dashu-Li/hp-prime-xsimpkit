@@ -1,0 +1,347 @@
+{
+  "runtime": "Upstream Giac calc_mode(-38), original one-based module; not physical HP firmware.",
+  "contract": "Typed numeric-leaf inspection; bounded at 24 levels; incomplete candidates preserved unless input already has a confirmed float. No reconstruction of unchanged function heads.",
+  "sourceSha256": {
+    "scalar.cas": "7948012a9fb507a141430de067e6b6b9164111db7bb29ec1b8a36b41a2b97600"
+  },
+  "total": 48,
+  "failed": 0,
+  "rows": [
+    {
+      "input": "xsisapprox(sqrt(2)+i/3)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 37
+    },
+    {
+      "input": "xsisapprox(2+3*i)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 3
+    },
+    {
+      "input": "xsisapprox(2.0+3*i)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 7
+    },
+    {
+      "input": "xsisapprox(2+3.0*i)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xsisapprox([1,sqrt(2),[3+i/2]])",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xsisapprox([1,sqrt(2),[3.0+i/2]])",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 24
+    },
+    {
+      "input": "xsisapprox(f(1.2))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 10
+    },
+    {
+      "input": "xsisapprox(f(sqrt(2)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsisapprox([\"1.0\",Euler,xexample])",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsisapprox(x+1E20)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xsisapprox(x+1E-20)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xsisapprox([1.0/0.0])",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsisapprox([0.0/0.0])",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsnewapprox(sqrt(2),1.414)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xsnewapprox(1.4,1.414)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsnewapprox(sqrt(2),sqrt(3))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsisapprox(cos(ss)*exp(i))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 11
+    },
+    {
+      "input": "xsisapprox(normal(cos(ss)*exp(i)))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 819
+    },
+    {
+      "input": "xsisapprox(xsrewrite(cos(ss)*exp(i)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 20
+    },
+    {
+      "input": "xsisapprox(xsclean(cos(ss)*exp(i)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 4
+    },
+    {
+      "input": "xsisapprox(xsscalar(cos(ss)*exp(i)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 2
+    },
+    {
+      "input": "xsisapprox(XRECT(cos(ss)*exp(i)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 599
+    },
+    {
+      "input": "string(xsrewrite(expr(\"quote(sqrt(4-2*i))\")))==string(expr(\"quote(sqrt(4-2*i))\"))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 2
+    },
+    {
+      "input": "xsscalar(sin(x)^2+cos(x)^2)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "normal(xsscalar((x^2-1)/(x-1))-(x+1))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 4
+    },
+    {
+      "input": "normal(xsscalar(exp(sqrt(2)*ln(3)))-3^sqrt(2))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 18
+    },
+    {
+      "input": "xsisapprox(xsscalar(cos(ss)*exp(i)+0.1))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xscomplexrad(ss)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(cos(ss)*exp(i))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xscomplexrad(2*sin(ss)*exp(i)/ss)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad((3+2*i)*sqrt(2)/6)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(i*2^(1/3))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(expr(\"quote(sqrt(4-2*i))\"))",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xscomplexrad(sqrt(2)+sqrt(3))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(cos(sqrt(2))*exp(1))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(2+3*i)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(cos(2+i))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(x+ss)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 1
+    },
+    {
+      "input": "xscomplexrad(sin(x)*sqrt(2)*i)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(0.1+ss)",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xscomplexrad(f(ss))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "xsisapprox(xsclean(2*sin(ss)*exp(i)/ss))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 3
+    },
+    {
+      "input": "xsisapprox(xsscalar(2*sin(ss)*exp(i)/ss))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 3
+    },
+    {
+      "input": "xsisapprox(xsclean((-2+i)*sin(ss)*exp(i)/ss))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 3
+    },
+    {
+      "input": "xsscalar(sin(ss)^2+cos(ss)^2)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 25
+    },
+    {
+      "input": "xsclean(2+sin(ss)^2+cos(ss)^2)",
+      "actual": "3",
+      "want": "3",
+      "pass": true,
+      "ms": 27
+    },
+    {
+      "input": "string(xsradtrigunit(sin(ss)^2+cos(2*ss)^2))==string(sin(ss)^2+cos(2*ss)^2)",
+      "actual": "1",
+      "want": "1",
+      "pass": true,
+      "ms": 0
+    },
+    {
+      "input": "normal(xsscalar((sqrt(2)+sqrt(3))^2)-(5+2*sqrt(6)))",
+      "actual": "0",
+      "want": "0",
+      "pass": true,
+      "ms": 4
+    }
+  ]
+}

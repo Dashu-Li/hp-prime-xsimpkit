@@ -1,0 +1,332 @@
+// Final presentation pass. Build text first, then parse once under quote.
+// No algebraic simplification may follow xspresent: native ^ evaluation may
+// otherwise turn a real irrational power straight back into exp(c*ln(b)).
+// Bounds apply to traversal/text; individual native CAS calls have no timeout.
+
+// HP-mode string(i) can be a private-use display glyph that expr cannot parse.
+// Translate that glyph outside string literals. Keep other native syntax.
+xspnative(xspv):=BEGIN
+  LOCAL xsps,xspr,xspk,xspn,xspi,xspni,xspch,xspquoted,xspescape;
+  xsps:=string(xspv);
+  IF type(xspv)==DOM_STRING THEN
+    xsps:=string([xspv]); xsps:=mid(xsps,2,size(xsps)-2);
+    // The printed string is already quoted/escaped. Its contents are data,
+    // so no imaginary-symbol translation can be needed inside this literal.
+    RETURN xsps;
+  END;
+  xspi:=string(i); xspni:=size(xspi);
+  IF xspi=="i" THEN RETURN xsps; END;
+  IF size(xsps)>6400 THEN RETURN xsps; END;
+  // Prime's inString is one-based and returns 0 when absent. Most expression
+  // nodes contain no private imaginary glyph: avoid a CAS-level character loop.
+  IF inString(xsps,xspi)==0 THEN RETURN xsps; END;
+  xspr:=""; xspk:=1; xspn:=size(xsps); xspquoted:=0; xspescape:=0;
+  WHILE xspk<=xspn DO
+    xspch:=mid(xsps,xspk,1);
+    IF xspquoted==0 AND mid(xsps,xspk,xspni)==xspi THEN
+      xspr:=xspr+"(i)"; xspk:=xspk+xspni;
+    ELSE
+      xspr:=xspr+xspch; xspk:=xspk+1;
+      IF xspescape==1 THEN xspescape:=0;
+      ELSE
+        IF xspch=="\\" THEN xspescape:=1;
+        ELSE IF xspch=="\"" THEN xspquoted:=1-xspquoted; END; END;
+      END;
+    END;
+  END;
+  RETURN xspr;
+END;
+
+// Only functions with ordinary unary call syntax are reconstructed here.
+// Internal/special operators retain their native printed syntax unchanged.
+xspunaryname(xsph):=BEGIN
+  IF xsph==exp THEN RETURN "exp"; END;
+  IF xsph==ln THEN RETURN "ln"; END;
+  IF xsph==sqrt THEN RETURN "sqrt"; END;
+  IF xsph==sin THEN RETURN "sin"; END;
+  IF xsph==cos THEN RETURN "cos"; END;
+  IF xsph==tan THEN RETURN "tan"; END;
+  IF xsph==asin THEN RETURN "asin"; END;
+  IF xsph==acos THEN RETURN "acos"; END;
+  IF xsph==atan THEN RETURN "atan"; END;
+  IF xsph==sinh THEN RETURN "sinh"; END;
+  IF xsph==cosh THEN RETURN "cosh"; END;
+  IF xsph==tanh THEN RETURN "tanh"; END;
+  IF xsph==asinh THEN RETURN "asinh"; END;
+  IF xsph==acosh THEN RETURN "acosh"; END;
+  IF xsph==atanh THEN RETURN "atanh"; END;
+  IF xsph==abs THEN RETURN "abs"; END;
+  IF xsph==re THEN RETURN "re"; END;
+  IF xsph==im THEN RETURN "im"; END;
+  IF xsph==arg THEN RETURN "arg"; END;
+  IF xsph==conj THEN RETURN "conj"; END;
+  IF xsph==sign THEN RETURN "sign"; END;
+  RETURN "";
+END;
+
+// Find a shorter trigonometric argument using identities valid for every
+// complex u: cosh(u)=cos(-i*u), sinh(u)=i*sin(-i*u). Never evaluate re(u):
+// some native/upstream builds fail on re(sqrt(3)*ln(a)) with complex variables.
+// The leading space makes the absence test work in both zero-/one-based modes.
+xsptrigarg(xspu):=BEGIN
+  LOCAL xsps,xspc,xspneg,xspsign,xspnew;
+  xsps:=string(xspu);
+  IF size(xsps)>256 THEN RETURN []; END;
+  IF inString(" "+xsps,string(i))<=0 THEN RETURN []; END;
+  xspc:=-i*xspu;
+  // Even normal(-u) can approximate an exact complex radical on Prime.
+  // A shorter display argument must retain the input's exactness.
+  IF xsnewapprox(xspu,xspc) THEN RETURN []; END;
+  xspnew:=normal(xspc);
+  IF NOT xsnewapprox(xspc,xspnew) THEN xspc:=xspnew; END;
+  xspneg:=-xspc; xspnew:=normal(xspneg); xspsign:=1;
+  IF NOT xsnewapprox(xspneg,xspnew) THEN xspneg:=xspnew; END;
+  IF NOT xsnewapprox(xspc,xspneg) AND size(string(xspneg))<size(string(xspc)) THEN xspc:=xspneg; xspsign:=-1; END;
+  IF size(string(xspc))<size(xsps) THEN RETURN [xspc,xspsign]; END;
+  RETURN [];
+END;
+
+// Convert small hyperbolic leaves before rendering their parents. Odd/even
+// trig identities need no sign assumptions. Only changed arithmetic parents
+// are regrouped; unchanged hyperbolic expressions are left intact.
+xspimagwalk(xspv,xspd):=BEGIN
+  LOCAL xsph,xspname,xspl,xspr,xspk,xspq,xspu,xspc,xspneg,xspchanged,xspnew,xspparent;
+  xspparent:=string(xspv);
+  IF xspd>=24 OR size(xspparent)>1600 THEN RETURN xspv; END;
+  IF type(xspv)==DOM_LIST THEN
+    xspr:=xspv;
+    FOR xspk FROM 1 TO size(xspv) DO
+      IF string(xspv[xspk])==xspparent THEN RETURN xspv; END;
+      xspr[xspk]:=xspimagwalk(xspv[xspk],xspd+1);
+    END;
+    RETURN xspr;
+  END;
+  IF type(xspv)<>DOM_SYMBOLIC THEN RETURN xspv; END;
+  xsph:=xshead(xspv);
+  IF type(xsph)<>DOM_FUNC THEN RETURN xspv; END;
+  xspname:=string(xsph);
+  IF xspname=="'of'" OR xspname=="of" THEN RETURN xspv; END;
+  IF xspunaryname(xsph)=="" AND xspname<>"'+'" AND xspname<>"+" AND xspname<>"'-'" AND xspname<>"-" AND xspname<>"'*'" AND xspname<>"*" AND xspname<>"'/'" AND xspname<>"/" AND xspname<>"'inv'" AND xspname<>"inv" AND xspname<>"'^'" AND xspname<>"^" THEN RETURN xspv; END;
+  xspl:=[op(xspv)]; xspr:=[]; xspchanged:=0;
+  // Do not evaluate an unevaluated matrix function/product in a display pass.
+  FOR xspk FROM 1 TO size(xspl) DO
+    IF type(xspl[xspk])==DOM_LIST THEN RETURN xspv; END;
+    IF string(xspl[xspk])==xspparent THEN RETURN xspv; END;
+  END;
+  FOR xspk FROM 1 TO size(xspl) DO
+    xspnew:=xspimagwalk(xspl[xspk],xspd+1);
+    IF string(xspnew)<>string(xspl[xspk]) THEN xspchanged:=1; END;
+    xspr:=append(xspr,xspnew);
+  END;
+  xspq:=xspv;
+  IF xspchanged THEN
+    xspnew:=xsph(op(xspr));
+    IF NOT xsnewapprox(xspv,xspnew) THEN xspq:=xspnew; END;
+  END;
+  IF size(xspr)==1 AND size(string(xspr[1]))<=256 THEN
+    xspu:=xspr[1];
+    IF xsph==cosh OR xsph==sinh THEN
+      xspc:=xsptrigarg(xspu);
+      IF size(xspc)==2 THEN
+        IF xsph==cosh THEN xspnew:=cos(xspc[1]);
+        ELSE xspnew:=xspc[2]*i*sin(xspc[1]); END;
+        IF NOT xsnewapprox(xspv,xspnew) THEN RETURN xspnew; END;
+      END;
+    END;
+    IF xsph==sin OR xsph==cos THEN
+      xspneg:=-xspu; xspnew:=normal(xspneg);
+      IF NOT xsnewapprox(xspneg,xspnew) THEN xspneg:=xspnew; END;
+      IF NOT xsnewapprox(xspu,xspneg) AND size(string(xspneg))<size(string(xspu)) THEN
+        IF xsph==cos THEN xspnew:=cos(xspneg);
+        ELSE xspnew:=-sin(xspneg); END;
+        IF NOT xsnewapprox(xspv,xspnew) THEN RETURN xspnew; END;
+      END;
+    END;
+  END;
+  IF xspchanged THEN
+    IF xspname=="'+'" OR xspname=="+" OR xspname=="'-'" OR xspname=="-" OR xspname=="'*'" OR xspname=="*" OR xspname=="'/'" OR xspname=="/" OR xspname=="'inv'" OR xspname=="inv" THEN
+      xspnew:=regroup(regroup(xspq));
+      IF type(xspnew)<>DOM_STRING AND NOT has(xspnew,undef) AND NOT has(xspnew,infinity) AND NOT xsnewapprox(xspv,xspnew) THEN RETURN xspnew; END;
+    END;
+  END;
+  RETURN xspq;
+END;
+
+// Held parsing can retain nested multiplication nodes. Flatten only those
+// nodes, keeping factor order; no expansion or algebraic evaluation is used.
+xspflatproduct(xspv,xspd):=BEGIN
+  LOCAL xsph,xspl,xspr,xspk,xspj,xspsub;
+  IF xspd>=24 OR type(xspv)<>DOM_SYMBOLIC THEN RETURN [xspv]; END;
+  xsph:=string(xshead(xspv));
+  IF xsph<>"'*'" AND xsph<>"*" THEN RETURN [xspv]; END;
+  xspl:=[op(xspv)]; xspr:=[];
+  FOR xspk FROM 1 TO size(xspl) DO
+    IF string(xspl[xspk])==string(xspv) THEN RETURN [xspv]; END;
+    xspsub:=xspflatproduct(xspl[xspk],xspd+1);
+    FOR xspj FROM 1 TO size(xspsub) DO
+      xspr:=append(xspr,xspsub[xspj]);
+      IF size(xspr)>256 THEN RETURN [xspv]; END;
+    END;
+  END;
+  RETURN xspr;
+END;
+
+// Render scalar products as one fraction without evaluating the product.
+// Matrix products/inverses retain their original order and formatting path.
+xspproducttext(xspv,xspl,xspd):=BEGIN
+  LOCAL xspk,xspf,xsph,xspa,xspnum,xspden,xspnf,xspdf,xspnt,xspdt;
+  xspl:=xspflatproduct(xspv,xspd);
+  xspnum:=""; xspden:="";
+  FOR xspk FROM 1 TO size(xspl) DO
+    xspf:=xspl[xspk];
+    IF type(xspf)==DOM_LIST THEN RETURN ""; END;
+    IF string(xspf)==string(xspv) THEN RETURN ""; END;
+    xspnf:=xspf; xspdf:=1;
+    IF type(xspf)==DOM_RAT THEN
+      xspnf:=numer(xspf); xspdf:=denom(xspf);
+    ELSE
+      IF type(xspf)==DOM_SYMBOLIC THEN
+        xsph:=string(xshead(xspf));
+        IF xsph=="'inv'" OR xsph=="inv" THEN
+          xspdf:=op(xspf);
+          IF type(xspdf)==DOM_LIST THEN RETURN ""; END;
+          xspnf:=1;
+        ELSE
+          IF xsph=="'^'" OR xsph=="^" OR xsph=="'/'" OR xsph=="/" THEN
+            xspa:=[op(xspf)];
+            IF size(xspa)==2 THEN
+              IF type(xspa[1])==DOM_LIST OR type(xspa[2])==DOM_LIST THEN RETURN ""; END;
+              IF xsph=="'/'" OR xsph=="/" THEN
+                xspnf:=xspa[1]; xspdf:=xspa[2];
+              ELSE
+                IF string(xspa[2])=="-1" THEN xspnf:=1; xspdf:=xspa[1]; END;
+              END;
+            END;
+          END;
+        END;
+      END;
+    END;
+    IF string(xspnf)<>"1" THEN
+      xspnt:=xsptext(xspnf,xspd+1);
+      IF xspnum<>"" THEN xspnum:=xspnum+"*"; END;
+      xspnum:=xspnum+"("+xspnt+")";
+    END;
+    IF string(xspdf)<>"1" THEN
+      xspdt:=xsptext(xspdf,xspd+1);
+      IF xspden<>"" THEN xspden:=xspden+"*"; END;
+      xspden:=xspden+"("+xspdt+")";
+    END;
+    IF size(xspnum)+size(xspden)>6400 THEN RETURN ""; END;
+  END;
+  IF xspnum=="" THEN xspnum:="1"; END;
+  IF xspden=="" THEN RETURN "("+xspnum+")"; END;
+  RETURN "("+xspnum+")/("+xspden+")";
+END;
+
+xsptext(xspv,xspd):=BEGIN
+  LOCAL xsps,xsph,xspname,xspl,xspr,xspk,xspu,xspb,xspc,xspn,xspopen,xspclose,xspchild,xspreal;
+  xsps:=xspnative(xspv);
+  IF xspd>=24 OR size(xsps)>1600 THEN RETURN xsps; END;
+  IF type(xspv)==DOM_LIST THEN
+    xspopen:=mid(xsps,1,1);
+    IF xspopen=="[" THEN xspclose:="]";
+    ELSE IF xspopen=="{" THEN xspclose:="}";
+    ELSE RETURN xsps; END; END;
+    xspr:=xspopen;
+    FOR xspk FROM 1 TO size(xspv) DO
+      IF xspk>1 THEN xspr:=xspr+","; END;
+      IF string(xspv[xspk])==string(xspv) THEN RETURN xsps; END;
+      xspr:=xspr+xsptext(xspv[xspk],xspd+1);
+      IF size(xspr)>6400 THEN RETURN xsps; END;
+    END;
+    RETURN xspr+xspclose;
+  END;
+  IF type(xspv)<>DOM_SYMBOLIC THEN RETURN xsps; END;
+  xsph:=xshead(xspv);
+  IF type(xsph)<>DOM_FUNC THEN RETURN xsps; END;
+  xspname:=xspunaryname(xsph);
+  IF xspname<>"" THEN
+    xspu:=op(xspv);
+    // A unary matrix operand is a sequence of rows in Prime's op output.
+    IF type(xspu)==DOM_LIST THEN xspu:=[xspu]; END;
+    IF string(xspu)==string(xspv) THEN RETURN xsps; END;
+    IF type(xspu)<>DOM_LIST THEN
+      IF xsph==exp THEN
+        xspl:=xslogs(xspu);
+        IF size(xspl)<=8 THEN
+          FOR xspk FROM 1 TO size(xspl) DO
+            xspb:=op(xspl[xspk]);
+            // This same logarithm already occurs in the input. Re-express its
+            // scalar multiple as a principal power, retaining the whole base.
+            // ln(base) excludes base=0; do not split products or nested powers.
+            IF type(xspb)<>DOM_LIST AND xspb<>0 AND xspb<>1 AND NOT has(xspb,undef) AND NOT has(xspb,infinity) THEN
+              xspc:=ratnormal(xspu/xspl[xspk]);
+              IF NOT xsnewapprox(xspu,xspc) AND size(xslogs(xspc))==0 THEN
+                xspchild:=im(xspc); xspreal:=simplify(xspchild);
+                IF NOT xsnewapprox(xspc,xspchild) AND NOT xsnewapprox(xspchild,xspreal) THEN
+                  IF string(xspreal)=="0" THEN
+                    RETURN "("+xsptext(xspb,xspd+1)+")^("+xsptext(xspc,xspd+1)+")";
+                  END;
+                END;
+              END;
+            END;
+          END;
+        END;
+      END;
+      IF xsph==cosh OR xsph==sinh THEN
+        xspc:=xsptrigarg(xspu);
+        IF size(xspc)==2 THEN
+          IF xsph==cosh THEN RETURN "cos("+xsptext(xspc[1],xspd+1)+")"; END;
+          IF xspc[2]==-1 THEN RETURN "(-i)*sin("+xsptext(xspc[1],xspd+1)+")"; END;
+          RETURN "(i)*sin("+xsptext(xspc[1],xspd+1)+")";
+        END;
+      END;
+    END;
+    RETURN xspname+"("+xsptext(xspu,xspd+1)+")";
+  END;
+  xspname:=string(xsph);
+  IF mid(xspname,1,1)=="'" THEN xspname:=mid(xspname,2,size(xspname)-2); END;
+  IF xspname<>"+" AND xspname<>"-" AND xspname<>"*" AND xspname<>"/" AND xspname<>"^" AND xspname<>"=" AND xspname<>"==" AND xspname<>"<" AND xspname<>">" AND xspname<>"<=" AND xspname<>">=" AND xspname<>"!=" AND xspname<>"<>" THEN RETURN xsps; END;
+  xspl:=[op(xspv)]; xspn:=size(xspl);
+  IF xspn==0 THEN RETURN xsps; END;
+  IF xspname<>"+" AND xspname<>"*" AND xspname<>"-" AND xspn<>2 THEN RETURN xsps; END;
+  IF xspname=="-" AND xspn>2 THEN RETURN xsps; END;
+  IF xspname=="*" THEN
+    xspr:=xspproducttext(xspv,xspl,xspd);
+    IF xspr<>"" THEN RETURN xspr; END;
+  END;
+  // normal may store sqrt(c) as c^(1/2); retain the familiar radical spelling.
+  IF xspname=="^" AND xspn==2 THEN
+    IF type(xspl[1])<>DOM_LIST AND string(xspl[2])=="1/2" THEN
+      RETURN "sqrt("+xsptext(xspl[1],xspd+1)+")";
+    END;
+  END;
+  xspr:="";
+  IF xspname=="-" AND xspn==1 THEN xspr:="-"; END;
+  FOR xspk FROM 1 TO xspn DO
+    IF string(xspl[xspk])==string(xspv) THEN RETURN xsps; END;
+    IF xspk>1 THEN xspr:=xspr+xspname; END;
+    xspr:=xspr+"("+xsptext(xspl[xspk],xspd+1)+")";
+    IF size(xspr)>6400 THEN RETURN xsps; END;
+  END;
+  RETURN "("+xspr+")";
+END;
+
+// Isolated parser shim: no evaluation/normal/simplify after this call.
+xsphold(xsps):=BEGIN RETURN expr("quote("+xsps+")"); END;
+
+xspresent(xspv):=BEGIN
+  LOCAL xsps,xspclean,xspresult;
+  IF type(xspv)==DOM_STRING THEN RETURN xspv; END;
+  IFERR
+    xspclean:=xspimagwalk(xspv,0);
+    IF xsnewapprox(xspv,xspclean) THEN xspclean:=xspv; END;
+    xsps:=xsptext(xspclean,0);
+    IF size(xsps)>6400 THEN RETURN xspv; END;
+    xspresult:=xsphold(xsps);
+    IF xsnewapprox(xspv,xspresult) THEN RETURN xspv; END;
+    RETURN xspresult;
+  THEN
+    RETURN xspv;
+  END;
+END;

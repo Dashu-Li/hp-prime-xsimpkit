@@ -1,0 +1,343 @@
+{
+  "runtime": "Upstream Giac calc_mode(-38), original one-based modules; not physical HP firmware.",
+  "reference": "Independent JavaScript complex arithmetic and the 2x2 Cayley-Hamilton exponential formula. Numerical tolerance 1e-10. No numerical comparison is labeled an exact symbolic equality proof.",
+  "summary": {
+    "total": 15,
+    "passed": 15,
+    "exactRepresentationAndNumeric": 13,
+    "approximateSemantics": 2,
+    "failed": 0
+  },
+  "cases": [
+    {
+      "index": 0,
+      "name": "screenshot quoted exp",
+      "source": "XSIMP(\"exp(i*([[1,0],[1,1]]+2*[[0,-i],[i,0]]))\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(*(√(√5-2)+*√(√5+2)))*e^(),-2**e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]",
+      "output": "\"[[cos(*(√(√5-2)+*√(√5+2)))*e^(),-2**e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2093710279138944e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15",
+        "0.12093710279138945e-15",
+        "0.10431444859552239e-15",
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1310,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 1,
+      "name": "screenshot quoted e power",
+      "source": "XSIMP(\"e^(i*([[1,0],[1,1]]+2*[[0,-i],[i,0]]))\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(*(√(√5-2)+*√(√5+2)))*e^(),-2**e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]",
+      "output": "\"[[cos(*(√(√5-2)+*√(√5+2)))*e^(),-2**e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2093710279138944e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15",
+        "0.12093710279138945e-15",
+        "0.10431444859552239e-15",
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1470,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 2,
+      "name": "direct XEXPT",
+      "source": "XEXPT([[1,-2*i],[1+2*i,1]],i)",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(*(√(√5-2)+*√(√5+2)))*e^(),(-2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]",
+      "output": "\"[[cos(*(√(√5-2)+*√(√5+2)))*e^(),(-2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(1+2*)*e^()*sin(*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),cos(*(√(√5-2)+*√(√5+2)))*e^()]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2093710279138944e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15",
+        "0.12093710279138945e-15",
+        "0.10431444859552239e-15",
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1033,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 3,
+      "name": "direct XEXP",
+      "source": "XEXP(i*[[1,-2*i],[1+2*i,1]])",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(√(√5+2)-*√(√5-2))*e^(),2*e^()*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(−)*√(√5-2))],[(-2+)*e^()*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(−)*√(√5-2)),cos(√(√5+2)-*√(√5-2))*e^()]]",
+      "output": "\"[[cos(√(√5+2)-*√(√5-2))*e^(),2*e^()*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(−)*√(√5-2))],[(-2+)*e^()*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(−)*√(√5-2)),cos(√(√5+2)-*√(√5-2))*e^()]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2093710279138944e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15",
+        "0.12093710279138945e-15",
+        "0.10431444859552239e-15",
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1065,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 4,
+      "name": "conjugate exponential",
+      "source": "XSIMP(\"exp(-i*[[1,2*i],[1-2*i,1]])\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos((-())*(√(√5-2)-*√(√5+2)))*e^(-()),2**e^(-())*sin((-())*(√(√5-2)-*√(√5+2)))/((-())*√(√5+2)+√(√5-2))],[(1-2*)*e^(-())*sin((-())*(√(√5-2)-*√(√5+2)))/((-())*√(√5+2)+√(√5-2)),cos((-())*(√(√5-2)-*√(√5+2)))*e^(-())]]",
+      "output": "\"[[cos((-())*(√(√5-2)-*√(√5+2)))*e^(-()),2**e^(-())*sin((-())*(√(√5-2)-*√(√5+2)))/((-())*√(√5+2)+√(√5-2))],[(1-2*)*e^(-())*sin((-())*(√(√5-2)-*√(√5+2)))/((-())*√(√5+2)+√(√5-2)),cos((-())*(√(√5-2)-*√(√5+2)))*e^(-())]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2093710279138944e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15",
+        "0.12093710279138945e-15",
+        "0.10431444859552239e-15",
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1379,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 5,
+      "name": "positive scalar base complex matrix power",
+      "source": "XSIMP(\"2^[[1,-2*i],[1+2*i,1]]\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[2*cos(ln(2)*(√(√5-2)+*√(√5+2))),-4**sin(ln(2)*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(2+4*)*sin(ln(2)*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),2*cos(ln(2)*(√(√5-2)+*√(√5+2)))]]",
+      "output": "\"[[2*cos(ln(2)*(√(√5-2)+*√(√5+2))),-4**sin(ln(2)*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2))],[(2+4*)*sin(ln(2)*(√(√5-2)+*√(√5+2)))/(*√(√5+2)+√(√5-2)),2*cos(ln(2)*(√(√5-2)+*√(√5+2)))]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 9.32603861714756e-16,
+      "numericPass": true,
+      "errors": [
+        "0.40626616427409521e-15",
+        "0.32039361110334218e-15",
+        "0.93260386171475599e-15",
+        "0.40626616427409521e-15"
+      ],
+      "pass": true,
+      "ms": 1378,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 6,
+      "name": "complex matrix sine",
+      "source": "XSIMP(\"sin([[1,-2*i],[1+2*i,1]])\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(√(√5+2)-*√(√5-2))*sin(1),-2**cos(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2))],[(1+2*)*cos(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2)),cos(√(√5+2)-*√(√5-2))*sin(1)]]",
+      "output": "\"[[cos(√(√5+2)-*√(√5-2))*sin(1),-2**cos(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2))],[(1+2*)*cos(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2)),cos(√(√5+2)-*√(√5-2))*sin(1)]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.507470063135694e-16,
+      "numericPass": true,
+      "errors": [
+        "0.48199097454382932e-16",
+        "0.21103821920200812e-16",
+        "0.15074700631356940e-15",
+        "0.48199097454382932e-16"
+      ],
+      "pass": true,
+      "ms": 1366,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 7,
+      "name": "complex matrix cosine",
+      "source": "XSIMP(\"cos([[1,-2*i],[1+2*i,1]])\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[cos(1)*cos(√(√5+2)-*√(√5-2)),2**sin(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2))],[(-1-2*)*sin(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2)),cos(1)*cos(√(√5+2)-*√(√5-2))]]",
+      "output": "\"[[cos(1)*cos(√(√5+2)-*√(√5-2)),2**sin(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2))],[(-1-2*)*sin(1)*sin(√(√5+2)-*√(√5-2))/(√(√5+2)+(-())*√(√5-2)),cos(1)*cos(√(√5+2)-*√(√5-2))]]\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.2154211009587467e-16,
+      "numericPass": true,
+      "errors": [
+        "0.12154211009587467e-15",
+        "0.11020615097076935e-15",
+        "0.10267419259901549e-15",
+        "0.12154211009587467e-15"
+      ],
+      "pass": true,
+      "ms": 1365,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 8,
+      "name": "quoted complex sqrt",
+      "source": "XSIMP(\"sqrt(4-2*i)\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "√(√5+2)+(-())*√(√5-2)=2.05817102727-0.485868271757*",
+      "output": "\"√(√5+2)+(-())*√(√5-2)\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.6184142622847344e-16,
+      "numericPass": true,
+      "errors": [
+        "0.16184142622847343e-15"
+      ],
+      "pass": true,
+      "ms": 473,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 9,
+      "name": "quoted complex half power",
+      "source": "XSIMP(\"(4-2*i)^(1/2)\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "√(√5+2)+(-())*√(√5-2)=2.05817102727-0.485868271757*",
+      "output": "\"√(√5+2)+(-())*√(√5-2)\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.6184142622847344e-16,
+      "numericPass": true,
+      "errors": [
+        "0.16184142622847343e-15"
+      ],
+      "pass": true,
+      "ms": 473,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 10,
+      "name": "quoted second-quadrant sqrt",
+      "source": "XSIMP(\"sqrt(-4+2*i)\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "*√(√5+2)+√(√5-2)=0.485868271757+2.05817102727*",
+      "output": "\"*√(√5+2)+√(√5-2)\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.6184142622847344e-16,
+      "numericPass": true,
+      "errors": [
+        "0.16184142622847343e-15"
+      ],
+      "pass": true,
+      "ms": 456,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 11,
+      "name": "exact radical trigonometric product",
+      "source": "XSIMP(\"cos((sqrt(2+sqrt(5))-i*sqrt(sqrt(5)-2)))*exp(i)\")",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "cos(√(2+√5)-*√(√5-2))*e^()=-0.659107914859-0.200318977789*",
+      "output": "\"cos(√(2+√5)-*√(√5-2))*e^()\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.1739862079479962e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1069,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 12,
+      "name": "direct exact radical trigonometric product",
+      "source": "XSIMP(cos((sqrt(2+sqrt(5))-i*sqrt(sqrt(5)-2)))*exp(i))",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "cos(√(2+√5)-*√(√5-2))*e^()=-0.659107914859-0.200318977789*",
+      "output": "\"cos(√(2+√5)-*√(√5-2))*e^()\"",
+      "detectedApproximate": "0",
+      "floatToken": false,
+      "expectApproximate": false,
+      "representationPass": true,
+      "numericError": 1.1739862079479962e-16,
+      "numericPass": true,
+      "errors": [
+        "0.11739862079479961e-15"
+      ],
+      "pass": true,
+      "ms": 1166,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 13,
+      "name": "floating matrix input stays approximate",
+      "source": "XEXPT([[1.0,-2.0*i],[1.0+2.0*i,1.0]],i)",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[-0.659107914859-0.200318977789*,0.100282881951+0.957342194739*],[-0.578953979321-0.907200753764*,-0.659107914859-0.200318977789*]]",
+      "output": "\"[[-0.659107914859-0.200318977789*,0.100282881951+0.957342194739*],[-0.578953979321-0.907200753764*,-0.659107914859-0.200318977789*]]\"",
+      "detectedApproximate": "1",
+      "floatToken": true,
+      "expectApproximate": true,
+      "representationPass": true,
+      "numericError": 1.2080532582e-14,
+      "numericPass": true,
+      "errors": [
+        "1.2080532582E-14",
+        "8.37905845335E-15",
+        "7.94410929039E-15",
+        "1.2080532582E-14"
+      ],
+      "pass": true,
+      "ms": 231,
+      "validation": "Exactness is a representation assertion on stored value (not the CAS display, which may append a decimal preview); numerical agreement is checked independently and is not called a symbolic equality proof."
+    },
+    {
+      "index": 14,
+      "name": "native unquoted exponential has already lost exactness",
+      "source": "XSIMP(exp(i*[[1,-2*i],[1+2*i,1]]))",
+      "sourceSha256": "312e5773e83cacf368e221e33a3ad05657d1e6ca4ac69e8eedcdcba485a1589f",
+      "display": "[[-0.659107914859-0.200318977789*,0.100282881951+0.957342194739*],[-0.578953979321-0.907200753764*,-0.659107914859-0.200318977789*]]",
+      "output": "\"[[-0.659107914859-0.200318977789*,0.100282881951+0.957342194739*],[-0.578953979321-0.907200753764*,-0.659107914859-0.200318977789*]]\"",
+      "detectedApproximate": "1",
+      "floatToken": true,
+      "expectApproximate": true,
+      "representationPass": true,
+      "numericError": 4.973973783456081e-13,
+      "numericPass": true,
+      "errors": [
+        "0.49739737834560815e-12",
+        "0.40009083187103606e-12",
+        "0.26536923981649886e-12",
+        "0.49739737834560815e-12"
+      ],
+      "pass": true,
+      "ms": 613,
+      "validation": "Approximate native result retained; not counted as an exact symbolic result."
+    }
+  ]
+}

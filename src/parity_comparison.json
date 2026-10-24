@@ -1,0 +1,243 @@
+{
+  "baseline_version": "1.6",
+  "version": "1.7",
+  "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930",
+  "summary": {
+    "cases": 33,
+    "quoted_unchanged": 30,
+    "unquoted_unchanged": 32
+  },
+  "cases": [
+    {
+      "index": 0,
+      "name": "scalar trig identity",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 1,
+      "name": "scalar rational cancellation",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 2,
+      "name": "scalar radical cancellation",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 3,
+      "name": "scalar variable radical",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 4,
+      "name": "scalar complex quotient",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 5,
+      "name": "scalar Euler cancellation",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 6,
+      "name": "scalar special complex angle",
+      "quoted_identical": false,
+      "unquoted_identical": false,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 7,
+      "name": "scalar irrational power rewrite",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 8,
+      "name": "scalar complex exponential preference",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 9,
+      "name": "scalar variable real exponent",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 10,
+      "name": "scalar real exponential pair",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 11,
+      "name": "list simplification",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 12,
+      "name": "matrix exp zero",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 13,
+      "name": "matrix rotation exp",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 14,
+      "name": "matrix rotation parameter",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 15,
+      "name": "matrix positive exp",
+      "quoted_identical": false,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 16,
+      "name": "matrix positive parameter",
+      "quoted_identical": false,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 17,
+      "name": "matrix positive ln2",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 18,
+      "name": "matrix imaginary Pauli",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 19,
+      "name": "matrix symbolic imaginary Pauli",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 20,
+      "name": "matrix Jordan exp",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 21,
+      "name": "matrix variable Jordan exp",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 22,
+      "name": "matrix nilpotent 3x3",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 23,
+      "name": "matrix sine",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 24,
+      "name": "matrix cosine",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 25,
+      "name": "matrix hyperbolic cosine",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 26,
+      "name": "matrix nested exponential sum",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 27,
+      "name": "matrix original power",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "different native scalar-base matrix power semantics"
+    },
+    {
+      "index": 28,
+      "name": "matrix zero power",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "different native scalar-base matrix power semantics"
+    },
+    {
+      "index": 29,
+      "name": "matrix Jordan power",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "different native scalar-base matrix power semantics"
+    },
+    {
+      "index": 30,
+      "name": "matrix ordinary square",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 31,
+      "name": "matrix Euler cancellation cells",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    },
+    {
+      "index": 32,
+      "name": "matrix scalar identity cells",
+      "quoted_identical": true,
+      "unquoted_identical": true,
+      "current_equivalence": "proved equal"
+    }
+  ]
+}

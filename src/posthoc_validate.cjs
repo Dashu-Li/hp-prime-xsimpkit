@@ -1,0 +1,32 @@
+const fs=require('fs');
+global.UI={warnpy:false,Datestart:Date.now(),python_output:'',add_python_output(){},clean_for_html(x){return x;}};global.alert=()=>{};
+const g=require('../test_runtime/giac.js');const ev=g.cwrap('caseval','string',['string']);
+ev('calc_mode(-38)');
+ev(['scalar','matrix','presentation','posthoc','unified'].map(x=>fs.readFileSync(__dirname+'/'+x+'.cas','utf8')).join('\n'));
+const out=[];
+function run(name,expr,expected,hyp=false){const st=Date.now();const actual=ev('phactual:='+expr);const diff='simplify(trig2exp(hyp2exp(pow2exp(phactual)))-trig2exp(hyp2exp(pow2exp('+expected+'))))';const matrix=ev('xsumatrix(phactual)')==='1';const eq=ev(matrix?'xsmzero('+diff+')':'string('+diff+')=="0"');const pass=(eq==='1'||eq==='true')&&(!hyp||actual.includes('cosh')||actual.includes('sinh'));out.push({name,expr,actual,eq,pass,ms:Date.now()-st});fs.writeFileSync(__dirname+'/posthoc_checks.json',JSON.stringify(out,null,2));}
+const target='4*[[cosh(sqrt(3)*ln(2))-sinh(sqrt(3)*ln(2))/sqrt(3),sinh(sqrt(3)*ln(2))/sqrt(3)],[2*sinh(sqrt(3)*ln(2))/sqrt(3),cosh(sqrt(3)*ln(2))+sinh(sqrt(3)*ln(2))/sqrt(3)]]';
+run('native_exp_matrix','XSIMP(exp([[1,1],[2,3]]*ln(2)))',target,true);
+run('native_exp_power_form','XSIMP(exp2trig(exp([[1,1],[2,3]]*ln(2))))',target,true);
+ev('phraw:=exp([[1,1],[2,3]]*ln(2))');
+ev('phraw:=[[simplify(phraw[1,1]),simplify(phraw[1,2])],[simplify(phraw[2,1]),simplify(phraw[2,2])]]');
+run('native_exp_rational_form','XSIMP(phraw)',target,true);
+run('bound_identifier','XSIMP("phraw")',target,true);
+run('quoted_path','XSIMP("exp([[1,1],[2,3]]*ln(2))")',target,true);
+run('quoted_positive_power','XSIMP("2^[[1,1],[2,3]]")',target,true);
+run('rational_spectrum','XSIMP("2^[[2,1],[1,2]]")','[[5,3],[3,5]]');
+run('unquoted_elementwise_power','XSIMP(2^[[1,1],[2,3]])','[[2,2],[4,8]]');
+run('rational_laurent_recovery','xsppostscalar((2*exp(sqrt(2))^2+3*exp(sqrt(2))+5)/exp(sqrt(2)))','3+7*cosh(sqrt(2))-3*sinh(sqrt(2))',true);
+run('exponential_pair_sum','xsppostscalar(exp(sqrt(2))+exp(-sqrt(2)))','2*cosh(sqrt(2))',true);
+run('unknown_denominator_declined','xsppostscalar(1/(1+exp(sqrt(2))))','1/(1+exp(sqrt(2)))');
+run('higher_degree_declined','xsppostscalar(exp(sqrt(2))^2+1)','exp(sqrt(2))^2+1');
+run('complex_argument_compacted','xsppostscalar(exp(i)+exp(-i))','2*cos(1)');
+run('parameter_declined','xsppostscalar(exp(x)+exp(-x))','exp(x)+exp(-x)');
+const guards=[];
+guards.push({name:'pole_guard',actual:ev('xsppsafe(expr("quote((exp(2*sqrt(2))-exp(sqrt(2))^2)/(exp(2*sqrt(2))-exp(sqrt(2))^2))"),0)'),expected:'0'});
+ev('xsppostauxv:=7');
+guards.push({name:'placeholder_collision',actual:ev('string(xsppostscalar(exp(sqrt(2))+exp(-sqrt(2))))==string(exp(sqrt(2))+exp(-sqrt(2)))'),expected:'true'});
+guards.push({name:'user_value_preserved',actual:ev('xsppostauxv'),expected:'7'});
+for(const c of guards){c.pass=c.actual===c.expected||c.expected==='true'&&c.actual==='1';out.push(c);}
+fs.writeFileSync(__dirname+'/posthoc_checks.json',JSON.stringify(out,null,2));
+if(out.some(x=>!x.pass))process.exitCode=1;

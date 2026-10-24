@@ -1,0 +1,121 @@
+[
+  {
+    "name": "symbolic_rotation",
+    "src": "exp(t*[[0,-1],[1,0]])",
+    "actual": "[[cos(t),-sin(t)],[sin(t),cos(t)]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 460
+  },
+  {
+    "name": "symbolic_imaginary_pauli",
+    "src": "exp(i*t*[[0,1],[1,0]])",
+    "actual": "[[cos(t),*sin(t)],[*sin(t),cos(t)]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 13
+  },
+  {
+    "name": "symbolic_positive_spectrum",
+    "src": "exp(t*[[1,1],[2,3]])",
+    "actual": "[[e^(2*t)*cosh(√3*t)-√3*e^(2*t)*sinh(√3*t)/3,√3*e^(2*t)*sinh(√3*t)/3],[2*√3*e^(2*t)*sinh(√3*t)/3,e^(2*t)*cosh(√3*t)+√3*e^(2*t)*sinh(√3*t)/3]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 557
+  },
+  {
+    "name": "sine_matrix",
+    "src": "sin([[0,-1],[1,0]])",
+    "actual": "[[0,-sinh(1)],[sinh(1),0]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 66
+  },
+  {
+    "name": "cosine_matrix",
+    "src": "cos([[0,-1],[1,0]])",
+    "actual": "[[cosh(1),0],[0,cosh(1)]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 24
+  },
+  {
+    "name": "complex_pair_sum",
+    "src": "exp([[0,-1],[1,0]])+exp([[0,1],[-1,0]])",
+    "actual": "[[2*cos(1),0],[0,2*cos(1)]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 11
+  },
+  {
+    "name": "complex_parameter_rotation",
+    "src": "exp((1+i)*t*[[0,-1],[1,0]])",
+    "actual": "[[cos((1+)*t),-sin((1+)*t)],[sin((1+)*t),cos((1+)*t)]]",
+    "eq": "1",
+    "pass": true,
+    "ms": 13
+  },
+  {
+    "name": "unknown_base_power",
+    "x": "xspppowers(expr(\"quote(a^t)\"),0)",
+    "actual": "0",
+    "expected": "0",
+    "pass": true
+  },
+  {
+    "name": "negative_base_power",
+    "x": "xspppowers(expr(\"quote((-2)^t)\"),0)",
+    "actual": "0",
+    "expected": "0",
+    "pass": true
+  },
+  {
+    "name": "positive_base_power",
+    "x": "xspppowers(expr(\"quote(2^t)\"),0)",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "unknown_symbolic_denominator",
+    "x": "string(xsppostscalar((exp(t)+exp(-t))/x))==string((exp(t)+exp(-t))/x)",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "placeholder_in_input",
+    "x": "string(xsppostscalar(exp(xsppostauxv)+exp(-xsppostauxv)))==string(exp(xsppostauxv)+exp(-xsppostauxv))",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "negative_rational_power_guard",
+    "x": "string(xsppostscalar((exp(t)+exp(-t))/sqrt(x)))==string((exp(t)+exp(-t))/sqrt(x))",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "existing_log_base_allowed",
+    "x": "string(xsppostscalar(exp(t*ln(x))+exp(-t*ln(x))))==string(2*cosh(t*ln(x)))",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "new_unknown_log_base_declined",
+    "x": "string(xsppostscalar(expr(\"quote(x^t+x^(-t))\")))==string(expr(\"quote(x^t+x^(-t))\"))",
+    "actual": "1",
+    "expected": "1",
+    "pass": true
+  },
+  {
+    "name": "existing_log_does_not_exempt_unknown_power",
+    "x": "xspppowers(expr(\"quote(x^t+x^(-t)+ln(x))\"),0)",
+    "actual": "0",
+    "expected": "0",
+    "pass": true
+  }
+]

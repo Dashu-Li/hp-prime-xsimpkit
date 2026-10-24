@@ -1,0 +1,72 @@
+[
+  {
+    "script": "validate",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "representation_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "coefficient_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "fraction_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "posthoc_validate",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "posthoc_extended_validate",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "imag_leaf_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "native_text_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "symbolic_power_text_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "symbolic_base_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "complex_root_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "complex_matrix_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "complex_exactness_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  },
+  {
+    "script": "exact_presentation_guard_tests",
+    "exit_code": 0,
+    "source_sha256": "3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930"
+  }
+]

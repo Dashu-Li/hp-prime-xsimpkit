@@ -1,0 +1,37 @@
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+global.UI = {warnpy:false, Datestart:Date.now(), python_output:'', add_python_output(){}, clean_for_html(x){return x;}};
+global.alert = () => {};
+const giac = require('../test_runtime/giac.js');
+const ev = giac.cwrap('caseval','string',['string']);
+ev('calc_mode(-38)');
+ev('complex_variables(1)');
+const sourceFiles = ['scalar.cas','presentation.cas'];
+const sources = sourceFiles.map(n => fs.readFileSync(path.join(__dirname,n),'utf8'));
+const sourceSha256 = Object.fromEntries(sourceFiles.map((n,k) => [n,crypto.createHash('sha256').update(sources[k]).digest('hex')]));
+ev(sources.join('\n'));
+ev('ss:=sqrt(2+sqrt(5))-i*sqrt(sqrt(5)-2)');
+ev('zz:=cos(ss)*exp(i)');
+ev('ee:=exp(i)*[[cos(ss),2*sin(ss)/ss],[(-2+i)*sin(ss)/ss,cos(ss)]]');
+const rows=[];
+function check(name,input,proof){
+  const start=Date.now();
+  const output=ev(input);
+  const verdict=ev(proof);
+  const row={name,input,output,proof:verdict,ms:Date.now()-start,passed:verdict==='1'||verdict==='true'};
+  rows.push(row); console.log(JSON.stringify(row));
+}
+check('complex radical trig leaf remains exact','outp:=xspimagwalk(cos(ss),0)', 'xsisapprox(outp)==0 AND abs(evalf(outp-cos(ss)))<1e-10');
+check('complex radical exponential product remains exact','outp:=xspresent(zz)', 'xsisapprox(outp)==0 AND abs(evalf(outp-zz))<1e-10');
+check('safe sibling presentation survives an unsafe reconstruction','outp:=xspresent(xsphold("cosh(i)+"+xspnative(zz)))', 'xsisapprox(outp)==0 AND inString(string(outp),"cosh")==0 AND abs(evalf(outp-cos(1)-zz))<1e-10');
+check('complex exact matrix stays exact','outp:=xspresent(ee)', 'xsisapprox(outp)==0 AND abs(evalf(outp[1,1]-ee[1,1]))<1e-10 AND abs(evalf(outp[1,2]-ee[1,2]))<1e-10 AND abs(evalf(outp[2,1]-ee[2,1]))<1e-10 AND abs(evalf(outp[2,2]-ee[2,2]))<1e-10');
+check('imaginary cosh becomes cos','outp:=xspresent(quote(cosh(-i)))', 'string(outp)==string(cos(1))');
+check('imaginary sinh sign is retained','outp:=xspresent(quote(-sinh(-i)))', 'simplify(outp-i*sin(1))==0 AND xsisapprox(outp)==0');
+check('odd cancellation survives','outp:=xspresent(quote(sin(-t)+sin(t)))', 'outp==0');
+check('even cancellation survives','outp:=xspresent(quote(cos(-t)-cos(t)))', 'outp==0');
+check('irrational exponent remains a power','outp:=xsptext(quote(exp((2-sqrt(3))*ln(a))),0)', 'inString(outp,"(a)^")>0');
+check('complex coefficient keeps exp','outp:=xsptext(quote(exp(i*ln(a))),0)', 'inString(outp,"exp(")==1');
+check('inexact source is still allowed','outp:=xspresent(quote(cosh(1.5*i)))', 'abs(evalf(outp-cos(1.5)))<1e-10');
+fs.writeFileSync(path.join(__dirname,'exact_presentation_guard_results.json'),JSON.stringify({runtime:'Upstream Giac, calc_mode(-38), complex_variables(1); not HP firmware.',sourceSha256,rows},null,2));
+process.exitCode=rows.every(x=>x.passed)?0:1;

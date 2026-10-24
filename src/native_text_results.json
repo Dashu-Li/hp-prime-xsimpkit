@@ -1,0 +1,105 @@
+{
+  "runtime": "Upstream Giac calc_mode(-38); original one-based sources. Not HP firmware.",
+  "results": [
+    {
+      "name": "real scalar",
+      "input": "sqrt(3)*ln(2)",
+      "old": "\"√3*ln(2)\"",
+      "now": "\"√3*ln(2)\"",
+      "passed": true
+    },
+    {
+      "name": "large real matrix",
+      "input": "quote([[4*cosh(sqrt(3)*ln(2))-4*sqrt(3)*sinh(sqrt(3)*ln(2))/3,4*sqrt(3)*sinh(sqrt(3)*ln(2))/3],[8*sqrt(3)*sinh(sqrt(3)*ln(2))/3,4*cosh(sqrt(3)*ln(2))+4*sqrt(3)*sinh(sqrt(3)*ln(2))/3]])",
+      "old": "\"[[4*cosh(√3*ln(2))-4*√3*sinh(√3*ln(2))/3,4*√3*sinh(√3*ln(2))/3],[8*√3*sinh(√3*ln(2))/3,4*cosh(√3*ln(2))+4*√3*sinh(√3*ln(2))/3]]\"",
+      "now": "\"[[4*cosh(√3*ln(2))-4*√3*sinh(√3*ln(2))/3,4*√3*sinh(√3*ln(2))/3],[8*√3*sinh(√3*ln(2))/3,4*cosh(√3*ln(2))+4*√3*sinh(√3*ln(2))/3]]\"",
+      "passed": true
+    },
+    {
+      "name": "imaginary scalar",
+      "input": "2+3*i",
+      "old": "\"2+3*(i)\"",
+      "now": "\"2+3*(i)\"",
+      "passed": true
+    },
+    {
+      "name": "imaginary matrix",
+      "input": "quote([[cos(t),i*sin(t)],[i*sin(t),cos(t)]])",
+      "old": "\"[[cos(t),(i)*sin(t)],[(i)*sin(t),cos(t)]]\"",
+      "now": "\"[[cos(t),(i)*sin(t)],[(i)*sin(t),cos(t)]]\"",
+      "passed": true
+    },
+    {
+      "name": "literal imaginary glyph",
+      "input": "\"\"",
+      "old": "\"\"\"\"\"\"",
+      "now": "\"\"\"\"\"\"",
+      "passed": true
+    },
+    {
+      "name": "literal ascii and quote",
+      "input": "\"i = \\\"\\\"\"",
+      "old": "\"\"\"i = \"\"\"\"\"\"\"\"\"\"\"",
+      "now": "\"\"\"i = \"\"\"\"\"\"\"\"\"\"\"",
+      "passed": true
+    },
+    {
+      "name": "literal backslash",
+      "input": "\"\\\\\\\"\\\"\\\\\"",
+      "old": "undef",
+      "now": "undef",
+      "passed": true
+    },
+    {
+      "name": "mixed literal and imaginary value",
+      "input": "quote([i,\"inner \\\"\\\" \\\\\"])",
+      "old": "undef",
+      "now": "undef",
+      "passed": true
+    },
+    {
+      "name": "undefined function string args",
+      "input": "quote(ff(\"inner  \\\" \\\\\",i))",
+      "old": "undef",
+      "now": "undef",
+      "passed": true
+    },
+    {
+      "name": "ordinary text",
+      "input": "\"ordinary sin(x) text\"",
+      "old": "\"\"\"ordinary sin(x) text\"\"\"",
+      "now": "\"\"\"ordinary sin(x) text\"\"\"",
+      "passed": true
+    }
+  ],
+  "search": {
+    "present": "4",
+    "absent": "0",
+    "glyphPresent": "5",
+    "glyphAbsent": "0"
+  },
+  "timing": [
+    {
+      "name": "xspnativeold",
+      "medianMsPerCall": 1.5078813000000082,
+      "rounds": [
+        1.2146342000000003,
+        1.2444863000000168,
+        1.5078813000000082,
+        2.049318099999982,
+        2.0722475999999914
+      ]
+    },
+    {
+      "name": "xspnative",
+      "medianMsPerCall": 0.08669979999999669,
+      "rounds": [
+        0.07339480000000549,
+        0.0848500999999942,
+        0.08669979999999669,
+        0.09151910000000499,
+        0.09223819999997432
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "runtime": "\"Powered by Giac 1.1.3, B. Parisse and R. De Graeve, Institut Fourier, Universite Grenoble I, France\"",
+  "mode": "Upstream Giac calc_mode(-38); original one-based source. Not HP firmware.",
+  "outputs": [
+    {
+      "name": "real matrix exponential",
+      "input": "XSIMP(\"exp([[1,1],[2,3]])\")",
+      "output": "[[(-sinh(√3)/(√3)+cosh(√3))*e^2,e^2*sinh(√3)/(√3)],[e^2*2*sinh(√3)/(√3),(sinh(√3)/(√3)+cosh(√3))*e^2]]"
+    },
+    {
+      "name": "log-two scaled exponential",
+      "input": "XSIMP(\"exp([[1,1],[2,3]]*ln(2))\")",
+      "output": "[[4*(-sinh(√3*ln(2))/(√3)+cosh(√3*ln(2))),4*sinh(√3*ln(2))/(√3)],[8*sinh(√3*ln(2))/(√3),4*(sinh(√3*ln(2))/(√3)+cosh(√3*ln(2)))]]"
+    },
+    {
+      "name": "left log-two factor",
+      "input": "XSIMP(\"exp(ln(2)*[[1,1],[2,3]])\")",
+      "output": "[[4*(-sinh(√3*ln(2))/(√3)+cosh(√3*ln(2))),4*sinh(√3*ln(2))/(√3)],[8*sinh(√3*ln(2))/(√3),4*(sinh(√3*ln(2))/(√3)+cosh(√3*ln(2)))]]"
+    },
+    {
+      "name": "symbolic real parameter",
+      "input": "XSIMP(\"exp(t*[[1,1],[2,3]])\")",
+      "output": "[[(-sinh(√3*t)/(√3)+cosh(√3*t))*e^(2*t),e^(2*t)*sinh(√3*t)/(√3)],[e^(2*t)*2*sinh(√3*t)/(√3),(sinh(√3*t)/(√3)+cosh(√3*t))*e^(2*t)]]"
+    },
+    {
+      "name": "imaginary Pauli exponential",
+      "input": "XSIMP(\"exp(i*[[0,1],[1,0]])\")",
+      "output": "[[cos(1),*sin(1)],[*sin(1),cos(1)]]"
+    },
+    {
+      "name": "base-two matrix power",
+      "input": "XSIMP(\"2^[[1,1],[2,3]]\")",
+      "output": "[[4*(-sinh(√3*ln(2))/(√3)+cosh(√3*ln(2))),4*sinh(√3*ln(2))/(√3)],[8*sinh(√3*ln(2))/(√3),4*(sinh(√3*ln(2))/(√3)+cosh(√3*ln(2)))]]"
+    }
+  ],
+  "results": [
+    {
+      "name": "off-diagonal ln2 coefficient is 8/sqrt3",
+      "input": "simplify(XEXPT([[1,1],[2,3]],ln(2))[2,1]/sinh(sqrt(3)*ln(2))-8/sqrt(3))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "other off-diagonal ln2 coefficient is 4/sqrt3",
+      "input": "simplify(XEXPT([[1,1],[2,3]],ln(2))[1,2]/sinh(sqrt(3)*ln(2))-4/sqrt(3))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "real exp lower coefficient",
+      "input": "simplify(XEXP([[1,1],[2,3]])[2,1]/sinh(sqrt(3))-2*exp(2)/sqrt(3))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "symbolic t lower coefficient",
+      "input": "simplify(XEXPT([[1,1],[2,3]],t)[2,1]/sinh(t*sqrt(3))-2*exp(2*t)/sqrt(3))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "real exp diagonal",
+      "input": "simplify(XEXP([[1,1],[2,3]])[1,1]-exp(2)*(cosh(sqrt(3))-sinh(sqrt(3))/sqrt(3)))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "ln2 diagonal",
+      "input": "simplify(XEXPT([[1,1],[2,3]],ln(2))[2,2]-4*(cosh(sqrt(3)*ln(2))+sinh(sqrt(3)*ln(2))/sqrt(3)))",
+      "output": "0",
+      "passed": true
+    },
+    {
+      "name": "imaginary Pauli unchanged",
+      "input": "simplify(XEXPT([[0,1],[1,0]],i)-[[cos(1),i*sin(1)],[i*sin(1),cos(1)]])",
+      "output": "[[0,0],[0,0]]",
+      "passed": true
+    }
+  ],
+  "representation": {
+    "name": "ln2 lower coefficient folded before sinh",
+    "passed": true
+  }
+}

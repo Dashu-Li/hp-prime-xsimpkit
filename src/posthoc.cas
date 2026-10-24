@@ -1,0 +1,219 @@
+// Recover compact hyperbolic or trigonometric forms in evaluated matrices.
+// Only a Laurent polynomial a/z+b+c*z, z=exp(u), is accepted.
+// No matrix logarithm, floating recognition, or recovery of input intent.
+xsppa(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvr,xsvk,xsvj,xsvpart;
+  xsvr:=[];
+  IF xsvdepth>=24 THEN RETURN [0,0,0]; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsvr; END;
+  xsvh:=xsve[1];
+  IF xsvh==exp THEN RETURN [xsve]; END;
+  IF type(xsvh)!=DOM_FUNC THEN RETURN [0,0,0]; END;
+  IF string(xsvh)=="of" OR string(xsvh)=="'of'" THEN RETURN [0,0,0]; END;
+  xsvl:=[op(xsve)];
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN [0,0,0]; END;
+    xsvpart:=xsppa(xsvl[xsvk],xsvdepth+1);
+    IF size(xsvpart)>2 THEN RETURN [0,0,0]; END;
+    FOR xsvj FROM 1 TO size(xsvpart) DO
+      IF NOT member(xsvpart[xsvj],xsvr) THEN xsvr:=append(xsvr,xsvpart[xsvj]); END;
+      IF size(xsvr)>2 THEN RETURN [0,0,0]; END;
+    END;
+  END;
+  RETURN xsvr;
+END;
+
+// pow2exp may introduce ln(base). For non-rational exponents, admit only
+// positive real constant bases; do not add branches for an unknown base.
+xspppowers(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;
+  xsvh:=string(xsve[1]); xsvl:=[op(xsve)];
+  IF xsvh=="'^'" OR xsvh=="^" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF type(xsvl[2])!=DOM_INT AND type(xsvl[2])!=DOM_RAT THEN
+      IF NOT xspos(xsvl[1]) THEN RETURN 0; END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF NOT xspppowers(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+// Denominators may only contain products/powers of nonzero constants and
+// exponentials. A difference of exponentials might secretly be zero: decline.
+xsppnz(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk,xsvs;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF size(xsppa(xsve,0))==0 THEN
+    IF size(lname(xsve))!=0 THEN RETURN 0; END;
+    xsvs:=string(normal(sign(xsve)));
+    RETURN xsvs=="1" OR xsvs=="-1";
+  END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;
+  xsvh:=xsve[1];
+  IF xsvh==exp THEN RETURN 1; END;
+  xsvl:=[op(xsve)];
+  IF string(xsvh)=="'^'" OR string(xsvh)=="^" THEN
+    IF size(xsvl)==2 AND type(xsvl[2])==DOM_INT THEN RETURN xsppnz(xsvl[1],xsvdepth+1); END;
+  END;
+  IF string(xsvh)!="'*'" AND string(xsvh)!="*" THEN RETURN 0; END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF NOT xsppnz(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+xsppsafe(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;
+  xsvh:=string(xsve[1]); xsvl:=[op(xsve)];
+  IF xsvh=="'inv'" OR xsvh=="inv" THEN
+    IF NOT xsppnz(xsvl[1],0) THEN RETURN 0; END;
+  END;
+  IF xsvh=="'/'" OR xsvh=="/" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF NOT xsppnz(xsvl[2],0) THEN RETURN 0; END;
+  END;
+  IF xsvh=="'^'" OR xsvh=="^" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF type(xsvl[2])==DOM_INT OR type(xsvl[2])==DOM_RAT THEN
+      IF xsvl[2]<0 THEN
+        IF NOT xsppnz(xsvl[1],0) THEN RETURN 0; END;
+      END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF NOT xsppsafe(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+// A cheap structural hint for the optional pow2exp fallback. Integer and
+// rational powers alone do not justify another CAS transformation pass.
+xspppowhint(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 OR type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;
+  xsvh:=xsve[1];
+  IF type(xsvh)!=DOM_FUNC THEN RETURN 0; END;
+  IF string(xsvh)=="of" OR string(xsvh)=="'of'" THEN RETURN 0; END;
+  xsvl:=[op(xsve)];
+  IF string(xsvh)=="'^'" OR string(xsvh)=="^" THEN
+    IF size(xsvl)==2 THEN
+      IF type(xsvl[2])!=DOM_INT AND type(xsvl[2])!=DOM_RAT THEN RETURN 1; END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF xspppowhint(xsvl[xsvk],xsvdepth+1) THEN RETURN 1; END;
+  END;
+  RETURN 0;
+END;
+
+// Recover from the supplied exponential atoms without changing logarithms.
+// The identities exp(m+u)=exp(m)*exp(u) and cosh/sinh definitions hold for
+// finite complex arguments, including arguments containing an existing ln(a).
+xspprecover(xsve,xsvf,xsva,xsvlen):=BEGIN
+  LOCAL xsvu,xsvv,xsvm,xsvp,xsvz,xsvpoly,xsvden,xsv0,xsv1,xsv2,xsvc,xsvs,xsvr,xsvk,xsvtrig,xsvangle,xsvrlen,xsvtlen;
+  IF size(xsva)<1 OR size(xsva)>2 THEN RETURN xsve; END;
+  IFERR
+    // Do not assign or purge a global. Decline if the scratch identifier is
+    // already assigned or occurs in the input expression.
+    xsvz:=expr("quote(xsppostauxv)");
+    IF type(eval(xsvz))!=DOM_IDENT OR string(eval(xsvz))!="xsppostauxv" THEN RETURN xsve; END;
+    IF has(xsve,xsvz) THEN RETURN xsve; END;
+    IF NOT xsppsafe(xsvf,0) THEN RETURN xsve; END;
+    xsvu:=op(xsva[1]);
+    IF size(xsva)==1 THEN
+      xsvf:=subst(xsvf,xsva[1],xsvz);
+    ELSE
+      xsvv:=op(xsva[2]);
+      xsvm:=normal((xsvu+xsvv)/2);
+      xsvu:=normal((xsvu-xsvv)/2);
+      xsvp:=xsclean(exp(xsvm));
+      xsvf:=subst(xsvf,xsva,[xsvp*xsvz,xsvp/xsvz]);
+    END;
+    IF size(xsppa(xsvf,0))>0 THEN
+      // A nonconstant center exp(m) is allowed, but substitution must remove
+      // both original atoms. The polynomial proof below rejects residual z.
+      FOR xsvk FROM 1 TO size(xsva) DO
+        IF has(xsvf,xsva[xsvk]) THEN RETURN xsve; END;
+      END;
+    END;
+    xsvpoly:=ratnormal(xsvf*xsvz);
+    IF size(string(xsvpoly))>3000 THEN RETURN xsve; END;
+    xsvden:=denom(xsvpoly);
+    IF has(xsvden,xsvz) THEN RETURN xsve; END;
+    xsv0:=coeff(xsvpoly,xsvz,0);
+    xsv1:=coeff(xsvpoly,xsvz,1);
+    xsv2:=coeff(xsvpoly,xsvz,2);
+    IF has(xsv0,xsvz) OR has(xsv1,xsvz) OR has(xsv2,xsvz) THEN RETURN xsve; END;
+    IF string(ratnormal(xsvpoly-xsv0-xsv1*xsvz-xsv2*xsvz^2))!="0" THEN RETURN xsve; END;
+    xsvc:=normal(xsv0+xsv2); xsvs:=normal(xsv2-xsv0);
+    xsvr:=normal(xsv1)+xsvc*cosh(xsvu)+xsvs*sinh(xsvu);
+    // cosh(u)=cos(-i*u), sinh(u)=i*sin(-i*u), for every complex u.
+    // Clean only the angle and coefficients, never the completed candidate.
+    xsvangle:=normal(-i*xsvu);
+    xsvtrig:=normal(xsv1)+xsvc*cos(xsvangle)+normal(i*xsvs)*sin(xsvangle);
+    xsvrlen:=size(string(xsvr)); xsvtlen:=size(string(xsvtrig));
+    // A short decimal is not a successful simplification of an exact input.
+    IF xsnewapprox(xsve,xsvr) THEN xsvr:=xsve; xsvrlen:=xsvlen; END;
+    IF xsnewapprox(xsve,xsvtrig) THEN xsvtrig:=xsve; xsvtlen:=xsvlen; END;
+    IF xsvtlen<xsvrlen THEN xsvr:=xsvtrig; xsvrlen:=xsvtlen; END;
+    IF has(xsvr,undef) OR has(xsvr,infinity) THEN RETURN xsve; END;
+    IF xsvrlen<xsvlen THEN RETURN xsvr; END;
+  THEN RETURN xsve;
+  END;
+  RETURN xsve;
+END;
+
+xsppostscalar(xsve):=BEGIN
+  LOCAL xsvf,xsva,xsvr,xsvoldlogs,xsvnewlogs,xsvk,xsvtext,xsvlen;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsve; END;
+  xsvtext:=string(xsve); xsvlen:=size(xsvtext);
+  IF xsvlen>1000 THEN RETURN xsve; END;
+  IF has(xsve,undef) OR has(xsve,infinity) THEN RETURN xsve; END;
+  IFERR
+    // First use the original expression. An already present logarithm is
+    // part of its domain; it does not require a positive constant argument.
+    xsva:=xsppa(xsve,0);
+    IF size(xsva)>=1 AND size(xsva)<=2 THEN
+      xsvr:=xspprecover(xsve,xsve,xsva,xsvlen);
+      IF string(xsvr)!=xsvtext THEN RETURN xsvr; END;
+    END;
+    IF NOT xspppowhint(xsve,0) THEN RETURN xsve; END;
+    IF NOT xspppowers(xsve,0) THEN RETURN xsve; END;
+    xsvoldlogs:=xslogs(xsve);
+    xsvf:=pow2exp(xsve);
+    IF xsnewapprox(xsve,xsvf) THEN RETURN xsve; END;
+    IF string(xsvf)==xsvtext OR size(string(xsvf))>2000 THEN RETURN xsve; END;
+    xsvnewlogs:=xslogs(xsvf);
+    IF size(xsvnewlogs)>8 THEN RETURN xsve; END;
+    FOR xsvk FROM 1 TO size(xsvnewlogs) DO
+      IF NOT member(xsvnewlogs[xsvk],xsvoldlogs) THEN
+        IF NOT xspos(op(xsvnewlogs[xsvk])) THEN RETURN xsve; END;
+      END;
+    END;
+    xsva:=xsppa(xsvf,0);
+    RETURN xspprecover(xsve,xsvf,xsva,xsvlen);
+  THEN RETURN xsve;
+  END;
+END;
+
+xsmpost(xsmv):=BEGIN
+  LOCAL xsmvr,xsmvi,xsmvj;
+  IF NOT xsumatrix(xsmv) THEN RETURN xsmv; END;
+  IF size(string(xsmv))>1600 THEN RETURN xsmv; END;
+  xsmvr:=xsmv;
+  FOR xsmvi FROM 1 TO rowDim(xsmv) DO
+    FOR xsmvj FROM 1 TO colDim(xsmv) DO
+      xsmvr[xsmvi,xsmvj]:=xsppostscalar(xsmv[xsmvi,xsmvj]);
+    END;
+  END;
+  RETURN xsmvr;
+END;
