@@ -1,0 +1,2021 @@
+WARNING: using emscripten GL emulation. This is a collection of limited workarounds, do not expect it to work.
+Warning: 'of' is a reserved word
+Warning: 'of' is a reserved word
+// Parsing xshead
+// Success
+// compiling xshead
+// Parsing xsinitok
+// Success
+// compiling xsinitok
+// Parsing xsapproxstate
+// Warning: xsapproxstate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsapproxstate
+xsapproxstate: recursive definition
+// Parsing xsisapprox
+// Success
+// compiling xsisapprox
+// Parsing xsnewapprox
+// Success
+// compiling xsnewapprox
+// Parsing xscomplexradwalk
+// Warning: xscomplexradwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xscomplexradwalk
+xscomplexradwalk: recursive definition
+// Parsing xscomplexrad
+// Success
+// compiling xscomplexrad
+// Parsing xsradtrigsquare
+// Success
+// compiling xsradtrigsquare
+// Parsing xsradtrigunit
+// Success
+// compiling xsradtrigunit
+// Parsing xspos
+// Success
+// compiling xspos
+// Parsing xslogswalk
+// Warning: xslogswalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xslogswalk
+xslogswalk: recursive definition
+// Parsing xslogs
+// Success
+// compiling xslogs
+// Parsing xshyppoly
+// Warning: xshyppoly, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshyppoly
+xshyppoly: recursive definition
+// Parsing xsrwwalk
+// Warning: xsrwwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrwwalk
+xsrwwalk: recursive definition
+// Parsing xsrewrite
+// Success
+// compiling xsrewrite
+// Parsing xsweightwalk
+// Warning: xsweightwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsweightwalk
+xsweightwalk: recursive definition
+// Parsing xsweight
+// Success
+// compiling xsweight
+// Parsing xsscore
+// Success
+// compiling xsscore
+// Parsing xstrans
+// Success
+// compiling xstrans
+// Parsing xsbounded
+// Warning: xsidauto,xshypnatural,xsbounded,xsmpauto, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsbounded
+xsbounded: recursive definition
+// Parsing xsscalar
+// Success
+// compiling xsscalar
+// Parsing XFAST
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XFAST
+// Parsing XREWRITE
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XREWRITE
+// Parsing xsclean
+// Success
+// compiling xsclean
+// Parsing xsrectwalk
+// Warning: xsrectwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrectwalk
+// Parsing xsrectwalk
+// Warning: xsrectwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrectwalk
+xsrectwalk: recursive definition
+// Parsing XRECT
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XRECT
+// Parsing xsmpisradian
+// Success
+// compiling xsmpisradian
+// Parsing xsmpunbound
+// Warning: xsmpunbound, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpunbound
+xsmpunbound: recursive definition
+// Parsing xsmpnonzero
+// Warning: xsmpnonzero, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpnonzero
+xsmpnonzero: recursive definition
+// Parsing xsmpwalk
+// Warning: xsmpwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpwalk
+xsmpwalk: recursive definition
+// Parsing xsmptry
+// Success
+// compiling xsmptry
+// Parsing xsmpauto
+// Success
+// compiling xsmpauto
+// Parsing xsmz
+// Success
+// compiling xsmz
+// Parsing xsmsign
+// Success
+// compiling xsmsign
+// Parsing xsmroot
+// Warning: xsphold,xspnative, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmroot
+// Parsing xsmroot
+// Warning: xsphold,xspnative, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmroot
+// Parsing xsmzero
+// Success
+// compiling xsmzero
+// Parsing xsmclean
+// Success
+// compiling xsmclean
+// Parsing xsmrewrite
+// Success
+// compiling xsmrewrite
+// Parsing xsmid
+// Success
+// compiling xsmid
+// Parsing xsmdiagonal
+// Success
+// compiling xsmdiagonal
+// Parsing xsmhyperexp
+// Success
+// compiling xsmhyperexp
+// Parsing xsmhyperpower
+// Success
+// compiling xsmhyperpower
+// Parsing xsmpospower
+// Warning: xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpospower
+// Parsing xsmcore
+// Success
+// compiling xsmcore
+// Parsing xsmcore
+// Success
+// compiling xsmcore
+// Parsing XEXP
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XEXP
+// Parsing XEXPT
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XEXPT
+// Parsing XPOW
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XPOW
+// Parsing xsmtrigcore
+// Success
+// compiling xsmtrigcore
+// Parsing xsmtrigcore
+// Success
+// compiling xsmtrigcore
+// Parsing XSIN
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSIN
+// Parsing XCOS
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XCOS
+// Parsing xspnative
+// Success
+// compiling xspnative
+// Parsing xspnative
+// Success
+// compiling xspnative
+// Parsing xspunaryname
+// Success
+// compiling xspunaryname
+// Parsing xsptrigarg
+// Success
+// compiling xsptrigarg
+// Parsing xsptrigarg
+// Success
+// compiling xsptrigarg
+// Parsing xspimagwalk
+// Warning: xsidauto,xspimagwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspimagwalk
+// Parsing xspimagwalk
+// Warning: xsidauto,xspimagwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspimagwalk
+xspimagwalk: recursive definition
+// Parsing xspflatproduct
+// Warning: xspflatproduct, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspflatproduct
+xspflatproduct: recursive definition
+// Parsing xspproducttext
+// Warning: xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspproducttext
+// Parsing xsptext
+// Warning: xsidauto,xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsptext
+xsptext: recursive definition
+// Parsing xspatomwalk
+// Warning: xspatomwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspatomwalk
+// Parsing xspatomwalk
+// Warning: xspatomwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspatomwalk
+xspatomwalk: recursive definition
+// Parsing xsphold
+// Success
+// compiling xsphold
+// Parsing xspresent
+// Warning: xsidauto,xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspresent
+// Parsing xsppa
+// Warning: xsppa, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppa
+xsppa: recursive definition
+// Parsing xspppowers
+// Warning: xspppowers, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspppowers
+xspppowers: recursive definition
+// Parsing xsppnz
+// Warning: xsppnz, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppnz
+xsppnz: recursive definition
+// Parsing xsppsafe
+// Warning: xsppsafe, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppsafe
+xsppsafe: recursive definition
+// Parsing xspppowhint
+// Warning: xspppowhint, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspppowhint
+xspppowhint: recursive definition
+// Parsing xspprecover
+// Success
+// compiling xspprecover
+// Parsing xspprecover
+// Success
+// compiling xspprecover
+// Parsing xsppostscalar
+// Success
+// compiling xsppostscalar
+// Parsing xsmpost
+// Warning: xsumatrix, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpost
+// Parsing xshypnatural
+// Success
+// compiling xshypnatural
+// Parsing xshyparg
+// Success
+// compiling xshyparg
+// Parsing xshypguard
+// Warning: xshypguard, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypguard
+xshypguard: recursive definition
+// Parsing xshypholes
+// Warning: xshypholes, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypholes
+xshypholes: recursive definition
+// Parsing xshypmono
+// Warning: xshypmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypmono
+xshypmono: recursive definition
+// Parsing xshypcoeftext
+// Success
+// compiling xshypcoeftext
+// Parsing xshyphold
+// Success
+// compiling xshyphold
+// Parsing xshyprebuild
+// Success
+// compiling xshyprebuild
+// Parsing xshyproots
+// Warning: xshyproots, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshyproots
+xshyproots: recursive definition
+// Parsing xshypangle
+// Success
+// compiling xshypangle
+// Parsing xshypwalk
+// Warning: xshypwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypwalk
+xshypwalk: recursive definition
+// Parsing xshypcompact
+// Success
+// compiling xshypcompact
+// Parsing xsidpoly
+// Warning: xsidpoly,xsidmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidpoly
+xsidpoly: recursive definition
+// Parsing xsidroot
+// Warning: xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidroot
+// Parsing xsidmono
+// Warning: xsidmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidmono
+xsidmono: recursive definition
+// Parsing xsidwalk
+// Warning: xsidwalk,xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidwalk
+xsidwalk: recursive definition
+// Parsing xsidauto
+// Success
+// compiling xsidauto
+// Parsing xspfcheck
+// Success
+// compiling xspfcheck
+// Parsing xspfpoly
+// Warning: xspfpoly, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfpoly
+xspfpoly: recursive definition
+// Parsing xspfwalk
+// Warning: xspfwalk,xspfterms, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfwalk
+xspfwalk: recursive definition
+// Parsing xspfterms
+// Warning: xspfterms, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfterms
+xspfterms: recursive definition
+// Parsing xspfauto
+// Warning: xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfauto
+// Parsing xsumatrix
+// Success
+// compiling xsumatrix
+// Parsing xsutree0
+// Warning: xsutree0, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsutree0
+xsutree0: recursive definition
+// Parsing xsuindexok
+// Success
+// compiling xsuindexok
+// Parsing xsucorecheck
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsucorecheck
+// Parsing xsutree
+// Success
+// compiling xsutree
+// Parsing xsufold
+// Warning: xsufold, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsufold
+xsufold: recursive definition
+// Parsing xsuhypcandidate
+// Warning: xsuhypcandidate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuhypcandidate
+xsuhypcandidate: recursive definition
+// Parsing xsuholefactor
+// Warning: xsuholefactor, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuholefactor
+xsuholefactor: recursive definition
+// Parsing xsuholewalk
+// Warning: xsuholewalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuholewalk
+xsuholewalk: recursive definition
+// Parsing xsuholegate
+// Success
+// compiling xsuholegate
+// Parsing xsuend
+// Success
+// compiling xsuend
+// Parsing xsuorigselect
+// Warning: xsuorigselect, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuorigselect
+xsuorigselect: recursive definition
+// Parsing XSIMP
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSIMP
+// Parsing XSDIAG
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSDIAG
+// Parsing XSCHECK
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSCHECK
+// Parsing XSCHECK
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSCHECK
+Warning: 'of' is a reserved word
+Python compatibility enabled. List index will start at 0, run index:=1 or python_compat(0) to disable Python compatibility.
+Warning: 'of' is a reserved word
+1
+Gen [int] Error: Bad Argument Type
+{
+  "scope": "Upstream Giac HP mode only: zero-based-index safety guard, explicit of:=1 recovery, and optional per-definition expr manifest loading. This is not native Prime/G2 compatibility or PPL bridge validation.",
+  "loadEvidence": {
+    "mode": "installer_commands",
+    "scope": "Upstream Giac HP mode; sequential installer CAS expr commands only; independently checks stored global types after each command and all names after loading; does not validate PPL strings, CAS.expr bridge or G2 compatibility",
+    "commandsPath": "/workspace/scratch/ab2fff2df75d/xsimpkit-187/dist/v1.8.7-installer/installer_commands.json",
+    "commandsSha256": "9178e7647f7f1c0a5238183c847d645424566aff244925716153f74928fde2ff",
+    "manifestPath": "/workspace/scratch/ab2fff2df75d/xsimpkit-187/dist/v1.8.7-installer/INSTALLER_MANIFEST.json",
+    "manifestSha256": "ca7af42f64979ca9422cc4d87fbdffbb3e37fa849be7811a10aad66461f878cd",
+    "sourceSha256": "4f947847aebcd2246dbae08039596de3ac8c6383521175c4dac73c66e0b79410",
+    "moduleHashes": {
+      "scalar.cas": "217369285a853174786cb2e2b3b0739a897e73fcccec5d3c00577646d0633c4f",
+      "matrix.cas": "89ab24363c27164be01a32807524bcd582f0489ef770d38a98ea242be5821ee1",
+      "presentation.cas": "d07315080abfe7f76ae5aa7a3818ab83165b586685faab7b957f709b6a51e972",
+      "posthoc.cas": "fe692c42d6a0727aad44809c57059b1118d82618828312e0033614cd0b583765",
+      "unified.cas": "c77006ce6402522744799edce14a2f1dba359b0ff34463d3141cd6cda11e10e9"
+    },
+    "expectedFunctions": 105,
+    "loadedFunctions": 105,
+    "indexSetter": "\"[] index start 1\"",
+    "indexVerification": "1",
+    "definitions": [
+      {
+        "name": "xshead",
+        "commandSha256": "2eea446a6575d7a5ac6674fde815e95ef85e118676294f6e5914e61ad4c7acc2",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsinitok",
+        "commandSha256": "c571d3c5a62d424a46d74758e5ea8ac0f4581c6c3b364f69200abcc41186534b",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsapproxstate",
+        "commandSha256": "474146bf0a87b5509d103b6befc1fcaf562e37a78c3f1a74d41c6ae17396e66f",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsisapprox",
+        "commandSha256": "d2f5748fc767cbb2b46b9fb408ca6e947d69e738493831a67da9647cdaf074aa",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsnewapprox",
+        "commandSha256": "9430985b90d417f52b173012e8a27f5608af3bc788b0f484f366a655ce0fba85",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xscomplexradwalk",
+        "commandSha256": "7499bc14ff11fc14ed1643a45de5ea0fa8d51b7a869fa45b2053b073f69c11a4",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xscomplexrad",
+        "commandSha256": "d80f18361aa92982244f7867afc0f602289da315ea03821d9623e468e9d6324c",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsradtrigsquare",
+        "commandSha256": "635a058a36d07840a9379d11f5dcf70fa598083babc1e87d2fd0bedf57a86f7e",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsradtrigunit",
+        "commandSha256": "697fc329db11d07cfd6709f85c66be48e2af63ec1373c5825f0bea3b2cab1b68",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspos",
+        "commandSha256": "28a2344e55066e403430ff7aaeae76fbad8c951d0d976d8082af594b8b91e8c7",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xslogswalk",
+        "commandSha256": "10c029573b8d6ce0e7772d05d59695ab082a51c6db752a10f8e8bc033eecea30",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xslogs",
+        "commandSha256": "d62d071b8e4a02599170f642c56ea21ed657d24eaac9e8a3a6c9371b5a84f920",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshyppoly",
+        "commandSha256": "f928025d80c08f6d09dc23787f7e88b5c2b89fd7dce392672549c61282faa734",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsrwwalk",
+        "commandSha256": "78ad7d4e2e577284d62952a58a1bc2ba0e82c0f83d3c59a803b771a5794c83dc",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsrewrite",
+        "commandSha256": "3c9afef0fc40c76a33e4a24c53e40dd4537e2c912cbc20c6ebb36d05bb234c6f",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsweightwalk",
+        "commandSha256": "cf00bccc27da564879fe5fc217e968f8c229189196a1591a1593a24df19138fe",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsweight",
+        "commandSha256": "67d734ad05626210afb36c644b9df98e289925c37956029144ae2dcf37ac8b70",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsscore",
+        "commandSha256": "b58ddaf5680ae4548afbbb9282268d99591879a115b507575e70fb32609d2401",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xstrans",
+        "commandSha256": "6b537f67b82f648521597fd5d8a1f509ce445f3c2486e81432cf6b1d54353eb0",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsbounded",
+        "commandSha256": "bf7946ef7b85d89a722dc22f4f544f3081ca220e205fb38a43023e5789aaea80",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsscalar",
+        "commandSha256": "d6f61423a77475f71fed6bd8d313596ef33a5bcf6f264d531794610009af7bbf",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XFAST",
+        "commandSha256": "a9edd3ddf7e903db48c605ec6bb8841ead1525939a97df0d445feb4d0affd04f",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XREWRITE",
+        "commandSha256": "4bba5677bec267ef31d774d77c7b030f50bfd1f1f6cf65610d232b06c70734f4",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsclean",
+        "commandSha256": "4fff522a459f614ae973235b26baf751af7c712d2ec68308a75958ae920a0fd9",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsrectwalk",
+        "commandSha256": "7ebf1ad7c6cc1c8744c61f0e00934902e029330b5c7e9bf3f2d4549f02bf4cef",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XRECT",
+        "commandSha256": "42d96c597bd584e7fae7ee155d96b84021026515ea0fd73179d5d2782d753e32",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpisradian",
+        "commandSha256": "3f3c1ff0394a008a18348c5ba0f70705fb13ddce8189f082274feab91b481d6e",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpunbound",
+        "commandSha256": "f0a3a896672e49dbbb2bc11d2583f6ac0c5ca15c0ec20903c928a92d35e449ed",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpnonzero",
+        "commandSha256": "b7bad01057059918d5351f6d8bb6e15c66da1753ab1ed231e7571ef332818ba1",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpwalk",
+        "commandSha256": "243b6009e185aeeaef8422ff5fd9c87dbdf21f7ce771b0f4903adf716a389b8a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmptry",
+        "commandSha256": "0268f827a86b023825c1d8b6c1c9fd39d8b9b92845a0dc6d6c1faed7c5c954e7",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpauto",
+        "commandSha256": "10d7fc4bff102be98b52dee427f754d36e268ee054cbde5f0bd630648ac68f08",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmz",
+        "commandSha256": "975056db34a6e6c9aa430ad2ab59ca1380f9046a6bf0ba590aa161a58837f252",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmsign",
+        "commandSha256": "7023f059cf576a75f48c8460a5dbcf4564fc531f31f5211a443841e5cb452c87",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmroot",
+        "commandSha256": "288d00c667c8870141e00b7eaa48365e93f595a33a2e847242463a1c7a11c665",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmzero",
+        "commandSha256": "622bc7683cfb4cf6b7239dc327a9207ad51b12b5f69593966accf23b905a7a49",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmclean",
+        "commandSha256": "15a01ceb433cc51b071e7a1b9d9e05088bab96b719e036136d1aaf79271fe14f",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmrewrite",
+        "commandSha256": "1e84f180f9b1f6e4ce6ae8f4bb2bcd1252f7cafb109fb9b5925eab506ea6663b",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmid",
+        "commandSha256": "5d3e539eb6fe41ee7dc4c800529d0bc3032fdf0b74471072ec484035f3cd67e6",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmdiagonal",
+        "commandSha256": "a27b9de19df59baf7542abce5b0045a358691f32f5d99abd25300421c319a865",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmhyperexp",
+        "commandSha256": "94e71b2b13dfb384823c4e0b5b3ba7d774e9af18caa4947ecafb3b00f3e933c1",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmhyperpower",
+        "commandSha256": "4dfcb009bc4d9db885c09c85ab9a702b17fae9fe8538854a3d8fd259d7808879",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpospower",
+        "commandSha256": "658a10e893b2ac0584f60347f875add4b4737670a99797bbef7ff253631f102a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmcore",
+        "commandSha256": "0ac0563fb7240899b23b2754884e3299e5e81470d6bac7c9bc7e0c7b2e65aba7",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XEXP",
+        "commandSha256": "98bb6c6329a7d09a94cc561bd76415a94d308e8ca862ac73bf047a2168ce6d67",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XEXPT",
+        "commandSha256": "2e86944dfd7897fd1d0277ead0b9dad4bc8cce232243f2e666ee8fec95a696bb",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XPOW",
+        "commandSha256": "757c9b0e3a7b07b15e25d7afcdebfb00e20f346f319ab05932c96eaa3cd3228a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmtrigcore",
+        "commandSha256": "b0699a9ad7b756c7c54850535c304cd5ba8f0486ec85cc45a008fff691cdf19a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XSIN",
+        "commandSha256": "34832784af2b400941dfd65e8b4776ac4fd8836254c2a868268f060998299b3e",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XCOS",
+        "commandSha256": "ba3a6eaf7a6f5c8836f8deef68957d6cc37255077341b7bf8494331ab5dfdcc0",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspnative",
+        "commandSha256": "ffa23de23d8f027678685e33268d0a08fd7cb78e7e22762d70bf24588a233fd9",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspunaryname",
+        "commandSha256": "d8fb16f01f366b052f2093500f4cb77063c239fe566610872ac23f499fc592fe",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsptrigarg",
+        "commandSha256": "560c6d3ac414553c9b80cecd2b15dba520b201c1915c173112a3d494d0a84f95",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspimagwalk",
+        "commandSha256": "e944f23260b1c3084daea654791eb68eaf4dd7494fa36938a2977aa6e5fbc132",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspflatproduct",
+        "commandSha256": "b0e27eb6ef56c993892f4e13becb3425871c8956ab0556bfbf4fe40f0e0340a6",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspproducttext",
+        "commandSha256": "de46b87c8e7ba79e26345b096e9f7b172bb364626184c8220c20e58c0dcdecd5",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsptext",
+        "commandSha256": "e6fc903582b8673b1002be08f587757f58b3a1d1d7c1c1e94667f0af597e3839",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspatomwalk",
+        "commandSha256": "1779090a9ba6cb218a8f86ecaeca0cab3b1c5a0dc4c7047fbd741066486b8fa1",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsphold",
+        "commandSha256": "7315cab0022b93588e6e52546e6db2597e6b502fdb21772114d89ea7772746fc",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspresent",
+        "commandSha256": "3bac64ed3a3b66e70771eb826bc4bfe835220e200ff22b44b61f8a2df1363c74",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsppa",
+        "commandSha256": "2f410f1e1f62b88da48542dc912b59412afc70dc54fefc05a035ddd66fab9343",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspppowers",
+        "commandSha256": "7470606d0950062036521aea7e69bc4510c8d14517bb240f23dcbedd6882b6bd",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsppnz",
+        "commandSha256": "a7c1327aa3cc2f8fdbe60391f82fb692ebcac2379a91d48aa47dd13734ecc244",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsppsafe",
+        "commandSha256": "e3e1bd9c40fed936e409cf68f8b3c68936ac4f957b8d7daf2e9b9be971e5f11d",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspppowhint",
+        "commandSha256": "a6ce45f82ec9b8dc5bd5a33bb00f484dfd3472927021b6aeb95e583922607447",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspprecover",
+        "commandSha256": "ed553a8df724ee9067389d23d3f8c1965a1a331598bc27e88abcd5c1eef8b71f",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsppostscalar",
+        "commandSha256": "4130f10d43a877bbe60635dc15283c98db5e8307e59e915028c1365de88d0724",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsmpost",
+        "commandSha256": "cbecaec00251be4ffd6984b41136ac444fe057a853d22e8348e3ff098bc187e4",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypnatural",
+        "commandSha256": "3064144e38f53a916a357cd9ef7b3456fef1e7e92e5efe596f5f4c51d4de379a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshyparg",
+        "commandSha256": "376d76ef3384dc9944c6892bea0538f7a1a48ff29fe2f9874faf9cfdafb4b441",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypguard",
+        "commandSha256": "52b72640ff87588cc9a6efef2eaedf097fb9bc1994b0926b9002004c48697c91",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypholes",
+        "commandSha256": "75043922c627219ed57e4693d0882a2fb816c59ebb42a3dea50864830281ce96",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypmono",
+        "commandSha256": "8d3a49d0f69f6985520bb20b66f6bd29fdab82cc28f9edf0ccbaf7a5dbc9f4be",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypcoeftext",
+        "commandSha256": "a1deedc3dd09fe088c090461355733f28f890ea737f01ab937acfbca4ca1eeda",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshyphold",
+        "commandSha256": "e6fe8d7e0a9cad92bf83d3dc7b05ad450d685c608d2ecd6ade5e52850d3e95a6",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshyprebuild",
+        "commandSha256": "320610d89b5a18f9cfd8c4e04bb458b91bd8c19519fe0d003b643da688d8a5bd",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshyproots",
+        "commandSha256": "157b186c1186c817045c7fe46ed92c8e450e81748e570f48fd12fd5fed00788b",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypangle",
+        "commandSha256": "bc779d635d8c5b3fcfbe25574c1789ba77d03519dc457b25d170086bad69050c",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypwalk",
+        "commandSha256": "0a0848d898d9552fba32e3f58e0cc3e79da7f2ad3301ff223f8cd4b6541ee56c",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xshypcompact",
+        "commandSha256": "e88c656daf5685cf67ef431d0a172b10c3b677c40e764c11c821c431e4c71c14",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsidpoly",
+        "commandSha256": "d4815ce35552aa20e1ab74e2c59dc07914ae6a22b6f339c6bafcef28062dc296",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsidroot",
+        "commandSha256": "ca8b04101afaf5e6c1d18d05db460387e34ec9815d15e6eab5e1b425bbf56042",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsidmono",
+        "commandSha256": "57a98e54f6caf010200acd8cf2d8bd835f9dae9c5fff0766964c1c42c31656bd",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsidwalk",
+        "commandSha256": "265fff61363ccfa9ff0d30a517e35fc58c36327e33167562ae951cba6ae2c2f0",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsidauto",
+        "commandSha256": "96d42dd394a93c66b5a7914e031a5becf3984acf8e630b4e17aa77d2f098a163",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspfcheck",
+        "commandSha256": "19ee90985d7028f7ac2e676ae673fb1b2b5761325998bcf75efcda45410a387c",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspfpoly",
+        "commandSha256": "a05e430548684c983a122b80c6bb74d1175aefefb58b25bc426872c3dfd6d5bc",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspfwalk",
+        "commandSha256": "78f04026b97de2ebeb2d84a1809c43c09731a358f23ed76cebc62fc03ff720c6",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspfterms",
+        "commandSha256": "db16a15459078c58875ba2b73f47ad77336785411660136c154f1761db0ccfce",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xspfauto",
+        "commandSha256": "af3e5cf66249fea606070ec67b80c4482fc2e1db43249a5bc9fad20d253fa412",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsumatrix",
+        "commandSha256": "c58ba463bf087b425956ee056bd8987ed80ecccdd44db0fec4fa0894cef27338",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsutree0",
+        "commandSha256": "8211929e328315227c3ae0b36d89d98be8d435ca14f23a3b90b485589655c967",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuindexok",
+        "commandSha256": "73fc166b23dc98c30bde044aa263643d690ba5d272a1a317daafba3c89b082bc",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsucorecheck",
+        "commandSha256": "dcfa6cec9b68f7c183968709d6cac2c18ea84339ccc29eb7678a5e5b351c26d9",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsutree",
+        "commandSha256": "3b8f1bff1b4d737dd7e2c33fa41b4094aa3ab66a7c9d54a25cdaefc656a664b3",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsufold",
+        "commandSha256": "a79e19a3a6c60d1d9e55b781817c3af83b025c4fe8ca0ab15b4af71b4f800400",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuhypcandidate",
+        "commandSha256": "ec6c5c5f5fc37a328114c8c0f6410279b55e339a54afc8ec026c59ae7aeb65d6",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuholefactor",
+        "commandSha256": "a021881aa0c0aa0bc7e548b8e71cc1516c07e9936db89f98e7341c6945b6e78a",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuholewalk",
+        "commandSha256": "428f24351bed025e53138990718db57e3a143bcf533254f5dbe0c996faadafd9",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuholegate",
+        "commandSha256": "efac13c6f289cce743e26ea7824169e5e462923be0c96caf8fc8a34f97090d29",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuend",
+        "commandSha256": "a9a5c8cf990aec24aaa043adabda677280a900f22270d270418e6f3765015469",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "xsuorigselect",
+        "commandSha256": "dc1039d91c375c7d00c23d594da7d0541be5f894e100f7882448d497c5157128",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XSIMP",
+        "commandSha256": "c143a76cbdc1d1a55323f026aed51885da80fc3d42c6622cd756ba257c529540",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XSDIAG",
+        "commandSha256": "a11af833facdd382100a1d6e0bd484527274a2e851ccb84ef5be5f8f7ae42080",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      },
+      {
+        "name": "XSCHECK",
+        "commandSha256": "8e852730c336e22ba6802266bb7f4729032179001d16220c90513f6238ab58e5",
+        "result": "1",
+        "type": "DOM_FUNC",
+        "pass": true
+      }
+    ],
+    "finalStoredTypes": [
+      {
+        "name": "xshead",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsinitok",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsapproxstate",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsisapprox",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsnewapprox",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xscomplexradwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xscomplexrad",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsradtrigsquare",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsradtrigunit",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspos",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xslogswalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xslogs",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshyppoly",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsrwwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsrewrite",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsweightwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsweight",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsscore",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xstrans",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsbounded",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsscalar",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XFAST",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XREWRITE",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsclean",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsrectwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XRECT",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpisradian",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpunbound",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpnonzero",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmptry",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpauto",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmz",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmsign",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmroot",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmzero",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmclean",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmrewrite",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmid",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmdiagonal",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmhyperexp",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmhyperpower",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpospower",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmcore",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XEXP",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XEXPT",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XPOW",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmtrigcore",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XSIN",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XCOS",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspnative",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspunaryname",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsptrigarg",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspimagwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspflatproduct",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspproducttext",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsptext",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspatomwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsphold",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspresent",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsppa",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspppowers",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsppnz",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsppsafe",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspppowhint",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspprecover",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsppostscalar",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsmpost",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypnatural",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshyparg",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypguard",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypholes",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypmono",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypcoeftext",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshyphold",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshyprebuild",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshyproots",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypangle",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xshypcompact",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsidpoly",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsidroot",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsidmono",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsidwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsidauto",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspfcheck",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspfpoly",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspfwalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspfterms",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xspfauto",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsumatrix",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsutree0",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuindexok",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsucorecheck",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsutree",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsufold",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuhypcandidate",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuholefactor",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuholewalk",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuholegate",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuend",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "xsuorigselect",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XSIMP",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XSDIAG",
+        "type": "DOM_FUNC"
+      },
+      {
+        "name": "XSCHECK",
+        "type": "DOM_FUNC"
+      }
+    ],
+    "finalStoredFunctionCount": 105
+  },
+  "sourceSha256": "4f947847aebcd2246dbae08039596de3ac8c6383521175c4dac73c66e0b79410",
+  "modules": {
+    "scalar": "217369285a853174786cb2e2b3b0739a897e73fcccec5d3c00577646d0633c4f",
+    "matrix": "89ab24363c27164be01a32807524bcd582f0489ef770d38a98ea242be5821ee1",
+    "presentation": "d07315080abfe7f76ae5aa7a3818ab83165b586685faab7b957f709b6a51e972",
+    "posthoc": "fe692c42d6a0727aad44809c57059b1118d82618828312e0033614cd0b583765",
+    "unified": "c77006ce6402522744799edce14a2f1dba359b0ff34463d3141cd6cda11e10e9"
+  },
+  "rows": [
+    {
+      "id": "index0_selfcheck",
+      "command": "XSCHECK(0)",
+      "actual": "\"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"",
+      "want": [
+        "\"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\""
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "index0_core",
+      "command": "xsucorecheck(0)",
+      "actual": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\"",
+      "want": [
+        "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "index0_native",
+      "command": "XSIMP(sinh(x)+i*sin(i*x))",
+      "actual": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\"",
+      "want": [
+        "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "index0_string",
+      "command": "XSIMP(\"sinh(x)+i*sin(i*x)\")",
+      "actual": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\"",
+      "want": [
+        "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "index0_quote",
+      "command": "XSIMP(quote(sinh(x)+i*sin(i*x)))",
+      "actual": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\"",
+      "want": [
+        "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "index0_guard",
+      "command": "xsuindexok(0)",
+      "actual": "0",
+      "want": [
+        "0",
+        "false"
+      ],
+      "before": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_guard",
+      "command": "xsuindexok(0)",
+      "actual": "1",
+      "want": [
+        "1",
+        "true"
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_selfcheck",
+      "command": "XSCHECK(0)",
+      "actual": "\"XSIMP 1.8.7 CHECK OK\"",
+      "want": [
+        "\"XSIMP 1.8.7 CHECK OK\""
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_native",
+      "command": "XSIMP(sinh(x)+i*sin(i*x))",
+      "actual": "0",
+      "want": [
+        "0"
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_string",
+      "command": "XSIMP(\"sinh(x)+i*sin(i*x)\")",
+      "actual": "0",
+      "want": [
+        "0"
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_quote",
+      "command": "XSIMP(quote(sinh(x)+i*sin(i*x)))",
+      "actual": "0",
+      "want": [
+        "0"
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "restored_bound_value",
+      "command": "XSIMP(\"zzigvalue\")",
+      "actual": "7",
+      "want": [
+        "7"
+      ],
+      "before": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "after": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "expected_result": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "id": "explicit_index_transitions",
+      "setZero": "\"[] index start 0\"",
+      "setOne": "\"[] index start 1\"",
+      "initial": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "zero": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "afterGuard": {
+        "indexProbe": "23",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "restored": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "final": {
+        "indexProbe": "17",
+        "radians": "1",
+        "complexVariables": "0",
+        "sentinel": "1729",
+        "boundValue": "7",
+        "assumption": "\"assume[[],[line[0,∞]],[0]]\"",
+        "rational": "\"1/3\""
+      },
+      "checks": {
+        "initial_one_based": true,
+        "zero_based_set": true,
+        "zero_based_preserved": true,
+        "one_based_restored": true,
+        "restored_state_matches_initial": true,
+        "final_state_matches_initial": true
+      },
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0
+  }
+}

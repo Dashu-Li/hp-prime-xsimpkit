@@ -1,0 +1,114 @@
+{
+  "version": "1.8.7",
+  "module_hashes": {
+    "matrix.cas": "89ab24363c27164be01a32807524bcd582f0489ef770d38a98ea242be5821ee1",
+    "posthoc.cas": "fe692c42d6a0727aad44809c57059b1118d82618828312e0033614cd0b583765",
+    "presentation.cas": "d07315080abfe7f76ae5aa7a3818ab83165b586685faab7b957f709b6a51e972",
+    "scalar.cas": "217369285a853174786cb2e2b3b0739a897e73fcccec5d3c00577646d0633c4f",
+    "unified.cas": "c77006ce6402522744799edce14a2f1dba359b0ff34463d3141cd6cda11e10e9"
+  },
+  "source_sha256": "242ee393f5f3ec5fcd9a69a2805ba4b7b5f33374bcc1ecca88281484d95699be",
+  "hpprgm_sha256": "799134ff1b20cb9ff1d8be422ad007a2fdc9162ea7a8823a6d0152bae80f7208",
+  "host": {
+    "legacy": 201,
+    "retained186": 76,
+    "new_partial_factor": 88,
+    "total": 365,
+    "passed": 365,
+    "failed": 0,
+    "scope": "Upstream Giac HP mode with current installer CAS commands"
+  },
+  "installer_unit_tests": {
+    "total": 12,
+    "passed": 12
+  },
+  "native": "See native/NATIVE_VALIDATION.json",
+  "g2": "not_tested",
+  "legacy_reports": [
+    {
+      "file": "validation/revision187/final-legacy/fresh-installer-runtime.json",
+      "summary": {
+        "loadedDefinitions": 105,
+        "finalFunctionCount": 105,
+        "allStoredFunctions": true,
+        "cases": 24,
+        "passed": 24,
+        "failed": 0,
+        "statePreserved": true
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/held_literal_semantics/held-literal-semantics.json",
+      "summary": {
+        "total": 44,
+        "passed": 44,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/held_marker_runtime/held-marker-runtime.json",
+      "summary": {
+        "total": 40,
+        "passed": 40,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/hyperbolic_angle_modes/angle-modes.json",
+      "summary": {
+        "total": 12,
+        "passed": 12,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/hyperbolic_final_holes/final-holes.json",
+      "summary": {
+        "total": 9,
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/hyperbolic_public_runtime/public-runtime.json",
+      "summary": {
+        "total": 15,
+        "passed": 15,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/index_guard_runtime/index-guard.json",
+      "summary": {
+        "total": 13,
+        "passed": 13,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/weighted_exponential_runtime/ode.json",
+      "summary": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/weighted_exponential_runtime/protection.json",
+      "summary": {
+        "total": 24,
+        "passed": 24,
+        "failed": 0
+      }
+    },
+    {
+      "file": "validation/revision187/final-legacy/weighted_exponential_runtime/selection.json",
+      "summary": {
+        "total": 13,
+        "passed": 13,
+        "failed": 0
+      }
+    }
+  ],
+  "github": "Prepared for v1.8.7 publication; source and native artifact unchanged"
+}

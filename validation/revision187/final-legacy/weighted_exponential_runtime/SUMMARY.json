@@ -1,0 +1,40 @@
+{
+  "root": "/workspace/scratch/ab2fff2df75d/xsimpkit-187",
+  "scope": "Fresh actual rebuilt185 command load for each group; not inherited integration184 test passes.",
+  "results": [
+    {
+      "group": "selection",
+      "status": 0,
+      "signal": null,
+      "ms": 4146,
+      "report": {
+        "total": 13,
+        "passed": 13,
+        "failed": 0
+      }
+    },
+    {
+      "group": "ode",
+      "status": 0,
+      "signal": null,
+      "ms": 8980,
+      "report": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    {
+      "group": "protection",
+      "status": 0,
+      "signal": null,
+      "ms": 3364,
+      "report": {
+        "total": 24,
+        "passed": 24,
+        "failed": 0
+      }
+    }
+  ],
+  "passed": true
+}

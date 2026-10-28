@@ -1,0 +1,10 @@
+c_hole_prefix: PASS
+c_hole_suffix: PASS
+sin_hole_prefix: PASS
+sin_hole_suffix: PASS
+shift_hole_prefix: PASS
+power_hole_prefix: PASS
+real_hyp_hole: PASS
+nonzero_exp_coefficient: PASS
+nonzero_numeric_coefficient: PASS
+{"total":9,"passed":9,"failed":0}

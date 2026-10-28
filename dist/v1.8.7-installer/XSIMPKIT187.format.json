@@ -1,0 +1,16 @@
+{
+  "status": "experimental_local_candidate",
+  "source_sha256": "242ee393f5f3ec5fcd9a69a2805ba4b7b5f33374bcc1ecca88281484d95699be",
+  "hpprgm_sha256": "799134ff1b20cb9ff1d8be422ad007a2fdc9162ea7a8823a6d0152bae80f7208",
+  "template_sha256": "3c8386b6d315b7d1155c68100b3346abd5946392ab64c97f0fa9bbf09cf87a7c",
+  "template_blob": "b73bf5ca9a084c8043d62ad5eb79f3de6ced80a6",
+  "template_source": "https://github.com/JordiRigau/hp-prime-kit",
+  "template_license": "MIT; see tools/templates/LICENSE",
+  "source_offset": 152,
+  "source_bytes_utf16le": 276598,
+  "compiled_cache": "absent",
+  "container_readback": "passed",
+  "prime_compile": "not_executed",
+  "prime_native_import": "not_executed",
+  "g2_execution": "not_executed"
+}

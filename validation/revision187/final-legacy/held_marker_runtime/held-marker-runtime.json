@@ -1,0 +1,673 @@
+{
+  "scope": "Fresh HOST combined CAS source, private transport marker and placeholder collisions; no physical G2 parser claim. Owned isolated test identifiers are purged between settings, never user state.",
+  "modules": {
+    "scalar.cas": "217369285a853174786cb2e2b3b0739a897e73fcccec5d3c00577646d0633c4f",
+    "matrix.cas": "89ab24363c27164be01a32807524bcd582f0489ef770d38a98ea242be5821ee1",
+    "presentation.cas": "d07315080abfe7f76ae5aa7a3818ab83165b586685faab7b957f709b6a51e972",
+    "posthoc.cas": "fe692c42d6a0727aad44809c57059b1118d82618828312e0033614cd0b583765",
+    "unified.cas": "c77006ce6402522744799edce14a2f1dba359b0ff34463d3141cd6cda11e10e9"
+  },
+  "rows": [
+    {
+      "setting": "unbound",
+      "id": "atomic",
+      "text": "@@XSIMP_I@@",
+      "want": "i",
+      "exactAtom": true,
+      "display": "",
+      "output": "\"\"",
+      "expected": "\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "exact_complex_parts": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "negative",
+      "text": "-@@XSIMP_I@@",
+      "want": "quote(-i)",
+      "display": "-()=−",
+      "output": "\"-()\"",
+      "expected": "\"-()\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "marker_in_string_data",
+      "text": "\"@@XSIMP_I@@ remains data\"",
+      "want": "\"@@XSIMP_I@@ remains data\"",
+      "display": "\"@@XSIMP_I@@ remains data\"",
+      "output": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "expected": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "escaped_quote_data",
+      "text": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "want": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "display": "\"\"\" @@XSIMP_I@@ \\ data\"",
+      "output": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "expected": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "source_identifier_collision",
+      "text": "xsppimagatom+xsppimagatomx*@@XSIMP_I@@",
+      "want": "quote(xsppimagatom+xsppimagatomx*i)",
+      "display": "xsppimagatom+xsppimagatomx*",
+      "output": "\"xsppimagatom+xsppimagatomx*\"",
+      "expected": "\"xsppimagatom+xsppimagatomx*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "bound_identifier_held",
+      "text": "zzhmarkbound*@@XSIMP_I@@",
+      "want": "quote(zzhmarkbound*i)",
+      "display": "zzhmarkbound*=7.0*",
+      "output": "\"zzhmarkbound*\"",
+      "expected": "\"zzhmarkbound*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "assumed_identifier_held",
+      "text": "zzhmarkpositive*@@XSIMP_I@@",
+      "want": "quote(zzhmarkpositive*i)",
+      "display": "zzhmarkpositive*",
+      "output": "\"zzhmarkpositive*\"",
+      "expected": "\"zzhmarkpositive*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "hole_in_unary",
+      "text": "sinh(c/c*@@XSIMP_I@@*b)",
+      "want": "quote(sinh(c/c*i*b))",
+      "hole": true,
+      "display": "sinh(c/c**b)",
+      "output": "\"sinh(c/c**b)\"",
+      "expected": "\"sinh(c/c**b)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "hole_retained": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "principal_root",
+      "text": "sqrt(4-2*@@XSIMP_I@@)",
+      "want": "quote(sqrt(4-2*i))",
+      "display": "√(4-2*)=2.05817102727-0.485868271757*",
+      "output": "\"√(4-2*)\"",
+      "expected": "\"√(4-2*)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "unbound",
+      "id": "nested_power",
+      "text": "(a^sqrt(3))^sqrt(2)*@@XSIMP_I@@",
+      "want": "quote((a^sqrt(3))^sqrt(2)*i)",
+      "display": "(a^(√3))^(√2)*",
+      "output": "\"(a^(√3))^(√2)*\"",
+      "expected": "\"(a^(√3))^(√2)*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "atomic",
+      "text": "@@XSIMP_I@@",
+      "want": "i",
+      "exactAtom": true,
+      "display": "",
+      "output": "\"\"",
+      "expected": "\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "exact_complex_parts": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "negative",
+      "text": "-@@XSIMP_I@@",
+      "want": "quote(-i)",
+      "display": "-()=−",
+      "output": "\"-()\"",
+      "expected": "\"-()\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "marker_in_string_data",
+      "text": "\"@@XSIMP_I@@ remains data\"",
+      "want": "\"@@XSIMP_I@@ remains data\"",
+      "display": "\"@@XSIMP_I@@ remains data\"",
+      "output": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "expected": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "escaped_quote_data",
+      "text": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "want": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "display": "\"\"\" @@XSIMP_I@@ \\ data\"",
+      "output": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "expected": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "source_identifier_collision",
+      "text": "xsppimagatom+xsppimagatomx*@@XSIMP_I@@",
+      "want": "quote(xsppimagatom+xsppimagatomx*i)",
+      "display": "xsppimagatom+xsppimagatomx*=83.0+97.0*",
+      "output": "\"xsppimagatom+xsppimagatomx*\"",
+      "expected": "\"xsppimagatom+xsppimagatomx*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "bound_identifier_held",
+      "text": "zzhmarkbound*@@XSIMP_I@@",
+      "want": "quote(zzhmarkbound*i)",
+      "display": "zzhmarkbound*=7.0*",
+      "output": "\"zzhmarkbound*\"",
+      "expected": "\"zzhmarkbound*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "assumed_identifier_held",
+      "text": "zzhmarkpositive*@@XSIMP_I@@",
+      "want": "quote(zzhmarkpositive*i)",
+      "display": "zzhmarkpositive*",
+      "output": "\"zzhmarkpositive*\"",
+      "expected": "\"zzhmarkpositive*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "hole_in_unary",
+      "text": "sinh(c/c*@@XSIMP_I@@*b)",
+      "want": "quote(sinh(c/c*i*b))",
+      "hole": true,
+      "display": "sinh(c/c**b)",
+      "output": "\"sinh(c/c**b)\"",
+      "expected": "\"sinh(c/c**b)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "hole_retained": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "principal_root",
+      "text": "sqrt(4-2*@@XSIMP_I@@)",
+      "want": "quote(sqrt(4-2*i))",
+      "display": "√(4-2*)=2.05817102727-0.485868271757*",
+      "output": "\"√(4-2*)\"",
+      "expected": "\"√(4-2*)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "bound",
+      "id": "nested_power",
+      "text": "(a^sqrt(3))^sqrt(2)*@@XSIMP_I@@",
+      "want": "quote((a^sqrt(3))^sqrt(2)*i)",
+      "display": "(a^(√3))^(√2)*",
+      "output": "\"(a^(√3))^(√2)*\"",
+      "expected": "\"(a^(√3))^(√2)*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "atomic",
+      "text": "@@XSIMP_I@@",
+      "want": "i",
+      "exactAtom": true,
+      "display": "",
+      "output": "\"\"",
+      "expected": "\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "exact_complex_parts": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "negative",
+      "text": "-@@XSIMP_I@@",
+      "want": "quote(-i)",
+      "display": "-()=−",
+      "output": "\"-()\"",
+      "expected": "\"-()\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "marker_in_string_data",
+      "text": "\"@@XSIMP_I@@ remains data\"",
+      "want": "\"@@XSIMP_I@@ remains data\"",
+      "display": "\"@@XSIMP_I@@ remains data\"",
+      "output": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "expected": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "escaped_quote_data",
+      "text": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "want": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "display": "\"\"\" @@XSIMP_I@@ \\ data\"",
+      "output": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "expected": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "source_identifier_collision",
+      "text": "xsppimagatom+xsppimagatomx*@@XSIMP_I@@",
+      "want": "quote(xsppimagatom+xsppimagatomx*i)",
+      "display": "xsppimagatom+xsppimagatomx*",
+      "output": "\"xsppimagatom+xsppimagatomx*\"",
+      "expected": "\"xsppimagatom+xsppimagatomx*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "bound_identifier_held",
+      "text": "zzhmarkbound*@@XSIMP_I@@",
+      "want": "quote(zzhmarkbound*i)",
+      "display": "zzhmarkbound*=7.0*",
+      "output": "\"zzhmarkbound*\"",
+      "expected": "\"zzhmarkbound*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "assumed_identifier_held",
+      "text": "zzhmarkpositive*@@XSIMP_I@@",
+      "want": "quote(zzhmarkpositive*i)",
+      "display": "zzhmarkpositive*",
+      "output": "\"zzhmarkpositive*\"",
+      "expected": "\"zzhmarkpositive*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "hole_in_unary",
+      "text": "sinh(c/c*@@XSIMP_I@@*b)",
+      "want": "quote(sinh(c/c*i*b))",
+      "hole": true,
+      "display": "sinh(c/c**b)",
+      "output": "\"sinh(c/c**b)\"",
+      "expected": "\"sinh(c/c**b)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "hole_retained": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "principal_root",
+      "text": "sqrt(4-2*@@XSIMP_I@@)",
+      "want": "quote(sqrt(4-2*i))",
+      "display": "√(4-2*)=2.05817102727-0.485868271757*",
+      "output": "\"√(4-2*)\"",
+      "expected": "\"√(4-2*)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "assumed",
+      "id": "nested_power",
+      "text": "(a^sqrt(3))^sqrt(2)*@@XSIMP_I@@",
+      "want": "quote((a^sqrt(3))^sqrt(2)*i)",
+      "display": "(a^(√3))^(√2)*",
+      "output": "\"(a^(√3))^(√2)*\"",
+      "expected": "\"(a^(√3))^(√2)*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "atomic",
+      "text": "@@XSIMP_I@@",
+      "want": "i",
+      "exactAtom": true,
+      "display": "",
+      "output": "\"\"",
+      "expected": "\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "exact_complex_parts": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "negative",
+      "text": "-@@XSIMP_I@@",
+      "want": "quote(-i)",
+      "display": "-()=−",
+      "output": "\"-()\"",
+      "expected": "\"-()\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "marker_in_string_data",
+      "text": "\"@@XSIMP_I@@ remains data\"",
+      "want": "\"@@XSIMP_I@@ remains data\"",
+      "display": "\"@@XSIMP_I@@ remains data\"",
+      "output": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "expected": "\"\"\"@@XSIMP_I@@ remains data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "escaped_quote_data",
+      "text": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "want": "\"\\\" @@XSIMP_I@@ \\\\ data\"",
+      "display": "\"\"\" @@XSIMP_I@@ \\ data\"",
+      "output": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "expected": "\"\"\"\"\"\"\" @@XSIMP_I@@ \\ data\"\"\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "source_identifier_collision",
+      "text": "xsppimagatom+xsppimagatomx*@@XSIMP_I@@",
+      "want": "quote(xsppimagatom+xsppimagatomx*i)",
+      "display": "xsppimagatom+xsppimagatomx*",
+      "output": "\"xsppimagatom+xsppimagatomx*\"",
+      "expected": "\"xsppimagatom+xsppimagatomx*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "bound_identifier_held",
+      "text": "zzhmarkbound*@@XSIMP_I@@",
+      "want": "quote(zzhmarkbound*i)",
+      "display": "zzhmarkbound*=7.0*",
+      "output": "\"zzhmarkbound*\"",
+      "expected": "\"zzhmarkbound*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "assumed_identifier_held",
+      "text": "zzhmarkpositive*@@XSIMP_I@@",
+      "want": "quote(zzhmarkpositive*i)",
+      "display": "zzhmarkpositive*",
+      "output": "\"zzhmarkpositive*\"",
+      "expected": "\"zzhmarkpositive*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "hole_in_unary",
+      "text": "sinh(c/c*@@XSIMP_I@@*b)",
+      "want": "quote(sinh(c/c*i*b))",
+      "hole": true,
+      "display": "sinh(c/c**b)",
+      "output": "\"sinh(c/c**b)\"",
+      "expected": "\"sinh(c/c**b)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true,
+        "hole_retained": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "principal_root",
+      "text": "sqrt(4-2*@@XSIMP_I@@)",
+      "want": "quote(sqrt(4-2*i))",
+      "display": "√(4-2*)=2.05817102727-0.485868271757*",
+      "output": "\"√(4-2*)\"",
+      "expected": "\"√(4-2*)\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    },
+    {
+      "setting": "function",
+      "id": "nested_power",
+      "text": "(a^sqrt(3))^sqrt(2)*@@XSIMP_I@@",
+      "want": "quote((a^sqrt(3))^sqrt(2)*i)",
+      "display": "(a^(√3))^(√2)*",
+      "output": "\"(a^(√3))^(√2)*\"",
+      "expected": "\"(a^(√3))^(√2)*\"",
+      "approx": "0",
+      "checks": {
+        "held_output": true,
+        "exact": true,
+        "state_preserved": true
+      },
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 40,
+    "passed": 40,
+    "failed": 0
+  }
+}

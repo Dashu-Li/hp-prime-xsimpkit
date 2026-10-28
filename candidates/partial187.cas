@@ -1,0 +1,72 @@
+// Bounded exact-polynomial partial factorization. No root, function, symbolic
+// denominator or negative power is admitted. Assembly is always held.
+xspfcheck(xspfe,xspfc):=BEGIN
+  IF type(xspfc)==DOM_STRING OR NOT xsidpoly(xspfc,0,0) THEN RETURN 0; END;
+  IF xsnewapprox(xspfe,xspfc) THEN RETURN 0; END;
+  IFERR RETURN string(ratnormal(xspfc-xspfe))=="0"; THEN RETURN 0; END;
+END;
+
+xspfpoly(xspfe,xspfd):=BEGIN
+  LOCAL xspfbest,xspff,xspfh,xspfn,xspfl,xspfnew,xspfv,xspfvars,xspfdeg,xspfk,xspfj,xspfcoef,xspfs,xspft,xspfchanged,xspfcount;
+  IF xspfd>2 OR size(string(xspfe))>512 OR type(xspfe)<>DOM_SYMBOLIC THEN RETURN xspfe; END;
+  IF xsidpoly(xspfe,0,0)<>1 THEN RETURN xspfe; END;
+  xspfvars:=lname(xspfe);
+  IF size(xspfvars)>5 THEN RETURN xspfe; END;
+  xspfbest:=xspfe;
+  IFERR
+    xspff:=factor(xspfe);
+    IF size(string(xspff))<size(string(xspfbest)) AND xspfcheck(xspfe,xspff) THEN xspfbest:=xspff; END;
+    // Factor once, then improve only its immediate additive factors. Each
+    // recursive level descends a product; coefficient candidates do not recurse.
+    xspfh:=xshead(xspff); xspfn:=string(xspfh); xspfl:=[op(xspff)];
+    IF (xspfn=="'*'" OR xspfn=="*") AND xspfd<2 AND size(xspfl)<=8 THEN
+      xspfchanged:=0;
+      FOR xspfk FROM 1 TO size(xspfl) DO
+        IF type(xspfl[xspfk])==DOM_SYMBOLIC THEN
+          xspfn:=string(xshead(xspfl[xspfk]));
+          IF (xspfn=="'+'" OR xspfn=="+" OR xspfn=="'-'" OR xspfn=="-") AND size([op(xspfl[xspfk])])>=3 THEN
+            xspfnew:=xspfpoly(xspfl[xspfk],xspfd+1);
+            IF string(xspfnew)<>string(xspfl[xspfk]) THEN xspfl[xspfk]:=xspfnew; xspfchanged:=1; END;
+          END;
+        END;
+      END;
+      IF xspfchanged THEN
+        xspfnew:=xshyprebuild(xspfh,xspfl);
+        IF size(string(xspfnew))<size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;
+      END;
+    END;
+    // Group by each low-degree variable and factor the coefficients, e.g.
+    // a*c^2+b*c^2+4*b*c*d+4*b*d^2 -> a*c^2+b*(c+2*d)^2.
+    // lname is bounded; the original is a certified polynomial in unbound IDs.
+    xspfn:=string(xshead(xspfe));
+    IF xspfn<>"'+'" AND xspfn<>"+" AND xspfn<>"'-'" AND xspfn<>"-" THEN RETURN xspfbest; END;
+    IF size([op(xspfe)])<3 THEN RETURN xspfbest; END;
+    FOR xspfj FROM 1 TO size(xspfvars) DO
+      xspfv:=xspfvars[xspfj]; xspfdeg:=degree(xspfe,xspfv);
+      IF type(xspfdeg)==DOM_INT AND xspfdeg>=1 AND xspfdeg<=4 THEN
+        xspfs:=""; xspfcount:=0;
+        FOR xspfk FROM 0 TO xspfdeg DO
+          xspfcoef:=coeff(xspfe,xspfv,xspfk);
+          IF string(xspfcoef)<>"0" THEN
+            IF type(xspfcoef)==DOM_SYMBOLIC THEN xspfcoef:=factor(xspfcoef); END;
+            IF xsidpoly(xspfcoef,0,0)<>1 THEN RETURN xspfbest; END;
+            xspft:="("+xspnative(xspfcoef)+")";
+            IF xspfk>0 THEN
+              IF string(xspfcoef)=="1" THEN xspft:="("+xspnative(xspfv)+")";
+              ELSE xspft:=xspft+"*("+xspnative(xspfv)+")"; END;
+              IF xspfk>1 THEN xspft:=xspft+"^"+string(xspfk); END;
+            END;
+            IF xspfs<>"" THEN xspfs:=xspfs+"+"; END;
+            xspfs:=xspfs+xspft; xspfcount:=xspfcount+1;
+          END;
+        END;
+        IF xspfcount>0 THEN
+          xspfnew:=xshyphold(xspfs);
+          IF size(string(xspfnew))<size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;
+        END;
+      END;
+    END;
+  THEN RETURN xspfbest;
+  END;
+  RETURN xspfbest;
+END;

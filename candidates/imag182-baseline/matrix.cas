@@ -1,0 +1,344 @@
+// XSIMP matrix module. CAS angle mode must be radians.
+// xsclean/xsisapprox are supplied by scalar; xspnative by presentation.
+
+xsmz(xsmvee):=BEGIN
+  LOCAL xsmvs;
+  xsmvs:=string(normal(xsmvee));
+  RETURN (xsmvs=="0") OR (xsmvs=="0.0");
+END;
+
+xsmsign(xsmvee):=BEGIN
+  LOCAL xsmvs;
+  xsmvs:=string(simplify(sign(xsmvee)));
+  IF xsmvs=="1" THEN RETURN 1; END;
+  IF xsmvs=="-1" THEN RETURN -1; END;
+  RETURN 0;
+END;
+
+// Principal square root without native sqrt(Gaussian rational), which can
+// silently approximate even in Exact mode. If z=a+i*b and b!=0, set
+// rho=sqrt(a^2+b^2), u=sqrt((rho+a)/2), v=sign(b)*sqrt((rho-a)/2).
+// Both inner radicands are nonnegative and (u+i*v)^2=z, with u>0.
+// Exact real and rational cases keep their native behavior. Floats stay
+// approximate; unsupported exact complex constants stay as a held square root.
+xsmroot(xsmvz):=BEGIN
+  LOCAL xsmva,xsmvb,xsmvrho,xsmvu,xsmvv;
+  IF type(xsmvz)==DOM_INT THEN RETURN sqrt(xsmvz); END;
+  // Giac can tag (3+2*i)/6 as DOM_RAT: rational storage alone does not
+  // establish that the value is real.
+  IF type(xsmvz)==DOM_RAT THEN
+    IF string(im(xsmvz))=="0" THEN RETURN sqrt(xsmvz); END;
+  END;
+  IF xsisapprox(xsmvz) THEN RETURN sqrt(xsmvz); END;
+  IF size(lname(xsmvz))==0 THEN
+    IFERR
+      xsmva:=re(xsmvz); xsmvb:=im(xsmvz);
+      IF (type(xsmva)==DOM_INT OR type(xsmva)==DOM_RAT) AND
+         (type(xsmvb)==DOM_INT OR type(xsmvb)==DOM_RAT) THEN
+        IF xsmvb==0 THEN RETURN sqrt(xsmva); END;
+        xsmvrho:=sqrt(xsmva^2+xsmvb^2);
+        xsmvu:=sqrt(ratnormal((xsmvrho+xsmva)/2));
+        xsmvv:=sqrt(ratnormal((xsmvrho-xsmva)/2));
+        IF xsmvb<0 THEN xsmvv:=-xsmvv; END;
+        RETURN xsmvu+i*xsmvv;
+      END;
+      // Preserve ordinary real radicals and symbolic real constants.
+      IF string(xsmvb)=="0" THEN RETURN sqrt(xsmvz); END;
+    THEN
+      RETURN expr("quote(sqrt("+xspnative(xsmvz)+"))");
+    END;
+  END;
+  RETURN expr("quote(sqrt("+xspnative(xsmvz)+"))");
+END;
+
+xsmzero(xsmva):=BEGIN
+  LOCAL xsmvj,xsmvk;
+  FOR xsmvj FROM 1 TO rowDim(xsmva) DO
+    FOR xsmvk FROM 1 TO colDim(xsmva) DO
+      IF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;
+    END;
+  END;
+  RETURN 1;
+END;
+
+xsmclean(xsmva):=BEGIN
+  LOCAL xsmvj,xsmvk,xsmvr;
+  xsmvr:=xsmva;
+  FOR xsmvj FROM 1 TO rowDim(xsmva) DO
+    FOR xsmvk FROM 1 TO colDim(xsmva) DO
+      xsmvr[xsmvj,xsmvk]:=xsclean(xsmva[xsmvj,xsmvk]);
+    END;
+  END;
+  RETURN xsmvr;
+END;
+
+// Rewrite only: preserve the Cayley-Hamilton linear-combination layout.
+xsmrewrite(xsmva):=BEGIN
+  LOCAL xsmvj,xsmvk,xsmvr;
+  xsmvr:=xsmva;
+  FOR xsmvj FROM 1 TO rowDim(xsmva) DO
+    FOR xsmvk FROM 1 TO colDim(xsmva) DO
+      xsmvr[xsmvj,xsmvk]:=xsrewrite(xsmva[xsmvj,xsmvk]);
+    END;
+  END;
+  RETURN xsmvr;
+END;
+
+xsmid(xsmvn):=BEGIN
+  LOCAL xsmvj;
+  RETURN diag(seq(1,xsmvj,1,xsmvn));
+END;
+
+xsmdiagonal(xsmva):=BEGIN
+  LOCAL xsmvj,xsmvk;
+  FOR xsmvj FROM 1 TO rowDim(xsmva) DO
+    FOR xsmvk FROM 1 TO colDim(xsmva) DO
+      IF xsmvj!=xsmvk THEN
+        IF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;
+      END;
+    END;
+  END;
+  RETURN 1;
+END;
+
+// exp(t*A), A=mu*I+B and B^2=r^2*I. Finish coefficient arithmetic
+// before attaching hyperbolic functions; the final held output must not
+// freeze separate numeric factors such as 2*sinh(u)/sqrt(3)*4.
+xsmhyperexp(xsmvt,xsmvmu,xsmvbb,xsmvrr):=BEGIN
+  LOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,xsmvc;
+  xsmvn:=rowDim(xsmvbb);
+  xsmvres:=0*xsmid(xsmvn);
+  xsmvpref:=xsclean(exp(normal(xsmvt*xsmvmu)));
+  xsmvu:=normal(xsmvt*xsmvrr);
+  xsmvch:=cosh(xsmvu); xsmvsh:=sinh(xsmvu);
+  FOR xsmvj FROM 1 TO xsmvn DO
+    FOR xsmvk FROM 1 TO xsmvn DO
+      xsmvc:=xsclean(xsmvbb[xsmvj,xsmvk]/xsmvrr);
+      IF xsmvj==xsmvk THEN
+        xsmvres[xsmvj,xsmvk]:=xsmvpref*(xsmvch+xsmvc*xsmvsh);
+      ELSE
+        xsmvc:=xsclean(xsmvpref*xsmvc);
+        xsmvres[xsmvj,xsmvk]:=xsmvc*xsmvsh;
+      END;
+    END;
+  END;
+  RETURN xsmvres;
+END;
+
+// Hyperbolic Cayley-Hamilton form for a positive scalar base and B^2=r^2 I.
+// Clean coefficients before introducing cosh/sinh, never the completed entries.
+xsmhyperpower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN
+  LOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,xsmvc,xsmvrational;
+  xsmvn:=rowDim(xsmvbb);
+  xsmvres:=0*xsmid(xsmvn);
+  xsmvrational:=type(xsmvmu)==DOM_INT OR type(xsmvmu)==DOM_RAT;
+  IF xsmvrational THEN xsmvpref:=xsclean(xsmvbas^xsmvmu);
+  ELSE xsmvpref:=exp(xsmvmu*ln(xsmvbas)); END;
+  xsmvu:=normal(xsmvrr*ln(xsmvbas));
+  xsmvch:=cosh(xsmvu); xsmvsh:=sinh(xsmvu);
+  FOR xsmvj FROM 1 TO xsmvn DO
+    FOR xsmvk FROM 1 TO xsmvn DO
+      xsmvc:=xsclean(xsmvbb[xsmvj,xsmvk]/xsmvrr);
+      IF xsmvj==xsmvk THEN
+        xsmvres[xsmvj,xsmvk]:=xsmvpref*(xsmvch+xsmvc*xsmvsh);
+      ELSE
+        IF xsmvrational THEN xsmvc:=xsclean(xsmvpref*xsmvc);
+        ELSE xsmvc:=xsmvpref*xsmvc; END;
+        xsmvres[xsmvj,xsmvk]:=xsmvc*xsmvsh;
+      END;
+    END;
+  END;
+  RETURN xsmvres;
+END;
+
+// Spectral projector form for B^2=r^2 I. Clean algebraic coefficients only.
+// Ordinary scalar powers may immediately become exp on Prime. Keep the two
+// exponential spectral values separate until xspresent builds the final held
+// power expression; never simplify a rational expression in these values.
+xsmpospower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN
+  LOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvup,xsmvdn,xsmvb,xsmvc,xsmvd,xsmvlup,xsmvldn,xsmvrational,xsmvhyp;
+  xsmvn:=rowDim(xsmvbb);
+  xsmvres:=0*xsmid(xsmvn);
+  xsmvlup:=normal(xsmvmu+xsmvrr); xsmvldn:=normal(xsmvmu-xsmvrr);
+  xsmvrational:=1;
+  IF type(xsmvlup)==DOM_INT OR type(xsmvlup)==DOM_RAT THEN
+    xsmvup:=xsclean(xsmvbas^xsmvlup);
+  ELSE
+    xsmvrational:=0;
+    xsmvup:=exp(xsmvlup*ln(xsmvbas));
+  END;
+  IF type(xsmvldn)==DOM_INT OR type(xsmvldn)==DOM_RAT THEN
+    xsmvdn:=xsclean(xsmvbas^xsmvldn);
+  ELSE
+    xsmvrational:=0;
+    xsmvdn:=exp(xsmvldn*ln(xsmvbas));
+  END;
+  FOR xsmvj FROM 1 TO xsmvn DO
+    FOR xsmvk FROM 1 TO xsmvn DO
+      xsmvb:=xsmvbb[xsmvj,xsmvk];
+      IF xsmvj==xsmvk THEN
+        IF xsmz(xsmvb) THEN
+          xsmvres[xsmvj,xsmvk]:=(xsmvup+xsmvdn)/2;
+        ELSE
+          xsmvc:=xsclean((1+xsmvb/xsmvrr)/2);
+          xsmvd:=xsclean((1-xsmvb/xsmvrr)/2);
+          xsmvres[xsmvj,xsmvk]:=xsmvc*xsmvup+xsmvd*xsmvdn;
+        END;
+      ELSE
+        xsmvc:=xsclean(xsmvb/(2*xsmvrr));
+        xsmvres[xsmvj,xsmvk]:=xsmvc*(xsmvup-xsmvdn);
+      END;
+    END;
+  END;
+  IF xsmvrational THEN RETURN xsmclean(xsmvres); END;
+  // Compare final text, since ordinary string(exp(...)) overstates the length
+  // of a power that the final presentation pass will preserve with quote.
+  xsmvhyp:=xsmhyperpower(xsmvbas,xsmvmu,xsmvbb,xsmvrr);
+  IF size(xsptext(xsmvhyp,0))<=size(xsptext(xsmvres,0)) THEN RETURN xsmvhyp; END;
+  RETURN xsmvres;
+END;
+
+// kind=0: exp(t*a); kind=1: bas^a, with positive-real bas.
+xsmcore(xsmva,xsmvt,xsmvbas,xsmvkind):=BEGIN
+  LOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvpref,xsmvj,xsmvk,xsmvpp,xsmvtotal,xsmvup,xsmvdn,xsmvres,xsmvtheta;
+  xsmvn:=rowDim(xsmva);
+  IF xsmvn!=colDim(xsmva) THEN RETURN "XEXP/XPOW requires a square matrix"; END;
+  xsmvii:=xsmid(xsmvn);
+  IF xsmdiagonal(xsmva) THEN
+    xsmvres:=0*xsmvii;
+    FOR xsmvj FROM 1 TO xsmvn DO
+      IF xsmvkind==1 THEN xsmvres[xsmvj,xsmvj]:=xsmvbas^xsmva[xsmvj,xsmvj];
+      ELSE xsmvres[xsmvj,xsmvj]:=exp(xsmvt*xsmva[xsmvj,xsmvj]); END;
+    END;
+    RETURN xsmclean(xsmvres);
+  END;
+  xsmvmu:=xsclean(trace(xsmva)/xsmvn);
+  xsmvbb:=xsmva-xsmvmu*xsmvii;
+  xsmvqq:=xsclean((xsmvbb*xsmvbb)[1,1]);
+  IF xsmvkind==1 THEN xsmvpref:=xsmvbas^xsmvmu;
+  ELSE xsmvpref:=exp(xsmvt*xsmvmu); END;
+  IF xsmzero(xsmvbb*xsmvbb-xsmvqq*xsmvii) THEN
+    IF xsmz(xsmvqq) THEN RETURN xsmclean(xsmvpref*(xsmvii+xsmvt*xsmvbb)); END;
+    IF size(lname(xsmvqq))!=0 THEN
+      RETURN xsmclean(exp(xsmvt*xsmva));
+    END;
+    IF xsmsign(xsmvqq)==-1 THEN
+      xsmvrr:=sqrt(-xsmvqq);
+      xsmvcc:=cos(xsmvt*xsmvrr);
+      xsmvdd:=sin(xsmvt*xsmvrr)/xsmvrr;
+      RETURN xsmclean(xsmvpref*(xsmvcc*xsmvii+xsmvdd*xsmvbb));
+    END;
+    IF xsmsign(xsmvqq)==1 THEN
+      xsmvrr:=sqrt(xsmvqq);
+      IF xsmvkind==1 THEN
+        RETURN xsmpospower(xsmvbas,xsmvmu,xsmvbb,xsmvrr);
+      END;
+      // exp(i*u*A), A with B^2=qI and q>0: prefer ordinary trig.
+      // Decide before generating cosh(i*u), which Prime may leave unchanged.
+      IF xsmz(re(xsmvt)) THEN
+        xsmvtheta:=normal(-i*xsmvt*xsmvrr);
+        RETURN xsmclean(xsmvpref*(cos(xsmvtheta)*xsmvii+i*sin(xsmvtheta)/xsmvrr*xsmvbb));
+      END;
+      RETURN xsmhyperexp(xsmvt,xsmvmu,xsmvbb,xsmvrr);
+    END;
+    // A nonzero complex constant q: scalar trig form is still valid.
+    xsmvrr:=xsmroot(-xsmvqq);
+    xsmvcc:=cos(xsmvt*xsmvrr);
+    xsmvdd:=sin(xsmvt*xsmvrr)/xsmvrr;
+    RETURN xsmclean(xsmvpref*(xsmvcc*xsmvii+xsmvdd*xsmvbb));
+  END;
+  // Shifted nilpotent matrices: exact terminating Taylor polynomial.
+  xsmvpp:=xsmvii; xsmvtotal:=xsmvii;
+  FOR xsmvj FROM 1 TO xsmvn DO
+    xsmvpp:=xsmvpp*xsmvbb;
+    IF xsmzero(xsmvpp) THEN RETURN xsmclean(xsmvpref*xsmvtotal); END;
+    xsmvtotal:=xsmvtotal+xsmvt^xsmvj/xsmvj!*xsmvpp;
+  END;
+  // General higher order: invoke the genuine matrix exponential.
+  RETURN xsmclean(exp(xsmvt*xsmva));
+END;
+
+XEXP(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsmcore(xsmva,1,0,0);
+END;
+
+XEXPT(xsmva,xsmvt):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsmcore(xsmva,xsmvt,0,0);
+END;
+
+XPOW(xsmvbas,xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF size(lname(xsmvbas))!=0 THEN
+    RETURN "XPOW requires a positive real constant base";
+  END;
+  IF NOT xsmz(im(xsmvbas)) THEN
+    RETURN "XPOW requires a positive real base";
+  END;
+  IF xsmsign(xsmvbas)!=1 THEN
+    RETURN "XPOW requires a provably positive real base";
+  END;
+  RETURN xsmcore(xsmva,ln(xsmvbas),xsmvbas,1);
+END;
+
+// Genuine matrix sine/cosine, never elementwise sin(a) or cos(a).
+xsmtrigcore(xsmva,xsmvkind):=BEGIN
+  LOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvj,xsmvpp,xsmvtotal,xsmvsm,xsmvcm,xsmvres;
+  xsmvn:=rowDim(xsmva);
+  IF xsmvn!=colDim(xsmva) THEN RETURN "XSIN/XCOS requires a square matrix"; END;
+  xsmvii:=xsmid(xsmvn);
+  IF xsmdiagonal(xsmva) THEN
+    xsmvres:=0*xsmvii;
+    FOR xsmvj FROM 1 TO xsmvn DO
+      IF xsmvkind==0 THEN xsmvres[xsmvj,xsmvj]:=sin(xsmva[xsmvj,xsmvj]);
+      ELSE xsmvres[xsmvj,xsmvj]:=cos(xsmva[xsmvj,xsmvj]); END;
+    END;
+    RETURN xsmclean(xsmvres);
+  END;
+  xsmvmu:=xsclean(trace(xsmva)/xsmvn);
+  xsmvbb:=xsmva-xsmvmu*xsmvii;
+  xsmvqq:=xsclean((xsmvbb*xsmvbb)[1,1]);
+  xsmvsm:=sin(xsmvmu); xsmvcm:=cos(xsmvmu);
+  IF xsmzero(xsmvbb*xsmvbb-xsmvqq*xsmvii) THEN
+    IF xsmz(xsmvqq) THEN
+      IF xsmvkind==0 THEN RETURN xsmclean(xsmvsm*xsmvii+xsmvcm*xsmvbb); END;
+      RETURN xsmclean(xsmvcm*xsmvii-xsmvsm*xsmvbb);
+    END;
+    IF size(lname(xsmvqq))==0 THEN
+      IF xsmsign(xsmvqq)==-1 THEN
+        xsmvrr:=sqrt(-xsmvqq); xsmvcc:=cosh(xsmvrr); xsmvdd:=sinh(xsmvrr)/xsmvrr;
+      ELSE
+        xsmvrr:=xsmroot(xsmvqq); xsmvcc:=cos(xsmvrr); xsmvdd:=sin(xsmvrr)/xsmvrr;
+      END;
+      IF xsmvkind==0 THEN RETURN xsmclean(xsmvsm*xsmvcc*xsmvii+xsmvcm*xsmvdd*xsmvbb); END;
+      RETURN xsmclean(xsmvcm*xsmvcc*xsmvii-xsmvsm*xsmvdd*xsmvbb);
+    END;
+  END;
+  // Exact Taylor series for a scalar plus a nilpotent matrix.
+  xsmvpp:=xsmvii;
+  IF xsmvkind==0 THEN xsmvtotal:=xsmvsm*xsmvii; ELSE xsmvtotal:=xsmvcm*xsmvii; END;
+  FOR xsmvj FROM 1 TO xsmvn DO
+    xsmvpp:=xsmvpp*xsmvbb;
+    IF xsmzero(xsmvpp) THEN RETURN xsmclean(xsmvtotal); END;
+    IF xsmvkind==0 THEN xsmvtotal:=xsmvtotal+sin(xsmvmu+xsmvj*pi/2)/xsmvj!*xsmvpp;
+    ELSE xsmvtotal:=xsmvtotal+cos(xsmvmu+xsmvj*pi/2)/xsmvj!*xsmvpp; END;
+  END;
+  IF xsmvkind==0 THEN RETURN xsmclean((exp(i*xsmva)-exp(-i*xsmva))/(2*i)); END;
+  RETURN xsmclean((exp(i*xsmva)+exp(-i*xsmva))/2);
+END;
+
+XSIN(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsmtrigcore(xsmva,0);
+END;
+
+XCOS(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.2: run XSIMPKIT182 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsmtrigcore(xsmva,1);
+END;

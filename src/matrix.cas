@@ -45,10 +45,10 @@ xsmroot(xsmvz):=BEGIN
       // Preserve ordinary real radicals and symbolic real constants.
       IF string(xsmvb)=="0" THEN RETURN sqrt(xsmvz); END;
     THEN
-      RETURN expr("quote(sqrt("+xspnative(xsmvz)+"))");
+      RETURN xsphold("sqrt("+xspnative(xsmvz)+")");
     END;
   END;
-  RETURN expr("quote(sqrt("+xspnative(xsmvz)+"))");
+  RETURN xsphold("sqrt("+xspnative(xsmvz)+")");
 END;
 
 xsmzero(xsmva):=BEGIN
@@ -259,14 +259,20 @@ xsmcore(xsmva,xsmvt,xsmvbas,xsmvkind):=BEGIN
 END;
 
 XEXP(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
   RETURN xsmcore(xsmva,1,0,0);
 END;
 
 XEXPT(xsmva,xsmvt):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
   RETURN xsmcore(xsmva,xsmvt,0,0);
 END;
 
 XPOW(xsmvbas,xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
   IF size(lname(xsmvbas))!=0 THEN
     RETURN "XPOW requires a positive real constant base";
   END;
@@ -326,9 +332,13 @@ xsmtrigcore(xsmva,xsmvkind):=BEGIN
 END;
 
 XSIN(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
   RETURN xsmtrigcore(xsmva,0);
 END;
 
 XCOS(xsmva):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions"; END;
   RETURN xsmtrigcore(xsmva,1);
 END;

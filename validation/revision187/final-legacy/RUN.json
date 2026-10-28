@@ -1,0 +1,34 @@
+[
+  {
+    "test": "held_literal_semantics.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "held_marker_runtime.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "hyperbolic_public_runtime.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "hyperbolic_final_holes.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "hyperbolic_angle_modes.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "index_guard_runtime.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "weighted_exponential_runtime.cjs",
+    "exit_code": 0
+  },
+  {
+    "test": "fresh_installer_runtime.cjs",
+    "exit_code": 0
+  }
+]

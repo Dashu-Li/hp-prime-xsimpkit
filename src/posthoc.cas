@@ -3,7 +3,7 @@
 // No matrix logarithm, floating recognition, or recovery of input intent.
 xsppa(xsve,xsvdepth):=BEGIN
   LOCAL xsvh,xsvl,xsvr,xsvk,xsvj,xsvpart;
-  xsvr:=[];
+  xsvr:=mid([0],1,0);
   IF xsvdepth>=24 THEN RETURN [0,0,0]; END;
   IF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsvr; END;
   xsvh:=xsve[1];
@@ -216,4 +216,757 @@ xsmpost(xsmv):=BEGIN
     END;
   END;
   RETURN xsmvr;
+END;
+
+// Private, bounded final-form exponential pairing. Never an ODE recognizer.
+// Arithmetic rebuilding is held; no symbolic numerator/denominator factors
+// are canceled. exp arguments are combined only after domain-hole checks.
+xshypnatural(xhpe):=BEGIN
+  LOCAL xhpl;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN 0; END;
+  IF xshead(xhpe)==exp THEN RETURN 1; END;
+  xhpl:=[op(xhpe)];
+  IF string(xshead(xhpe))=="'^'" OR string(xshead(xhpe))=="^" THEN
+    IF size(xhpl)==2 THEN RETURN string(xhpl[1])==string(exp(1)); END;
+  END;
+  RETURN 0;
+END;
+
+xshyparg(xhpe):=BEGIN
+  LOCAL xhpl;
+  IF xshead(xhpe)==exp THEN RETURN op(xhpe); END;
+  xhpl:=[op(xhpe)]; RETURN xhpl[2];
+END;
+
+// Guard the whole scalar tree, including quoted unknown calls.
+xshypguard(xhpe,xhpd,xhpb):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpc,xhpv;
+  IF xhpd>=24 OR xhpb<1 THEN RETURN -1; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN -1; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xspunaryname(xhph)=="" AND NOT member(xhpn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN -1; END;
+  xhpc:=1;
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypguard(xhpl[xhpk],xhpd+1,xhpb-xhpc); IF xhpv<0 THEN RETURN -1; END; xhpc:=xhpc+xhpv;
+  END;
+  RETURN xhpc;
+END;
+
+// Collect polynomial pole factors. On the input inspect only exponential
+// arguments; on output collect all remaining polynomial denominator factors.
+// Branch/singular functions xhpinside an input exponential argument are declined.
+xshypholes(xhpe,xhpd,xhpinside,xhpstrict):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpr,xhpv,xhpj,xhpden;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  xhpr:=mid([0],1,0); IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpr; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xshypnatural(xhpe) THEN RETURN xshypholes(xshyparg(xhpe),xhpd+1,1,xhpstrict); END;
+  IF xhph==sinh OR xhph==cosh THEN xhpinside:=1; END;
+  IF xhpstrict AND xhpinside THEN
+    IF xspunaryname(xhph)<>"" AND xhph<>sqrt THEN RETURN [0]; END;
+  END;
+  xhpden:=1;
+  IF xhpn=="'inv'" OR xhpn=="inv" THEN xhpden:=xhpl[1]; END;
+  IF xhpn=="'/'" OR xhpn=="/" THEN IF size(xhpl)==2 THEN xhpden:=xhpl[2]; END; END;
+  IF xhpn=="'^'" OR xhpn=="^" THEN
+    IF size(xhpl)==2 AND (type(xhpl[2])==DOM_INT OR type(xhpl[2])==DOM_RAT) THEN IF xhpl[2]<0 THEN xhpden:=xhpl[1]; END; END;
+  END;
+  IF string(xhpden)<>"1" AND (xhpinside OR NOT xhpstrict) THEN
+    IF xshyppoly(xhpden,0) THEN
+      IF size(lname(xhpden))>0 THEN xhpr:=append(xhpr,xhpden); END;
+    ELSE IF xhpstrict AND xhpinside THEN RETURN [0]; END; END;
+  END;
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypholes(xhpl[xhpk],xhpd+1,xhpinside,xhpstrict);
+    FOR xhpj FROM 1 TO size(xhpv) DO
+      IF string(xhpv[xhpj])=="0" THEN RETURN [0]; END;
+      IF NOT member(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;
+      IF size(xhpr)>16 THEN RETURN [0]; END;
+    END;
+  END;
+  RETURN xhpr;
+END;
+
+// [ok, rational numeric factor, numerator atoms, denominator atoms,
+//  summed exponent, number of exponential factors]. No symbolic cancellation.
+xshypmono(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpv,xhpr,xhpj,xhpsgn,xhpa,xhpb;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT THEN RETURN [1,xhpe,mid([0],1,0),mid([0],1,0),0,0]; END;
+  IF xshypnatural(xhpe) THEN RETURN [1,1,mid([0],1,0),mid([0],1,0),xshyparg(xhpe),1]; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN [1,1,[xhpe],mid([0],1,0),0,0]; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xhpn=="'-'" OR xhpn=="-" THEN
+    IF size(xhpl)==1 THEN
+      xhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 THEN RETURN xhpr; END; xhpr[2]:=-xhpr[2]; RETURN xhpr;
+    END;
+  END;
+  IF xhpn=="'inv'" OR xhpn=="inv" OR (xhpn=="'^'" OR xhpn=="^") AND size(xhpl)==2 AND string(xhpl[2])=="-1" THEN
+    xhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 OR xhpr[2]==0 THEN RETURN [0]; END;
+    RETURN [1,1/xhpr[2],xhpr[4],xhpr[3],-xhpr[5],xhpr[6]];
+  END;
+  IF xhpn=="'/'" OR xhpn=="/" THEN
+    IF size(xhpl)<>2 THEN RETURN [0]; END;
+    xhpa:=xshypmono(xhpl[1],xhpd+1); xhpb:=xshypmono(xhpl[2],xhpd+1);
+    IF xhpa[1]==0 OR xhpb[1]==0 OR xhpb[2]==0 THEN RETURN [0]; END;
+    xhpr:=[1,xhpa[2]/xhpb[2],xhpa[3],xhpa[4],xhpa[5]-xhpb[5],xhpa[6]+xhpb[6]];
+    FOR xhpj FROM 1 TO size(xhpb[4]) DO xhpr[3]:=append(xhpr[3],xhpb[4][xhpj]); END;
+    FOR xhpj FROM 1 TO size(xhpb[3]) DO xhpr[4]:=append(xhpr[4],xhpb[3][xhpj]); END;
+    RETURN xhpr;
+  END;
+  IF xhpn<>"'*'" AND xhpn<>"*" THEN RETURN [1,1,[xhpe],mid([0],1,0),0,0]; END;
+  xhpr:=[1,1,mid([0],1,0),mid([0],1,0),0,0];
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypmono(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;
+    xhpr[2]:=xhpr[2]*xhpv[2]; xhpr[5]:=xhpr[5]+xhpv[5]; xhpr[6]:=xhpr[6]+xhpv[6];
+    FOR xhpj FROM 1 TO size(xhpv[3]) DO xhpr[3]:=append(xhpr[3],xhpv[3][xhpj]); END;
+    FOR xhpj FROM 1 TO size(xhpv[4]) DO xhpr[4]:=append(xhpr[4],xhpv[4][xhpj]); END;
+    IF xhpr[6]>8 OR size(xhpr[3])+size(xhpr[4])>32 THEN RETURN [0]; END;
+  END;
+  RETURN xhpr;
+END;
+
+xshypcoeftext(xhpm):=BEGIN
+  LOCAL xhps,xhpt,xhpk;
+  xhps:="";
+  IF string(xhpm[2])<>"1" OR size(xhpm[3])==0 THEN xhps:=xspnative(xhpm[2]); END;
+  FOR xhpk FROM 1 TO size(xhpm[3]) DO
+    IF xhps<>"" THEN xhps:=xhps+"*"; END;
+    xhps:=xhps+"("+xspnative(xhpm[3][xhpk])+")";
+  END;
+  IF size(xhpm[4])>0 THEN
+    xhpt:=""; FOR xhpk FROM 1 TO size(xhpm[4]) DO
+      IF xhpt<>"" THEN xhpt:=xhpt+"*"; END;
+      xhpt:=xhpt+"("+xspnative(xhpm[4][xhpk])+")";
+    END;
+    xhps:="("+xhps+")/("+xhpt+")";
+  END;
+  RETURN xhps;
+END;
+
+xshyphold(xhps):=BEGIN RETURN xsphold(xhps); END;
+
+xshyprebuild(xhph,xhpl):=BEGIN
+  LOCAL xhpn,xhps,xhpk;
+  xhpn:=xspunaryname(xhph);
+  IF xhpn<>"" AND size(xhpl)==1 THEN RETURN xshyphold(xhpn+"("+xspnative(xhpl[1])+")"); END;
+  xhpn:=string(xhph); IF mid(xhpn,1,1)=="'" THEN xhpn:=mid(xhpn,2,size(xhpn)-2); END;
+  IF xhpn=="inv" AND size(xhpl)==1 THEN RETURN xshyphold("1/("+xspnative(xhpl[1])+")"); END;
+  IF xhpn=="-" AND size(xhpl)==1 THEN RETURN xshyphold("-("+xspnative(xhpl[1])+")"); END;
+  IF NOT member(xhpn,["+","-","*","/","^"]) OR size(xhpl)==0 THEN RETURN undef; END;
+  xhps:="("+xspnative(xhpl[1])+")";
+  FOR xhpk FROM 2 TO size(xhpl) DO xhps:=xhps+xhpn+"("+xspnative(xhpl[xhpk])+")"; END;
+  RETURN xshyphold(xhps);
+END;
+
+// Factor an angle with each whole root treated as one indeterminate. This
+// shortens a common-root sum without exposing the root to factor's branch rules.
+xshyproots(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpr,xhpv,xhpk,xhpj;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN [1]; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN [0]; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xhph==sqrt OR ((xhpn=="'^'" OR xhpn=="^") AND size(xhpl)==2 AND string(xhpl[2])=="1/2") THEN RETURN [1,xhpe]; END;
+  IF xhph==exp OR xhph==sinh OR xhph==cosh OR xhph==sin OR xhph==cos THEN RETURN xshyproots(op(xhpe),xhpd+1); END;
+  IF NOT member(xhpn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN [0]; END;
+  IF xhpn=="'^'" OR xhpn=="^" THEN
+    IF size(xhpl)<>2 OR type(xhpl[2])<>DOM_INT OR abs(xhpl[2])>8 THEN RETURN [0]; END;
+  END;
+  xhpr:=[1];
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshyproots(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;
+    FOR xhpj FROM 2 TO size(xhpv) DO
+      IF NOT member(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;
+      IF size(xhpr)>2 THEN RETURN [0]; END;
+    END;
+  END;
+  RETURN xhpr;
+END;
+
+xshypangle(xhpe):=BEGIN
+  LOCAL xhpr,xhpv,xhpz,xhpinfo,xhproot,xhparg,xhpq,xhptext,xhpname,xhpk;
+  IF size(string(xhpe))>1000 THEN RETURN xhpe; END;
+  xhpr:=xshyproots(xhpe,0); IF xhpr[1]==0 THEN RETURN xhpe; END;
+  IFERR
+    xhpz:=expr("quote(xshypangleaux)"); xhpinfo:=about(xhpz);
+    IF type(xhpinfo)<>DOM_IDENT OR string(xhpinfo)<>"xshypangleaux" OR inString(string(xhpe),"xshypangleaux")>0 THEN RETURN xhpe; END;
+    xhpv:=xhpe;
+    IF size(xhpr)==2 THEN
+      xhproot:=xhpr[2]; xhparg:=[op(xhproot)]; xhparg:=xhparg[1];
+      // Factor one shared polynomial radicand once, inside the same whole
+      // principal root. Numeric complex radicands are not factor targets.
+      IF size(string(xhparg))<=512 AND xshyppoly(xhparg,0) THEN
+        IF size(lname(xhparg))>0 AND size([op(xhparg)])>1 THEN
+          xhpq:=factor(xhparg);
+          IF xshyppoly(xhpq,0) AND NOT xsnewapprox(xhparg,xhpq) THEN
+            IF string(ratnormal(xhpq-xhparg))=="0" THEN
+              xhpq:=xshyphold("sqrt("+xspnative(xhpq)+")");
+              IF NOT xsnewapprox(xhproot,xhpq) AND size(string(xhpq))<size(string(xhproot)) THEN xhproot:=xhpq; END;
+            END;
+          END;
+        END;
+      END;
+      xhpv:=subst(xhpv,xhpr[2],xhpz);
+    END;
+    xhpv:=factor(xhpv);
+    IF size(xhpr)==2 THEN
+      // Substituting the root into a rebuilt parent would evaluate
+      // sqrt((z+1)^2) and may choose z+1 without a valid sign assumption.
+      // Restore the fresh, input-absent token through the held serializer.
+      xhptext:=xspnative(xhpv); xhpname:=string(xhpz); xhpq:=""; xhpk:=1;
+      WHILE xhpk<=size(xhptext) DO
+        IF mid(xhptext,xhpk,size(xhpname))==xhpname THEN
+          xhpq:=xhpq+"("+xspnative(xhproot)+")"; xhpk:=xhpk+size(xhpname);
+        ELSE xhpq:=xhpq+mid(xhptext,xhpk,1); xhpk:=xhpk+1; END;
+      END;
+      xhpv:=xshyphold(xhpq);
+    END;
+    IF NOT xsnewapprox(xhpe,xhpv) AND size(string(xhpv))<size(string(xhpe)) THEN RETURN xhpv; END;
+  THEN RETURN xhpe;
+  END;
+  RETURN xhpe;
+END;
+
+xshypwalk(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpr,xhpk,xhpq,xhpv,xhpa,xhpb,xhpc1,xhpc2,xhpu,xhpcenter,xhpdelta,xhps,xhpkind,xhptmp,xhpchanged,xhpbest,xhporigroots;
+  IF xhpd>=24 OR type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpe; END;
+  // Pure polynomials contain no exp pair or root node to rewrite. Keep root
+  // canonicalization at its parent without walking the radicand repeatedly.
+  IF xshyppoly(xhpe,0) THEN RETURN xhpe; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)]; xhpr:=mid([0],1,0);
+  xhporigroots:=mid([0],1,0);
+  IF member(xhpn,["'+'","+","'-'","-"]) AND size(xhpl)==2 THEN xhporigroots:=xshyproots(xhpe,0); END;
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypwalk(xhpl[xhpk],xhpd+1); xhpr:=append(xhpr,xhpv);
+  END;
+  xhpq:=xhpe; xhpchanged:=string(xhpr)<>string(xhpl);
+  IF xhpchanged THEN
+    xhpq:=xshyprebuild(xhph,xhpr);
+    IF xsnewapprox(xhpe,xhpq) THEN RETURN xhpe; END;
+  END;
+  // An unchanged node is the same exactness candidate, so rescanning it
+  // cannot discover a newly introduced approximation.
+  IF has(xhpq,undef) OR has(xhpq,infinity) THEN RETURN xhpe; END;
+  // Canonicalize only polynomial root arguments, never split xhpa root.
+  IF (xhph==sqrt AND size(xhpr)==1) OR ((xhpn=="'^'" OR xhpn=="^") AND size(xhpr)==2 AND string(xhpr[2])=="1/2") THEN
+    xhpu:=xhpr[1];
+    IF size(string(xhpu))<=512 AND xshyppoly(xhpu,0) THEN
+      xhpv:=ratnormal(xhpu); xhptmp:=xshyphold("sqrt("+xspnative(xhpv)+")");
+      IF NOT xsnewapprox(xhpe,xhptmp) THEN RETURN xhptmp; END;
+    END;
+  END;
+  // Combine only exp units, preserving every symbolic coefficient factor.
+  IF xhpn=="'*'" OR xhpn=="*" OR xhpn=="'inv'" OR xhpn=="inv" OR xhpn=="'/'" OR xhpn=="/" THEN
+    // Unchanged algebra inside roots and coefficients needs no exponential
+    // collection. Changed children still enter, so newly exposed 2/2 folds.
+    xhpkind:=xhpchanged;
+    IF NOT xhpkind THEN
+      xhpc1:=string(xhpq);
+      xhpkind:=inString(xhpc1,"exp(")>0 OR inString(xhpc1,"EXP(")>0 OR inString(xhpc1,"e^")>0;
+    END;
+    IF xhpkind THEN
+      xhpa:=xshypmono(xhpq,0);
+      IF xhpa[1]==1 AND xhpa[2]<>0 THEN
+        xhpu:=normal(xhpa[5]);
+        xhps:=xshypcoeftext(xhpa);
+        IF string(xhpu)<>"0" THEN
+          IF xhps=="1" THEN xhps:="exp("+xspnative(xhpu)+")";
+          ELSE xhps:="("+xhps+")*exp("+xspnative(xhpu)+")"; END;
+        END;
+        xhptmp:=xshyphold(xhps);
+        IF NOT xsnewapprox(xhpe,xhptmp) AND size(string(xhptmp))<size(string(xhpq)) THEN xhpq:=xhptmp; END;
+      END;
+    END;
+  END;
+  xhph:=xshead(xhpq); xhpn:=string(xhph); xhpl:=[op(xhpq)];
+  IF NOT member(xhpn,["'+'","+","'-'","-"]) OR size(xhpl)<>2 THEN RETURN xhpq; END;
+  xhpa:=xshypmono(xhpl[1],0); xhpb:=xshypmono(xhpl[2],0);
+  IF xhpa[1]<>1 OR xhpb[1]<>1 OR xhpa[6]<1 OR xhpb[6]<1 THEN RETURN xhpq; END;
+  IF xhpn=="'-'" OR xhpn=="-" THEN xhpb[2]:=-xhpb[2]; END;
+  xhpc1:=mid([0],1,0); xhpc2:=mid([0],1,0);
+  FOR xhpk FROM 1 TO size(xhpa[3]) DO xhpc1:=append(xhpc1,xspnative(xhpa[3][xhpk])); END;
+  FOR xhpk FROM 1 TO size(xhpb[3]) DO xhpc2:=append(xhpc2,xspnative(xhpb[3][xhpk])); END;
+  xhpchanged:=string(sort(xhpc1))==string(sort(xhpc2));
+  xhpc1:=mid([0],1,0); xhpc2:=mid([0],1,0);
+  FOR xhpk FROM 1 TO size(xhpa[4]) DO xhpc1:=append(xhpc1,xspnative(xhpa[4][xhpk])); END;
+  FOR xhpk FROM 1 TO size(xhpb[4]) DO xhpc2:=append(xhpc2,xspnative(xhpb[4][xhpk])); END;
+  xhpchanged:=xhpchanged AND string(sort(xhpc1))==string(sort(xhpc2));
+  xhpkind:=0;
+  IF xhpchanged THEN
+    IF xhpa[2]==xhpb[2] THEN xhpkind:=1; END;
+    IF xhpa[2]==-xhpb[2] THEN xhpkind:=2; END;
+  END;
+  IF xhpkind==2 AND xhpa[2]<0 AND xhpb[2]>0 THEN xhptmp:=xhpa; xhpa:=xhpb; xhpb:=xhptmp; END;
+  xhpcenter:=normal((xhpa[5]+xhpb[5])/2);
+  IF xhpkind==0 THEN
+    xhpdelta:=ratnormal((xhpa[5]-xhpb[5])/2);
+    // Arithmetic normalization must not replace a whole principal root by
+    // a sign-dependent expression. Decline if a source root disappears.
+    IF size(xhporigroots)==0 OR xhporigroots[1]==0 THEN RETURN xhpe; END;
+    xhpu:=string(xhpcenter)+","+string(xhpdelta);
+    FOR xhpk FROM 2 TO size(xhporigroots) DO
+      xhpc1:=[op(xhporigroots[xhpk])];
+      xhpc1:=xshyphold("sqrt("+xspnative(ratnormal(xhpc1[1]))+")");
+      IF inString(xhpu,string(xhpc1))==0 THEN RETURN xhpe; END;
+    END;
+    xhpdelta:=xshypangle(xhpdelta);
+  ELSE xhpdelta:=xshypangle(normal((xhpa[5]-xhpb[5])/2)); END;
+  IF string(xhpdelta)=="0" THEN RETURN xhpq; END;
+  IF xhpkind==0 THEN
+    // Arbitrary coefficients keep their original symbolic numerator and
+    // denominator factors. Compare both center-factored representations;
+    // the compact exponential form can beat the weighted hyperbolic form.
+    xhpc1:=xshypcoeftext(xhpa); xhpc2:=xshypcoeftext(xhpb);
+    xhpu:=xspnative(xhpdelta); xhps:="";
+    IF string(xhpcenter)<>"0" THEN xhps:="exp("+xspnative(xhpcenter)+")*"; END;
+    xhpbest:=xhpq;
+    xhptmp:=xshyphold(xhps+"(("+xhpc1+")*exp("+xhpu+")+("+xhpc2+")*exp(-("+xhpu+")))");
+    xhptmp:=xspresent(xhptmp);
+    IF type(xhptmp)<>DOM_STRING AND NOT has(xhptmp,undef) AND NOT has(xhptmp,infinity) AND NOT xsnewapprox(xhpe,xhptmp) THEN
+      IF size(string(xhptmp))<size(string(xhpbest)) THEN xhpbest:=xhptmp; END;
+    END;
+    xhptmp:=xshyphold(xhps+"((("+xhpc1+")+("+xhpc2+"))*cosh("+xhpu+")+(("+xhpc1+")-("+xhpc2+"))*sinh("+xhpu+"))");
+    xhptmp:=xspresent(xhptmp);
+    IF type(xhptmp)<>DOM_STRING AND NOT has(xhptmp,undef) AND NOT has(xhptmp,infinity) AND NOT xsnewapprox(xhpe,xhptmp) THEN
+      IF size(string(xhptmp))<size(string(xhpbest)) THEN xhpbest:=xhptmp; END;
+    END;
+    RETURN xhpbest;
+  END;
+  xhpa[2]:=2*xhpa[2];
+  IF xhpkind==1 THEN xhps:="cosh"; ELSE xhps:="sinh"; END;
+  xhptmp:=xhps+"("+xspnative(xhpdelta)+")";
+  IF string(xhpcenter)<>"0" THEN xhptmp:="exp("+xspnative(xhpcenter)+")*"+xhptmp; END;
+  xhpu:=xshypcoeftext(xhpa);
+  IF xhpu<>"1" THEN xhptmp:="("+xhpu+")*"+xhptmp; END;
+  xhptmp:=xshyphold(xhptmp);
+  IF NOT xsnewapprox(xhpe,xhptmp) AND size(string(xhptmp))<size(string(xhpq)) THEN RETURN xhptmp; END;
+  RETURN xhpq;
+END;
+
+xshypcompact(xhpe):=BEGIN
+  LOCAL xhpoldholes,xhpnewholes,xhpprod,xhpk,xhpv,xhpr,xhptext,xhpden;
+  IF type(xhpe)<>DOM_SYMBOLIC OR size(string(xhpe))>1600 THEN RETURN xhpe; END;
+  xhptext:=string(xhpe);
+  IF inString(xhptext,"exp(")==0 AND inString(xhptext,"EXP(")==0 AND inString(xhptext,"e^")==0 THEN RETURN xhpe; END;
+  IF xsapproxstate(xhpe,0)<>0 OR xshypguard(xhpe,0,768)<0 THEN RETURN xhpe; END;
+  IFERR
+    xhpoldholes:=xshypholes(xhpe,0,0,1);
+    IF member(0,xhpoldholes) THEN RETURN xhpe; END;
+    xhpr:=xshypwalk(xhpe,0);
+    IF xsnewapprox(xhpe,xhpr) OR has(xhpr,undef) OR has(xhpr,infinity) OR size(string(xhpr))>=size(string(xhpe)) THEN RETURN xhpe; END;
+    xhpnewholes:=xshypholes(xhpr,0,0,0);
+    IF member(0,xhpnewholes) THEN RETURN xhpe; END;
+    xhpprod:=1; FOR xhpk FROM 1 TO size(xhpnewholes) DO xhpprod:=xhpprod*xhpnewholes[xhpk]; IF size(string(xhpprod))>1600 THEN RETURN xhpe; END; END;
+    FOR xhpk FROM 1 TO size(xhpoldholes) DO
+      xhpv:=ratnormal(xhpprod/xhpoldholes[xhpk]);
+      xhpden:=denom(xhpv);
+      IF type(xhpden)<>DOM_INT AND type(xhpden)<>DOM_RAT THEN RETURN xhpe; END;
+      IF xhpden==0 THEN RETURN xhpe; END;
+    END;
+    RETURN xhpr;
+  THEN RETURN xhpe;
+  END;
+END;
+
+// Safe held identities. No parent function head is executed by this walk.
+// mode 0: exact polynomial; 1: polynomial in sin/cos(polynomial);
+// mode 2: exact rational arithmetic, without branch or transcendental heads.
+// mode 3: a short monomial trig angle; no sums or powers can hide harmonics.
+// Return 0 when declined, 1 for algebra alone, 2 when a trig node occurs.
+xsidpoly(xsie,xsid,xsimode):=BEGIN
+  LOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsii,xsim;
+  IF xsid>=16 THEN RETURN 0; END;
+  xsit:=type(xsie);
+  IF xsit==DOM_INT OR xsit==DOM_RAT OR xsit==DOM_COMPLEX THEN
+    IF xsapproxstate(xsie,0)<>0 THEN RETURN 0; END;
+    IF xsimode==3 AND xsit==DOM_COMPLEX THEN
+      IF string(re(xsie))<>"0" OR (string(im(xsie))<>"1" AND string(im(xsie))<>"-1") THEN RETURN 0; END;
+    END;
+    RETURN 1;
+  END;
+  IF xsit==DOM_IDENT THEN
+    xsii:=about(xsie);
+    IF type(xsii)==DOM_IDENT AND string(xsii)==string(xsie) THEN RETURN 1; END;
+    RETURN 0;
+  END;
+  IF xsit<>DOM_SYMBOLIC THEN RETURN 0; END;
+  xsih:=xshead(xsie); xsin:=string(xsih); xsil:=[op(xsie)];
+  IF xsimode==1 AND (xsih==sin OR xsih==cos) THEN
+    IF size(xsil)<>1 THEN RETURN 0; END;
+    IF xsidpoly(xsil[1],xsid+1,3)==0 THEN RETURN 0; END;
+    xsim:=xsidmono(xsil[1],0);
+    IF xsim[1]==0 OR abs(xsim[2])>8 OR size(xsim[3])+size(xsim[4])>6 THEN RETURN 0; END;
+    RETURN 2;
+  END;
+  IF xsin=="'^'" OR xsin=="^" THEN
+    IF xsimode==3 THEN RETURN 0; END;
+    IF size(xsil)<>2 OR type(xsil[2])<>DOM_INT THEN RETURN 0; END;
+    IF abs(xsil[2])>16 THEN RETURN 0; END;
+    IF xsimode<>2 AND xsil[2]<0 THEN RETURN 0; END;
+    RETURN xsidpoly(xsil[1],xsid+1,xsimode);
+  END;
+  IF xsin=="'inv'" OR xsin=="inv" THEN
+    IF size(xsil)<>1 THEN RETURN 0; END;
+    IF xsimode<>2 THEN
+      IF (type(xsil[1])<>DOM_INT AND type(xsil[1])<>DOM_RAT) OR xsil[1]==0 THEN RETURN 0; END;
+    END;
+  ELSE
+    IF xsin=="'/'" OR xsin=="/" THEN
+      IF size(xsil)<>2 THEN RETURN 0; END;
+      IF xsimode<>2 THEN
+        IF (type(xsil[2])<>DOM_INT AND type(xsil[2])<>DOM_RAT) OR xsil[2]==0 THEN RETURN 0; END;
+      END;
+    ELSE
+      IF NOT member(xsin,["'+'","+","'-'","-","'*'","*"]) OR size(xsil)==0 THEN RETURN 0; END;
+    END;
+  END;
+  IF xsimode==3 THEN
+    IF (xsin=="'+'" OR xsin=="+") OR ((xsin=="'-'" OR xsin=="-") AND size(xsil)<>1) THEN RETURN 0; END;
+    IF size(xsil)>6 THEN RETURN 0; END;
+  END;
+  xsir:=1;
+  FOR xsik FROM 1 TO size(xsil) DO
+    xsiv:=xsidpoly(xsil[xsik],xsid+1,xsimode);
+    IF xsiv==0 THEN RETURN 0; END;
+    IF xsiv==2 THEN xsir:=2; END;
+  END;
+  RETURN xsir;
+END;
+
+// Only the radicand enters texpand/factor. The resulting whole principal
+// root is parsed under quote, including any extracted positive square unit.
+xsidroot(xsie):=BEGIN
+  LOCAL xsic,xsil,xsik,xsif,xsicoef,xsinn,xsidd,xsisn,xsisd,xsis,xsir,xsia;
+  IF size(string(xsie))>256 OR xsidpoly(xsie,0,1)<>2 THEN RETURN xsphold("sqrt("+xspnative(xsie)+")"); END;
+  IFERR
+    xsic:=factor(texpand(xsie));
+    IF xsidpoly(xsic,0,1)==0 OR xsnewapprox(xsie,xsic) THEN RETURN xsphold("sqrt("+xspnative(xsie)+")"); END;
+    IF NOT xsuholegate(xsie,xsic) THEN RETURN xsphold("sqrt("+xspnative(xsie)+")"); END;
+    xsil:=xspflatproduct(xsic,0); xsicoef:=1; xsis:="";
+    FOR xsik FROM 1 TO size(xsil) DO
+      xsif:=xsil[xsik];
+      IF type(xsif)==DOM_INT OR type(xsif)==DOM_RAT THEN xsicoef:=xsicoef*xsif;
+      ELSE
+        IF xsis<>"" THEN xsis:=xsis+"*"; END;
+        xsis:=xsis+"("+xspnative(xsif)+")";
+      END;
+    END;
+    xsir:=xsphold("sqrt("+xspnative(xsic)+")");
+    IF xsicoef>0 THEN
+      xsinn:=numer(xsicoef); xsidd:=denom(xsicoef); xsisn:=sqrt(xsinn); xsisd:=sqrt(xsidd);
+      IF type(xsisn)==DOM_INT AND type(xsisd)==DOM_INT THEN
+        IF xsis=="" THEN xsis:="1"; END;
+        xsia:=xsisn/xsisd;
+        IF xsia==1 THEN xsir:=xsphold("sqrt("+xsis+")");
+        ELSE xsir:=xsphold("("+xspnative(xsia)+")*sqrt("+xsis+")"); END;
+      END;
+    END;
+    IF NOT xsnewapprox(xsie,xsir) THEN RETURN xsir; END;
+  THEN
+    RETURN xsphold("sqrt("+xspnative(xsie)+")");
+  END;
+  RETURN xsphold("sqrt("+xspnative(xsie)+")");
+END;
+
+// Exact numeric coefficient collection only. All symbolic factors remain
+// untouched and on their original side of the fraction; no cancellation.
+// Return [ok, rational coefficient, numerator atoms, denominator atoms].
+xsidmono(xsie,xsid):=BEGIN
+  LOCAL xsih,xsin,xsil,xsik,xsij,xsia,xsib,xsir;
+  IF xsid>=24 THEN RETURN [0]; END;
+  IF type(xsie)==DOM_INT OR type(xsie)==DOM_RAT THEN RETURN [1,xsie,mid([0],1,0),mid([0],1,0)]; END;
+  IF type(xsie)<>DOM_SYMBOLIC THEN RETURN [1,1,[xsie],mid([0],1,0)]; END;
+  xsih:=xshead(xsie); xsin:=string(xsih); xsil:=[op(xsie)];
+  IF (xsin=="'-'" OR xsin=="-") AND size(xsil)==1 THEN
+    xsir:=xsidmono(xsil[1],xsid+1); IF xsir[1]==1 THEN xsir[2]:=-xsir[2]; END; RETURN xsir;
+  END;
+  IF (xsin=="'inv'" OR xsin=="inv") OR ((xsin=="'^'" OR xsin=="^") AND size(xsil)==2 AND string(xsil[2])=="-1") THEN
+    xsia:=xsidmono(xsil[1],xsid+1); IF xsia[1]==0 OR xsia[2]==0 THEN RETURN [0]; END;
+    RETURN [1,1/xsia[2],xsia[4],xsia[3]];
+  END;
+  IF (xsin=="'/'" OR xsin=="/") AND size(xsil)==2 THEN
+    xsia:=xsidmono(xsil[1],xsid+1); xsib:=xsidmono(xsil[2],xsid+1);
+    IF xsia[1]==0 OR xsib[1]==0 OR xsib[2]==0 THEN RETURN [0]; END;
+    xsir:=[1,xsia[2]/xsib[2],xsia[3],xsia[4]];
+    FOR xsij FROM 1 TO size(xsib[4]) DO xsir[3]:=append(xsir[3],xsib[4][xsij]); END;
+    FOR xsij FROM 1 TO size(xsib[3]) DO xsir[4]:=append(xsir[4],xsib[3][xsij]); END;
+    RETURN xsir;
+  END;
+  IF xsin<>"'*'" AND xsin<>"*" THEN RETURN [1,1,[xsie],mid([0],1,0)]; END;
+  xsir:=[1,1,mid([0],1,0),mid([0],1,0)];
+  FOR xsik FROM 1 TO size(xsil) DO
+    xsia:=xsidmono(xsil[xsik],xsid+1); IF xsia[1]==0 THEN RETURN [0]; END;
+    xsir[2]:=xsir[2]*xsia[2];
+    FOR xsij FROM 1 TO size(xsia[3]) DO xsir[3]:=append(xsir[3],xsia[3][xsij]); END;
+    FOR xsij FROM 1 TO size(xsia[4]) DO xsir[4]:=append(xsir[4],xsia[4][xsij]); END;
+    IF size(xsir[3])+size(xsir[4])>64 THEN RETURN [0]; END;
+  END;
+  RETURN xsir;
+END;
+
+// [held candidate, symbolic trig-root flag]. Copy writable operand slots;
+// never call the parent head. Roots containing trig are flagged even when
+// the bounded radicand simplifier declines, so callers avoid native simplify.
+xsidwalk(xsie,xsid):=BEGIN
+  LOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsiflag,xsiarg,xsic,xsim,xsinn,xsidd,xsis,xsia,xsichanged;
+  xsit:=type(xsie); xsiflag:=0;
+  IF xsid>=24 OR size(string(xsie))>1600 THEN RETURN [xsie,0]; END;
+  IF xsit==DOM_LIST THEN
+    xsir:=xsie;
+    FOR xsik FROM 1 TO size(xsie) DO
+      xsiv:=xsidwalk(xsie[xsik],xsid+1); xsir[xsik]:=xsiv[1];
+      IF xsiv[2] THEN xsiflag:=1; END;
+    END;
+    RETURN [xsir,xsiflag];
+  END;
+  IF xsit<>DOM_SYMBOLIC THEN RETURN [xsie,0]; END;
+  xsih:=xshead(xsie); xsin:=string(xsih); xsil:=[op(xsie)];
+  IF xsin=="of" OR xsin=="'of'" THEN RETURN [xsie,0]; END;
+  // A unary matrix operand has special row packing in op on Prime.
+  // Lists are handled directly above; symbolic parents containing lists
+  // stay on the existing matrix dispatcher instead of guessing writable slots.
+  FOR xsik FROM 1 TO size(xsil) DO IF type(xsil[xsik])==DOM_LIST THEN RETURN [xsie,0]; END; END;
+  // Noninteger powers of an exponential have their own principal branch.
+  // sqrt(exp(u)) cannot be replaced by exp(u/2) for arbitrary complex u.
+  IF (xsin=="'^'" OR xsin=="^") AND size(xsil)==2 THEN
+    IF type(xsil[2])<>DOM_INT AND xshypnatural(xsil[1]) THEN RETURN [xsie,1]; END;
+  END;
+  IF xsih==sqrt OR ((xsin=="'^'" OR xsin=="^") AND size(xsil)==2 AND string(xsil[2])=="1/2") THEN
+    xsiarg:=xsil[1]; xsis:=string(xsiarg);
+    IF xshypnatural(xsiarg) THEN RETURN [xsie,1]; END;
+    IF size(lname(xsiarg))>0 AND (inString(xsis,"sin")>0 OR inString(xsis,"cos")>0 OR inString(xsis,"SIN")>0 OR inString(xsis,"COS")>0) THEN
+      xsiflag:=1; xsir:=xsidroot(xsiarg);
+      IF size(string(xsir))<size(string(xsie)) AND NOT xsnewapprox(xsie,xsir) AND xsuholegate(xsie,xsir) THEN RETURN [xsir,1]; END;
+      RETURN [xsie,1];
+    END;
+  END;
+  xsir:=xsie; xsichanged:=0;
+  FOR xsik FROM 1 TO size(xsil) DO
+    IF string(xsil[xsik])==string(xsie) THEN RETURN [xsie,xsiflag]; END;
+    xsiv:=xsidwalk(xsil[xsik],xsid+1);
+    IF xsiv[2] THEN xsiflag:=1; END;
+    IF string(xsiv[1])<>string(xsil[xsik]) THEN xsir[xsik+1]:=xsiv[1]; xsichanged:=1; END;
+  END;
+  xsil:=[op(xsir)];
+  IF (xsin=="'^'" OR xsin=="^") AND size(xsil)==2 AND type(xsil[2])==DOM_INT THEN
+    IF xshypnatural(xsil[1]) THEN
+      xsiarg:=xshyparg(xsil[1]);
+      IF xsidpoly(xsiarg,0,2)>0 THEN
+        xsic:=xsphold("("+xspnative(xsil[2])+")*("+xspnative(xsiarg)+")");
+        xsia:=ratnormal(eval(xsic));
+        IF NOT xsnewapprox(xsic,xsia) AND xsuholegate(xsic,xsia) THEN xsic:=xsia; END;
+        xsia:=xsphold("exp("+xspnative(xsic)+")");
+        IF NOT xsnewapprox(xsir,xsia) AND xsuholegate(xsir,xsia) THEN RETURN [xsia,xsiflag]; END;
+      END;
+    END;
+  END;
+  IF xsiflag OR xsichanged THEN
+    IF member(xsin,["'*'","*","'/'","/","'inv'","inv"]) THEN
+      xsim:=xsidmono(xsir,0);
+      IF xsim[1] THEN
+        xsinn:=""; xsidd:="";
+        IF numer(xsim[2])<>1 OR size(xsim[3])==0 THEN xsinn:=xspnative(numer(xsim[2])); END;
+        IF denom(xsim[2])<>1 THEN xsidd:=xspnative(denom(xsim[2])); END;
+        FOR xsik FROM 1 TO size(xsim[3]) DO
+          IF xsinn<>"" THEN xsinn:=xsinn+"*"; END;
+          xsinn:=xsinn+"("+xspnative(xsim[3][xsik])+")";
+        END;
+        FOR xsik FROM 1 TO size(xsim[4]) DO
+          IF xsidd<>"" THEN xsidd:=xsidd+"*"; END;
+          xsidd:=xsidd+"("+xspnative(xsim[4][xsik])+")";
+        END;
+        IF xsidd=="" THEN xsia:=xsphold(xsinn);
+        ELSE xsia:=xsphold("("+xsinn+")/("+xsidd+")"); END;
+        IF NOT xsnewapprox(xsir,xsia) AND xsuholegate(xsir,xsia) AND size(string(xsia))<size(string(xsir)) THEN xsir:=xsia; END;
+      END;
+    END;
+  END;
+  RETURN [xsir,xsiflag];
+END;
+
+// Cheap hints avoid an identity walk when no supported target can occur.
+// The scalar certificate excludes lists, matrix functions and unknown heads.
+xsidauto(xsie):=BEGIN
+  LOCAL xsis;
+  IF type(xsie)<>DOM_SYMBOLIC THEN RETURN [xsie,0]; END;
+  xsis:=string(xsie);
+  IF inString(xsis,"sin")==0 AND inString(xsis,"cos")==0 AND
+     inString(xsis,"SIN")==0 AND inString(xsis,"COS")==0 AND
+     inString(xsis,"(e^")==0 AND inString(xsis,"(exp(")==0 AND
+     inString(xsis,"(EXP(")==0 THEN RETURN [xsie,0]; END;
+  IF size(xsis)>1600 OR xshypguard(xsie,0,768)<0 THEN RETURN [xsie,0]; END;
+  IFERR RETURN xsidwalk(xsie,0); THEN RETURN [xsie,0]; END;
+END;
+
+// Bounded exact-polynomial partial factorization. No root, function, symbolic
+// denominator or negative power is admitted. Assembly is always held.
+xspfcheck(xspfe,xspfc):=BEGIN
+  IF type(xspfc)==DOM_STRING OR NOT xsidpoly(xspfc,0,0) THEN RETURN 0; END;
+  IF xsnewapprox(xspfe,xspfc) THEN RETURN 0; END;
+  IFERR RETURN string(ratnormal(xspfc-xspfe))=="0"; THEN RETURN 0; END;
+END;
+
+xspfpoly(xspfe,xspfd):=BEGIN
+  LOCAL xspfbest,xspff,xspfh,xspfn,xspfl,xspfnew,xspfv,xspfvars,xspfdeg,xspfk,xspfj,xspfcoef,xspfs,xspft,xspfchanged,xspfcount;
+  IF xspfd>2 OR size(string(xspfe))>512 OR type(xspfe)<>DOM_SYMBOLIC THEN RETURN xspfe; END;
+  IF xsidpoly(xspfe,0,0)<>1 THEN RETURN xspfe; END;
+  xspfvars:=lname(xspfe);
+  IF size(xspfvars)>5 THEN RETURN xspfe; END;
+  xspfbest:=xspfe;
+  IFERR
+    xspff:=factor(xspfe);
+    IF size(string(xspff))<size(string(xspfbest)) AND xspfcheck(xspfe,xspff) THEN xspfbest:=xspff; END;
+    // Factor once, then improve only its immediate additive factors. Each
+    // recursive level descends a product; coefficient candidates do not recurse.
+    xspfh:=xshead(xspff); xspfn:=string(xspfh); xspfl:=[op(xspff)];
+    IF (xspfn=="'*'" OR xspfn=="*") AND xspfd<2 AND size(xspfl)<=8 THEN
+      xspfchanged:=0;
+      FOR xspfk FROM 1 TO size(xspfl) DO
+        IF type(xspfl[xspfk])==DOM_SYMBOLIC THEN
+          xspfn:=string(xshead(xspfl[xspfk]));
+          IF (xspfn=="'+'" OR xspfn=="+" OR xspfn=="'-'" OR xspfn=="-") AND size([op(xspfl[xspfk])])>=3 THEN
+            xspfnew:=xspfpoly(xspfl[xspfk],xspfd+1);
+            IF string(xspfnew)<>string(xspfl[xspfk]) THEN xspfl[xspfk]:=xspfnew; xspfchanged:=1; END;
+          END;
+        END;
+      END;
+      IF xspfchanged THEN
+        xspfnew:=xshyprebuild(xspfh,xspfl);
+        IF size(string(xspfnew))<size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;
+      END;
+    END;
+    // Group by each low-degree variable and factor the coefficients, e.g.
+    // a*c^2+b*c^2+4*b*c*d+4*b*d^2 -> a*c^2+b*(c+2*d)^2.
+    // lname is bounded; the original is a certified polynomial in unbound IDs.
+    xspfn:=string(xshead(xspfe));
+    IF xspfn<>"'+'" AND xspfn<>"+" AND xspfn<>"'-'" AND xspfn<>"-" THEN RETURN xspfbest; END;
+    IF size([op(xspfe)])<3 THEN RETURN xspfbest; END;
+    FOR xspfj FROM 1 TO size(xspfvars) DO
+      xspfv:=xspfvars[xspfj]; xspfdeg:=degree(xspfe,xspfv);
+      IF type(xspfdeg)==DOM_INT AND xspfdeg>=1 AND xspfdeg<=4 THEN
+        xspfs:=""; xspfcount:=0;
+        FOR xspfk FROM 0 TO xspfdeg DO
+          xspfcoef:=coeff(xspfe,xspfv,xspfk);
+          IF string(xspfcoef)<>"0" THEN
+            IF type(xspfcoef)==DOM_SYMBOLIC THEN xspfcoef:=factor(xspfcoef); END;
+            IF xsidpoly(xspfcoef,0,0)<>1 THEN RETURN xspfbest; END;
+            xspft:="("+xspnative(xspfcoef)+")";
+            IF xspfk>0 THEN
+              IF string(xspfcoef)=="1" THEN xspft:="("+xspnative(xspfv)+")";
+              ELSE xspft:=xspft+"*("+xspnative(xspfv)+")"; END;
+              IF xspfk>1 THEN xspft:=xspft+"^"+string(xspfk); END;
+            END;
+            IF xspfs<>"" THEN xspfs:=xspfs+"+"; END;
+            xspfs:=xspfs+xspft; xspfcount:=xspfcount+1;
+          END;
+        END;
+        IF xspfcount>0 THEN
+          xspfnew:=xshyphold(xspfs);
+          IF size(string(xspfnew))<size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;
+        END;
+      END;
+    END;
+  THEN RETURN xspfbest;
+  END;
+  RETURN xspfbest;
+END;
+
+// Final-only local polynomial compaction. Parents are rebuilt under quote;
+// factor/coeff never see a square root, exponent, trig head or denominator.
+// Cache repeated polynomial blocks within this call; never assign globals.
+xspfwalk(xsfe,xsfd,xsfcache):=BEGIN
+  LOCAL xsfh,xsfn,xsfl,xsfr,xsfk,xsfv,xsfq,xsfkey,xsfchanged,xsfterms,xsfpolys,xsfothers,xsftext,xsfsgn,xsft;
+  IF xsfd>=24 THEN RETURN [xsfe,xsfcache]; END;
+  IF type(xsfe)==DOM_LIST THEN
+    xsfr:=mid([0],1,0);
+    FOR xsfk FROM 1 TO size(xsfe) DO
+      xsfv:=xspfwalk(xsfe[xsfk],xsfd+1,xsfcache); xsfcache:=xsfv[2]; xsfr:=append(xsfr,xsfv[1]);
+    END;
+    RETURN [xsfr,xsfcache];
+  END;
+  IF type(xsfe)<>DOM_SYMBOLIC THEN RETURN [xsfe,xsfcache]; END;
+  xsfkey:=string(xsfe);
+  IF size(xsfkey)>1600 THEN RETURN [xsfe,xsfcache]; END;
+  IF xsidpoly(xsfe,0,0)==1 THEN
+    FOR xsfk FROM 1 TO size(xsfcache) DO
+      IF xsfcache[xsfk][1]==xsfkey THEN RETURN [xsfcache[xsfk][2],xsfcache]; END;
+    END;
+    xsfv:=xspfpoly(xsfe,0);
+    IF size(xsfcache)<24 AND size(xsfkey)>12 THEN xsfcache:=append(xsfcache,[xsfkey,xsfv]); END;
+    RETURN [xsfv,xsfcache];
+  END;
+  xsfh:=xshead(xsfe); xsfn:=string(xsfh); xsfl:=[op(xsfe)];
+  IF xspunaryname(xsfh)=="" AND NOT member(xsfn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN [xsfe,xsfcache]; END;
+  xsfr:=mid([0],1,0); xsfchanged:=0;
+  FOR xsfk FROM 1 TO size(xsfl) DO
+    IF string(xsfl[xsfk])==xsfkey THEN RETURN [xsfe,xsfcache]; END;
+    xsfv:=xspfwalk(xsfl[xsfk],xsfd+1,xsfcache); xsfcache:=xsfv[2];
+    xsfr:=append(xsfr,xsfv[1]);
+    IF string(xsfv[1])<>string(xsfl[xsfk]) THEN xsfchanged:=1; END;
+  END;
+  xsfq:=xsfe;
+  IF xsfchanged THEN xsfq:=xshyprebuild(xsfh,xsfr); END;
+  // In p+q+sqrt(r), factor only the polynomial subtotal p+q. Keep
+  // nonpolynomial summands opaque rather than using CAS substitutions.
+  IF member(xsfn,["'+'","+","'-'","-"]) THEN
+    xsfterms:=xspfterms(xsfq,0,1); xsfpolys:=mid([0],1,0); xsfothers:=mid([0],1,0);
+    IF size(xsfterms)>32 THEN RETURN [xsfq,xsfcache]; END;
+    FOR xsfk FROM 1 TO size(xsfterms) DO
+      xsft:=xsfterms[xsfk];
+      IF xsidpoly(xsft[2],0,0)==1 THEN xsfpolys:=append(xsfpolys,xsft);
+      ELSE xsfothers:=append(xsfothers,xsft); END;
+    END;
+    IF size(xsfpolys)>1 AND size(xsfothers)>0 THEN
+      xsftext:="";
+      FOR xsfk FROM 1 TO size(xsfpolys) DO
+        xsft:=xsfpolys[xsfk];
+        IF xsftext<>"" THEN xsftext:=xsftext+"+"; END;
+        IF xsft[1]<0 THEN xsftext:=xsftext+"-("+xspnative(xsft[2])+")";
+        ELSE xsftext:=xsftext+"("+xspnative(xsft[2])+")"; END;
+      END;
+      xsfv:=xspfpoly(xshyphold(xsftext),0); xsftext:="("+xspnative(xsfv)+")";
+      FOR xsfk FROM 1 TO size(xsfothers) DO
+        xsft:=xsfothers[xsfk];
+        IF xsft[1]<0 THEN xsftext:=xsftext+"-("+xspnative(xsft[2])+")";
+        ELSE xsftext:=xsftext+"+("+xspnative(xsft[2])+")"; END;
+      END;
+      xsfv:=xshyphold(xsftext);
+      IF NOT xsnewapprox(xsfq,xsfv) AND size(string(xsfv))<size(string(xsfq)) THEN xsfq:=xsfv; END;
+    END;
+  END;
+  IF has(xsfq,undef) OR has(xsfq,infinity) OR xsnewapprox(xsfe,xsfq) THEN RETURN [xsfe,xsfcache]; END;
+  RETURN [xsfq,xsfcache];
+END;
+
+// Flatten signed additions only, with a strict list/depth budget.
+xspfterms(xsfe,xsfd,xsfsgn):=BEGIN
+  LOCAL xsfn,xsfl,xsfr,xsfv,xsfk,xsfj,xsfs;
+  IF xsfd>=16 OR type(xsfe)<>DOM_SYMBOLIC THEN RETURN [[xsfsgn,xsfe]]; END;
+  xsfn:=string(xshead(xsfe)); xsfl:=[op(xsfe)];
+  IF NOT member(xsfn,["'+'","+","'-'","-"]) THEN RETURN [[xsfsgn,xsfe]]; END;
+  xsfr:=mid([0],1,0);
+  FOR xsfk FROM 1 TO size(xsfl) DO
+    xsfs:=xsfsgn;
+    IF (xsfn=="'-'" OR xsfn=="-") AND (size(xsfl)==1 OR xsfk>1) THEN xsfs:=-xsfs; END;
+    xsfv:=xspfterms(xsfl[xsfk],xsfd+1,xsfs);
+    FOR xsfj FROM 1 TO size(xsfv) DO xsfr:=append(xsfr,xsfv[xsfj]); END;
+    IF size(xsfr)>32 THEN RETURN [[xsfsgn,xsfe]]; END;
+  END;
+  RETURN xsfr;
+END;
+
+xspfauto(xsfe):=BEGIN
+  LOCAL xsfr,xsfv;
+  IF type(xsfe)<>DOM_SYMBOLIC AND type(xsfe)<>DOM_LIST THEN RETURN xsfe; END;
+  IF size(string(xsfe))>1600 OR xsapproxstate(xsfe,0)<>0 THEN RETURN xsfe; END;
+  IF type(xsfe)==DOM_SYMBOLIC THEN IF xshypguard(xsfe,0,768)<0 THEN RETURN xsfe; END; END;
+  IFERR
+    xsfr:=xspfwalk(xsfe,0,mid([0],1,0)); xsfv:=xsfr[1];
+    IF size(string(xsfv))>=size(string(xsfe)) OR xsnewapprox(xsfe,xsfv) OR has(xsfv,undef) OR has(xsfv,infinity) THEN RETURN xsfe; END;
+    IF NOT xsuholegate(xsfe,xsfv) OR NOT xsuholegate(xsfv,xsfe) THEN RETURN xsfe; END;
+    RETURN xsfv;
+  THEN RETURN xsfe;
+  END;
 END;

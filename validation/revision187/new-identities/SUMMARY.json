@@ -1,0 +1,63 @@
+{
+  "scope": "Four fresh upstream-Giac HP runtime processes with actual 1.8.7 installer commands; not native/G2.",
+  "results": [
+    {
+      "cm": 0,
+      "cv": 0,
+      "status": 0,
+      "signal": null,
+      "ms": 6437,
+      "summary": {
+        "total": 19,
+        "passed": 19,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 0,
+      "cv": 1,
+      "status": 0,
+      "signal": null,
+      "ms": 9128,
+      "summary": {
+        "total": 19,
+        "passed": 19,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 1,
+      "cv": 0,
+      "status": 0,
+      "signal": null,
+      "ms": 6783,
+      "summary": {
+        "total": 19,
+        "passed": 19,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 1,
+      "cv": 1,
+      "status": 0,
+      "signal": null,
+      "ms": 9890,
+      "summary": {
+        "total": 19,
+        "passed": 19,
+        "failed": 0
+      },
+      "pass": true
+    }
+  ],
+  "totals": {
+    "total": 76,
+    "passed": 76,
+    "failed": 0
+  },
+  "pass": true
+}

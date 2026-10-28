@@ -1,0 +1,346 @@
+// Unified held-expression dispatcher. HP Prime uses one-based indexing.
+// Supply XSIMP("2^a") or XSIMP('2^a') to intercept matrix functions before CAS evaluation.
+xsumatrix(xsuinput):=BEGIN
+  LOCAL xsuj,xsun;
+  IF type(xsuinput)!=DOM_LIST THEN RETURN 0; END;
+  IF size(xsuinput)==0 THEN RETURN 0; END;
+  IF type(xsuinput[1])!=DOM_LIST THEN RETURN 0; END;
+  xsun:=size(xsuinput[1]);
+  IF xsun==0 THEN RETURN 0; END;
+  FOR xsuj FROM 1 TO size(xsuinput) DO
+    IF type(xsuinput[xsuj])!=DOM_LIST THEN RETURN 0; END;
+    IF size(xsuinput[xsuj])!=xsun THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+xsutree0(xsuinput,xsulevel):=BEGIN
+  LOCAL xsuhead,xsulist,xsures,xsuj,xsuarg,xsupow,xsucoef,xsumat,xsufound,xsufact;
+  IF xsulevel>24 THEN RETURN "XSIMP: expression depth exceeds 24"; END;
+  IF size(string(xsuinput))>1600 THEN RETURN "XSIMP: expression exceeds 1600 characters"; END;
+  IF type(xsuinput)==DOM_STRING THEN RETURN xsuinput; END;
+  IF type(xsuinput)==DOM_LIST THEN
+    xsures:=mid([0],1,0);
+    FOR xsuj FROM 1 TO size(xsuinput) DO
+      // Recover recognized exponential pairs before scalar normalization can
+      // expand them again or invoke algebraic-extension simplification.
+      xsuarg:=xsuinput[xsuj]; xsupow:=xsuarg;
+      IF type(xsuarg)!=DOM_LIST THEN xsupow:=xsppostscalar(xsuarg); END;
+      IF string(xsupow)!=string(xsuarg) THEN
+        xsuarg:=xsupow;
+      ELSE
+        xsuarg:=xsutree0(xsuarg,xsulevel+1);
+        IF type(xsuarg)==DOM_STRING THEN RETURN xsuarg; END;
+        IF type(xsuarg)!=DOM_LIST THEN
+          xsuarg:=xsscalar(xsuarg);
+          // Scalar cleanup can expose exponential pairs hidden in sin/cos.
+          xsuarg:=xsppostscalar(xsuarg);
+        END;
+      END;
+      xsures:=append(xsures,xsuarg);
+    END;
+    RETURN xsures;
+  END;
+  IF type(xsuinput)==DOM_IDENT THEN
+    xsuarg:=eval(xsuinput);
+    IF xsumatrix(xsuarg) THEN RETURN xsutree0(xsuarg,xsulevel+1); END;
+    RETURN xsuarg;
+  END;
+  IF type(xsuinput)!=DOM_SYMBOLIC THEN RETURN xsuinput; END;
+  xsuhead:=xsuinput[1];
+  IF type(xsuhead)!=DOM_FUNC THEN RETURN "XSIMP: unsupported expression operator"; END;
+  IF string(xsuhead)=="of" OR string(xsuhead)=="'of'" THEN RETURN "XSIMP: user function calls are not supported in quoted input"; END;
+  // Pull scalar factors out before evaluating exp(t*A), preserving CH structure.
+  IF xsuhead==exp THEN
+    xsuarg:=op(xsuinput);
+    IF type(xsuarg)==DOM_SYMBOLIC THEN
+      IF string(xsuarg[1])=="'*'" OR string(xsuarg[1])=="*" THEN
+        xsufact:=[op(xsuarg)]; xsucoef:=1; xsufound:=0;
+        FOR xsuj FROM 1 TO size(xsufact) DO
+          xsupow:=xsutree0(xsufact[xsuj],xsulevel+1);
+          IF type(xsupow)==DOM_STRING THEN RETURN xsupow; END;
+          IF xsumatrix(xsupow) THEN
+            IF xsufound==0 THEN xsumat:=xsupow; xsufound:=1;
+            ELSE xsumat:=xsumat*xsupow; END;
+          ELSE xsucoef:=xsucoef*xsupow; END;
+        END;
+        IF xsufound==1 THEN RETURN XEXPT(xsumat,xsucoef); END;
+      END;
+    END;
+  END;
+  // Unary matrix arguments must not be flattened into an argument sequence.
+  IF xsuhead==exp OR xsuhead==sin OR xsuhead==cos OR xsuhead==sinh OR xsuhead==cosh OR xsuhead==sqrt THEN
+    IF string(op(xsuinput))==string(xsuinput) THEN RETURN "XSIMP: expression traversal did not progress"; END;
+    xsuarg:=op(xsuinput);
+    IF type(xsuarg)==DOM_LIST THEN xsuarg:=[xsuarg]; END;
+    xsuarg:=xsutree0(xsuarg,xsulevel+1);
+    IF type(xsuarg)==DOM_STRING THEN RETURN xsuarg; END;
+    IF xsumatrix(xsuarg) THEN
+      IF xsuhead==exp THEN RETURN XEXP(xsuarg); END;
+      IF xsuhead==sin THEN RETURN XSIN(xsuarg); END;
+      IF xsuhead==cos THEN RETURN XCOS(xsuarg); END;
+      IF xsuhead==sinh THEN RETURN (XEXP(xsuarg)-XEXP(-xsuarg))/2; END;
+      IF xsuhead==cosh THEN RETURN (XEXP(xsuarg)+XEXP(-xsuarg))/2; END;
+    END;
+    IF xsuhead==sqrt AND type(xsuarg)!=DOM_LIST THEN RETURN xsmroot(xsuarg); END;
+    xsupow:=xsuhead(xsuarg);
+    IF xsnewapprox(xsuinput,xsupow) THEN RETURN xsuinput; END;
+    RETURN xsupow;
+  END;
+  xsulist:=[op(xsuinput)]; xsures:=mid([0],1,0);
+  FOR xsuj FROM 1 TO size(xsulist) DO
+    IF string(xsulist[xsuj])==string(xsuinput) THEN RETURN "XSIMP: expression traversal did not progress"; END;
+    xsuarg:=xsutree0(xsulist[xsuj],xsulevel+1);
+    IF type(xsuarg)==DOM_STRING THEN RETURN xsuarg; END;
+    xsures:=append(xsures,xsuarg);
+  END;
+  IF string(xsuhead)=="'^'" OR string(xsuhead)=="^" THEN
+    IF size(xsures)==2 THEN
+      xsuarg:=xsures[1]; xsupow:=xsures[2];
+      IF xsumatrix(xsupow) THEN
+        IF NOT xsumatrix(xsuarg) THEN RETURN XPOW(xsuarg,xsupow); END;
+      END;
+      IF type(xsupow)==DOM_RAT AND xsupow==1/2 AND type(xsuarg)!=DOM_LIST THEN RETURN xsmroot(xsuarg); END;
+    END;
+  END;
+  xsuarg:=xsuhead(op(xsures));
+  IF xsnewapprox(xsuinput,xsuarg) THEN RETURN xsuinput; END;
+  RETURN xsuarg;
+END;
+
+// Detect a zero-based CAS context before any expression-tree traversal.
+xsuindexok(xsuunused):=BEGIN
+  // A compiled subscript retains its original offset; parse this probe now.
+  RETURN expr("([17,23])[1]==17");
+END;
+
+// Prime expression-tree compatibility checks. No simplify/factor/recursive walk here.
+xsucorecheck(xsuunused):=BEGIN
+  LOCAL xsut,xsuh,xsua;
+  IF NOT xsuindexok(0) THEN RETURN "XSIMP 1.8.1: CAS index starts at 0; run of:=1"; END;
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  xsut:=expr("quote(sin(xsprobevar))");
+  IF type(xsut)!=DOM_SYMBOLIC THEN RETURN "XSIMP: quoted expression parsing failed"; END;
+  xsuh:=xsut[1];
+  IF type(xsuh)!=DOM_FUNC THEN RETURN "XSIMP: root operator extraction failed"; END;
+  IF xsuh!=sin THEN RETURN "XSIMP: root operator is not sin"; END;
+  xsua:=[op(xsut)];
+  IF size(xsua)!=1 THEN RETURN "XSIMP: operand extraction failed"; END;
+  IF string(xsua[1])!="xsprobevar" THEN RETURN "XSIMP: operand indexing failed"; END;
+  RETURN "XSIMP 1.8.1 CHECK OK";
+END;
+
+xsutree(xsuinput):=BEGIN
+  IF type(xsuinput)==DOM_STRING THEN
+    RETURN xsutree0(expr("quote("+xsuinput+")"),0);
+  END;
+  RETURN xsutree0(xsuinput,0);
+END;
+
+// Collect obvious sums/products after matrix composition, before holding the
+// final display. regroup is deliberately less invasive than normal/simplify.
+xsufold(xsue,xsud):=BEGIN
+  LOCAL xsur,xsuk,xsuc;
+  IF xsud>=24 THEN RETURN xsue; END;
+  IF type(xsue)==DOM_LIST THEN
+    xsur:=xsue;
+    FOR xsuk FROM 1 TO size(xsue) DO
+      xsur[xsuk]:=xsufold(xsue[xsuk],xsud+1);
+    END;
+    RETURN xsur;
+  END;
+  IF type(xsue)!=DOM_SYMBOLIC OR size(string(xsue))>1600 THEN RETURN xsue; END;
+  IFERR
+    // A first pass may turn (c+c)/2 into (1/2)*2*c on Prime;
+    // the second bounded pass finishes that newly exposed multiplication.
+    xsuc:=regroup(regroup(xsue));
+    IF type(xsuc)!=DOM_STRING AND NOT has(xsuc,undef) AND NOT has(xsuc,infinity) AND NOT xsnewapprox(xsue,xsuc) THEN
+      // Candidate selection must not run the full presentation pass twice.
+      IF size(string(xsuc))<size(string(xsue)) THEN RETURN xsuc; END;
+    END;
+  THEN RETURN xsue;
+  END;
+  RETURN xsue;
+END;
+
+// Apply the same scalar representation candidates inside lists and matrices.
+xsuhypcandidate(xsue,xsud):=BEGIN
+  LOCAL xsur,xsuk;
+  IF xsud>=24 THEN RETURN xsue; END;
+  IF type(xsue)<>DOM_LIST THEN RETURN xshypcompact(xsue); END;
+  xsur:=mid([0],1,0);
+  FOR xsuk FROM 1 TO size(xsue) DO
+    xsur:=append(xsur,xsuhypcandidate(xsue[xsuk],xsud+1));
+  END;
+  RETURN xsur;
+END;
+
+// Track denominator zero factors across final presentation only. The pairing
+// identity has already been checked by xshypcompact. [ok, visited, factors].
+xsuholefactor(xsue,xsud,xsub):=BEGIN
+  LOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuc,xsunew;
+  IF xsud>=24 OR xsub<1 THEN RETURN [0]; END;
+  IF type(xsue)==DOM_INT OR type(xsue)==DOM_RAT OR type(xsue)==DOM_COMPLEX THEN
+    IF xsue==0 THEN RETURN [0]; END; RETURN [1,1,mid([0],1,0)];
+  END;
+  IF xshypnatural(xsue) THEN RETURN [1,1,mid([0],1,0)]; END;
+  IF type(xsue)==DOM_SYMBOLIC THEN
+    xsuh:=xshead(xsue); xsun:=string(xsuh); xsul:=[op(xsue)];
+    IF (xsun=="'-'" OR xsun=="-") AND size(xsul)==1 THEN RETURN xsuholefactor(xsul[1],xsud+1,xsub-1); END;
+    IF xsun=="'inv'" OR xsun=="inv" THEN RETURN [1,1,mid([0],1,0)]; END;
+    IF (xsun=="'/'" OR xsun=="/") AND size(xsul)==2 THEN RETURN xsuholefactor(xsul[1],xsud+1,xsub-1); END;
+    IF (xsun=="'^'" OR xsun=="^") AND size(xsul)==2 AND type(xsul[2])==DOM_INT THEN
+      IF xsul[2]<=0 THEN RETURN [1,1,mid([0],1,0)]; END;
+      RETURN xsuholefactor(xsul[1],xsud+1,xsub-1);
+    END;
+    IF xsun=="'*'" OR xsun=="*" THEN
+      xsur:=[1,1,mid([0],1,0)];
+      FOR xsuk FROM 1 TO size(xsul) DO
+        xsuv:=xsuholefactor(xsul[xsuk],xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;
+        xsur[2]:=xsur[2]+xsuv[2];
+        FOR xsuj FROM 1 TO size(xsuv[3]) DO IF NOT member(xsuv[3][xsuj],xsur[3]) THEN xsur[3]:=append(xsur[3],xsuv[3][xsuj]); END; END;
+        IF size(xsur[3])>64 THEN RETURN [0]; END;
+      END;
+      RETURN xsur;
+    END;
+    IF NOT xshyppoly(xsue,0) THEN
+      // This canonicalizes only a zero-factor atom. Inner denominator domains
+      // are collected independently by xsuholewalk before any cancellation.
+      xsunew:=xspimagwalk(xsue,0);
+      IF xsnewapprox(xsue,xsunew) OR has(xsunew,undef) OR has(xsunew,infinity) THEN RETURN [0]; END;
+      IF string(xsunew)<>string(xsue) THEN RETURN xsuholefactor(xsunew,xsud+1,xsub-1); END;
+    END;
+  END;
+  RETURN [1,1,[xsue]];
+END;
+
+xsuholewalk(xsue,xsud,xsub):=BEGIN
+  LOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuden;
+  IF xsud>=24 OR xsub<1 THEN RETURN [0]; END;
+  xsur:=[1,1,mid([0],1,0)];
+  IF type(xsue)==DOM_LIST THEN xsul:=xsue;
+  ELSE
+    IF type(xsue)<>DOM_SYMBOLIC THEN RETURN xsur; END;
+    xsuh:=xshead(xsue); xsun:=string(xsuh); xsul:=[op(xsue)]; xsuden:=1;
+    IF xsun=="'inv'" OR xsun=="inv" THEN IF size(xsul)<>1 THEN RETURN [0]; END; xsuden:=xsul[1]; END;
+    IF xsun=="'/'" OR xsun=="/" THEN IF size(xsul)<>2 THEN RETURN [0]; END; xsuden:=xsul[2]; END;
+    IF xsun=="'^'" OR xsun=="^" THEN
+      IF size(xsul)==2 AND (type(xsul[2])==DOM_INT OR type(xsul[2])==DOM_RAT) THEN
+        IF xsul[2]<0 THEN xsuden:=xsul[1]; END;
+      END;
+    END;
+    IF string(xsuden)<>"1" THEN
+      xsuv:=xsuholefactor(xsuden,xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;
+      xsur[2]:=xsur[2]+xsuv[2]; xsur[3]:=xsuv[3];
+    END;
+  END;
+  FOR xsuk FROM 1 TO size(xsul) DO
+    IF string(xsul[xsuk])==string(xsue) THEN RETURN [0]; END;
+    xsuv:=xsuholewalk(xsul[xsuk],xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;
+    xsur[2]:=xsur[2]+xsuv[2];
+    FOR xsuj FROM 1 TO size(xsuv[3]) DO IF NOT member(xsuv[3][xsuj],xsur[3]) THEN xsur[3]:=append(xsur[3],xsuv[3][xsuj]); END; END;
+    IF size(xsur[3])>64 THEN RETURN [0]; END;
+  END;
+  RETURN xsur;
+END;
+
+xsuholegate(xsuprior,xsunext):=BEGIN
+  LOCAL xsuold,xsunew,xsuprod,xsuk,xsuj,xsuv,xsumatch,xsukey,xsuallmatch;
+  IFERR
+    xsuold:=xsuholewalk(xsuprior,0,2048); IF xsuold[1]==0 THEN RETURN 0; END;
+    IF size(xsuold[3])==0 THEN RETURN 1; END;
+    xsunew:=xsuholewalk(xsunext,0,2048); IF xsunew[1]==0 THEN RETURN 0; END;
+    // Unchanged zero factors need no algebraic proof or display conversion.
+    xsuallmatch:=1;
+    FOR xsuk FROM 1 TO size(xsuold[3]) DO
+      xsumatch:=0;
+      FOR xsuj FROM 1 TO size(xsunew[3]) DO
+        IF string(xsuold[3][xsuk])==string(xsunew[3][xsuj]) THEN xsumatch:=1; END;
+      END;
+      IF NOT xsumatch THEN xsuallmatch:=0; END;
+    END;
+    IF xsuallmatch THEN RETURN 1; END;
+    xsuprod:=1;
+    FOR xsuk FROM 1 TO size(xsunew[3]) DO
+      IF xshyppoly(xsunew[3][xsuk],0) THEN
+        IF NOT xsmpunbound(xsunew[3][xsuk],0) THEN RETURN 0; END;
+        xsuprod:=xsuprod*xsunew[3][xsuk];
+        IF size(string(xsuprod))>1600 THEN RETURN 0; END;
+      END;
+    END;
+    FOR xsuk FROM 1 TO size(xsuold[3]) DO
+      xsuv:=xsuold[3][xsuk];
+      IF xshyppoly(xsuv,0) THEN
+        IF NOT xsmpunbound(xsuv,0) THEN RETURN 0; END;
+        IF string(denom(ratnormal(xsuprod/xsuv)))<>"1" THEN RETURN 0; END;
+      ELSE
+        xsukey:=xsptext(xsuv,0); xsumatch:=0;
+        FOR xsuj FROM 1 TO size(xsunew[3]) DO
+          IF string(xsunew[3][xsuj])==string(xsuv) OR xsptext(xsunew[3][xsuj],0)==xsukey THEN xsumatch:=1; END;
+        END;
+        IF NOT xsumatch THEN RETURN 0; END;
+      END;
+    END;
+    RETURN 1;
+  THEN RETURN 0;
+  END;
+END;
+
+// Compare the actual displayed forms, after all presentation rewrites.
+// An unchanged candidate pays for presentation only once.
+xsuend(xsue):=BEGIN
+  LOCAL xsuc,xsuo,xsuraw;
+  xsuc:=xsuhypcandidate(xsue,0);
+  IF string(xsuc)==string(xsue) THEN RETURN xspresent(xsue); END;
+  // Only an actual new candidate needs this mode check.
+  // Hyperbolic-to-trigonometric presentation identities require radians.
+  IF NOT xsmpisradian(0) THEN RETURN xspresent(xsue); END;
+  xsuo:=xspresent(xsue);
+  xsuraw:=xsuc;
+  xsuc:=xspresent(xsuc);
+  IF type(xsuc)<>DOM_STRING AND NOT has(xsuc,undef) AND NOT has(xsuc,infinity) AND NOT xsnewapprox(xsue,xsuc) THEN
+    IF size(string(xsuc))<size(string(xsuo)) AND xsuholegate(xsuraw,xsuc) THEN RETURN xsuc; END;
+  END;
+  RETURN xsuo;
+END;
+
+XSIMP(xsuinput):=BEGIN
+  LOCAL xsures;
+  IF NOT xsuindexok(0) THEN RETURN "XSIMP 1.8.1: CAS index starts at 0; run of:=1"; END;
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF size(string(xsuinput))>1600 THEN RETURN "XSIMP: input exceeds 1600 characters"; END;
+  xsures:=xsutree(xsuinput);
+  IF type(xsures)==DOM_STRING THEN RETURN xsures; END;
+  // xsutree already simplified every leaf of a list or matrix. Do not run
+  // the complete scalar strategy set again over non-matrix lists.
+  IF type(xsures)==DOM_LIST THEN RETURN xsuend(xsufold(xsures,0)); END;
+  RETURN xsuend(xsufold(xsscalar(xsures),0));
+END;
+
+// Compact one-call report for the user's native CAS. No matrix exponentials.
+XSDIAG(xsuunused):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  RETURN ["1.8.1",xsucorecheck(0),xsptext(exp((2-sqrt(3))*ln(2)),0),string(xspresent(exp((2-sqrt(3))*ln(2))))];
+END;
+
+// Explicit full check. Internal XSIMP calls use only xsucorecheck, so checking
+// the public simplifier here does not recurse or charge every call for tests.
+XSCHECK(xsuunused):=BEGIN
+  LOCAL xsucheck;
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  xsucheck:=xsucorecheck(0);
+  IF xsucheck<>"XSIMP 1.8.1 CHECK OK" THEN RETURN xsucheck; END;
+  IF NOT xsmpisradian(0) THEN RETURN "XSIMP 1.8: mixed identities require CAS radians"; END;
+  IF NOT xsmpunbound(expr("quote(xsmpchecku+xsmpcheckv)"),0) THEN
+    RETURN "XSIMP 1.8: check symbols bound; no state changed";
+  END;
+  IF string(XSIMP("sinh(xsmpchecku)+i*sin(i*xsmpchecku)"))<>"0" THEN RETURN "XSIMP 1.8: mixed identity failed"; END;
+  IF string(XSIMP("cosh(xsmpchecku)^2+sin(i*xsmpchecku)^2"))<>"1" THEN RETURN "XSIMP 1.8: square identity failed"; END;
+  IF string(XSIMP("cosh(xsmpchecku+xsmpcheckv)-cos(i*xsmpchecku)*cosh(xsmpcheckv)+i*sin(i*xsmpchecku)*sinh(xsmpcheckv)"))<>"0" THEN RETURN "XSIMP 1.8: addition identity failed"; END;
+  IF inString(string(XSIMP("exp(xsmpchecku)-exp(-xsmpchecku)")),"sinh(")==0 THEN RETURN "XSIMP 1.8: exponential pairing failed"; END;
+  RETURN "XSIMP 1.8.1 CHECK OK";
+END;

@@ -1,0 +1,97 @@
+// Final-only local polynomial compaction. Parents are rebuilt under quote;
+// factor/coeff never see a square root, exponent, trig head or denominator.
+// Cache repeated polynomial blocks within this call; never assign globals.
+xspfwalk(xsfe,xsfd,xsfcache):=BEGIN
+  LOCAL xsfh,xsfn,xsfl,xsfr,xsfk,xsfv,xsfq,xsfkey,xsfchanged,xsfterms,xsfpolys,xsfothers,xsftext,xsfsgn,xsft;
+  IF xsfd>=24 THEN RETURN [xsfe,xsfcache]; END;
+  IF type(xsfe)==DOM_LIST THEN
+    xsfr:=mid([0],1,0);
+    FOR xsfk FROM 1 TO size(xsfe) DO
+      xsfv:=xspfwalk(xsfe[xsfk],xsfd+1,xsfcache); xsfcache:=xsfv[2]; xsfr:=append(xsfr,xsfv[1]);
+    END;
+    RETURN [xsfr,xsfcache];
+  END;
+  IF type(xsfe)<>DOM_SYMBOLIC THEN RETURN [xsfe,xsfcache]; END;
+  xsfkey:=string(xsfe);
+  IF size(xsfkey)>1600 THEN RETURN [xsfe,xsfcache]; END;
+  IF xsidpoly(xsfe,0,0)==1 THEN
+    FOR xsfk FROM 1 TO size(xsfcache) DO
+      IF xsfcache[xsfk][1]==xsfkey THEN RETURN [xsfcache[xsfk][2],xsfcache]; END;
+    END;
+    xsfv:=xspfpoly(xsfe,0);
+    IF size(xsfcache)<24 AND size(xsfkey)>12 THEN xsfcache:=append(xsfcache,[xsfkey,xsfv]); END;
+    RETURN [xsfv,xsfcache];
+  END;
+  xsfh:=xshead(xsfe); xsfn:=string(xsfh); xsfl:=[op(xsfe)];
+  IF xspunaryname(xsfh)=="" AND NOT member(xsfn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN [xsfe,xsfcache]; END;
+  xsfr:=mid([0],1,0); xsfchanged:=0;
+  FOR xsfk FROM 1 TO size(xsfl) DO
+    IF string(xsfl[xsfk])==xsfkey THEN RETURN [xsfe,xsfcache]; END;
+    xsfv:=xspfwalk(xsfl[xsfk],xsfd+1,xsfcache); xsfcache:=xsfv[2];
+    xsfr:=append(xsfr,xsfv[1]);
+    IF string(xsfv[1])<>string(xsfl[xsfk]) THEN xsfchanged:=1; END;
+  END;
+  xsfq:=xsfe;
+  IF xsfchanged THEN xsfq:=xshyprebuild(xsfh,xsfr); END;
+  // In p+q+sqrt(r), factor only the polynomial subtotal p+q. Keep
+  // nonpolynomial summands opaque rather than using CAS substitutions.
+  IF member(xsfn,["'+'","+","'-'","-"]) THEN
+    xsfterms:=xspfterms(xsfq,0,1); xsfpolys:=mid([0],1,0); xsfothers:=mid([0],1,0);
+    IF size(xsfterms)>32 THEN RETURN [xsfq,xsfcache]; END;
+    FOR xsfk FROM 1 TO size(xsfterms) DO
+      xsft:=xsfterms[xsfk];
+      IF xsidpoly(xsft[2],0,0)==1 THEN xsfpolys:=append(xsfpolys,xsft);
+      ELSE xsfothers:=append(xsfothers,xsft); END;
+    END;
+    IF size(xsfpolys)>1 AND size(xsfothers)>0 THEN
+      xsftext:="";
+      FOR xsfk FROM 1 TO size(xsfpolys) DO
+        xsft:=xsfpolys[xsfk];
+        IF xsftext<>"" THEN xsftext:=xsftext+"+"; END;
+        IF xsft[1]<0 THEN xsftext:=xsftext+"-("+xspnative(xsft[2])+")";
+        ELSE xsftext:=xsftext+"("+xspnative(xsft[2])+")"; END;
+      END;
+      xsfv:=xspfpoly(xshyphold(xsftext),0); xsftext:="("+xspnative(xsfv)+")";
+      FOR xsfk FROM 1 TO size(xsfothers) DO
+        xsft:=xsfothers[xsfk];
+        IF xsft[1]<0 THEN xsftext:=xsftext+"-("+xspnative(xsft[2])+")";
+        ELSE xsftext:=xsftext+"+("+xspnative(xsft[2])+")"; END;
+      END;
+      xsfv:=xshyphold(xsftext);
+      IF NOT xsnewapprox(xsfq,xsfv) AND size(string(xsfv))<size(string(xsfq)) THEN xsfq:=xsfv; END;
+    END;
+  END;
+  IF has(xsfq,undef) OR has(xsfq,infinity) OR xsnewapprox(xsfe,xsfq) THEN RETURN [xsfe,xsfcache]; END;
+  RETURN [xsfq,xsfcache];
+END;
+
+// Flatten signed additions only, with a strict list/depth budget.
+xspfterms(xsfe,xsfd,xsfsgn):=BEGIN
+  LOCAL xsfn,xsfl,xsfr,xsfv,xsfk,xsfj,xsfs;
+  IF xsfd>=16 OR type(xsfe)<>DOM_SYMBOLIC THEN RETURN [[xsfsgn,xsfe]]; END;
+  xsfn:=string(xshead(xsfe)); xsfl:=[op(xsfe)];
+  IF NOT member(xsfn,["'+'","+","'-'","-"]) THEN RETURN [[xsfsgn,xsfe]]; END;
+  xsfr:=mid([0],1,0);
+  FOR xsfk FROM 1 TO size(xsfl) DO
+    xsfs:=xsfsgn;
+    IF (xsfn=="'-'" OR xsfn=="-") AND (size(xsfl)==1 OR xsfk>1) THEN xsfs:=-xsfs; END;
+    xsfv:=xspfterms(xsfl[xsfk],xsfd+1,xsfs);
+    FOR xsfj FROM 1 TO size(xsfv) DO xsfr:=append(xsfr,xsfv[xsfj]); END;
+    IF size(xsfr)>32 THEN RETURN [[xsfsgn,xsfe]]; END;
+  END;
+  RETURN xsfr;
+END;
+
+xspfauto(xsfe):=BEGIN
+  LOCAL xsfr,xsfv;
+  IF type(xsfe)<>DOM_SYMBOLIC AND type(xsfe)<>DOM_LIST THEN RETURN xsfe; END;
+  IF size(string(xsfe))>1600 OR xsapproxstate(xsfe,0)<>0 THEN RETURN xsfe; END;
+  IF type(xsfe)==DOM_SYMBOLIC THEN IF xshypguard(xsfe,0,768)<0 THEN RETURN xsfe; END; END;
+  IFERR
+    xsfr:=xspfwalk(xsfe,0,mid([0],1,0)); xsfv:=xsfr[1];
+    IF size(string(xsfv))>=size(string(xsfe)) OR xsnewapprox(xsfe,xsfv) OR has(xsfv,undef) OR has(xsfv,infinity) THEN RETURN xsfe; END;
+    IF NOT xsuholegate(xsfe,xsfv) OR NOT xsuholegate(xsfv,xsfe) THEN RETURN xsfe; END;
+    RETURN xsfv;
+  THEN RETURN xsfe;
+  END;
+END;

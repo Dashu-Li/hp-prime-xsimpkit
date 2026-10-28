@@ -1,0 +1,3248 @@
+[
+  {
+    "command": "calc_mode(-38)",
+    "commandSha256": "c1e37d1029cb7f9ae82e96dbfba887c3ce565cf75c126c26ef371d994dd4ca3f",
+    "status": "returned",
+    "result": "-38"
+  },
+  {
+    "command": "of:=1",
+    "commandSha256": "5cb8c010b2712a1d0caf2ca0d6f58f868d58e8241f40ec85279b898c4eb00f1f",
+    "status": "returned",
+    "result": "\"[] index start 1\""
+  },
+  {
+    "command": "angle_radian(1)",
+    "commandSha256": "0b9e4b4389effe80c17674bcbbd351f8b70e43a8174315f19526b2f763b8a165",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables(0)",
+    "commandSha256": "c14016badddbe040491ffa2b2fbb0a240daa005a2d83c5b7bea62bdfba5bd52a",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "of:=1",
+    "commandSha256": "5cb8c010b2712a1d0caf2ca0d6f58f868d58e8241f40ec85279b898c4eb00f1f",
+    "status": "returned",
+    "result": "\"[] index start 1\""
+  },
+  {
+    "command": "([17,23])[1]==17",
+    "commandSha256": "4f89c50fbcdb2a417e6988bbca62119654999ce541a0f965db4117492940e2e9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "(type((xshead(xsve):=BEGIN RETURN xsve[1]; END))==DOM_FUNC)",
+    "commandSha256": "2eea446a6575d7a5ac6674fde815e95ef85e118676294f6e5914e61ad4c7acc2",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshead)",
+    "commandSha256": "7ac0b056de4bd16d9454e28e87a6fb3125da5da6c4248c465483698e9560e1b8",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsinitok(xsinitunused):=BEGIN\nLOCAL xsinitlist;\nIFERR\nIF NOT expr(\"([17,23])[1]==17\") THEN RETURN 0; END;\nxsinitlist:=[];\nxsinitlist:=append(xsinitlist,17);\nRETURN string(xsinitlist)==\"[17]\";\nT...",
+    "commandSha256": "c571d3c5a62d424a46d74758e5ea8ac0f4581c6c3b364f69200abcc41186534b",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsinitok)",
+    "commandSha256": "55bb2af03dc2af84d744feaaef2dcc08bf3a318d4ee90923fa9074d073f54218",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsapproxstate(xsve,xsvdepth):=BEGIN\nLOCAL xsvt,xsvl,xsvk,xsvs,xsvr,xsvtext;\nxsvt:=type(xsve);\nIF xsvt==DOM_FLOAT THEN RETURN 1; END;\nIF xsvt==DOM_COMPLEX THEN\nIF type(re(xsve))==DOM_FLOAT OR ty...",
+    "commandSha256": "474146bf0a87b5509d103b6befc1fcaf562e37a78c3f1a74d41c6ae17396e66f",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsapproxstate)",
+    "commandSha256": "5e6b788774346b918dbc3d1772a07932ac227211bb7e02f6f1bf423f9c806aff",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsisapprox(xsve):=BEGIN RETURN xsapproxstate(xsve,0)==1; END))==DOM_FUNC)",
+    "commandSha256": "d2f5748fc767cbb2b46b9fb408ca6e947d69e738493831a67da9647cdaf074aa",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsisapprox)",
+    "commandSha256": "5444561576038ecb91968d40de4c3735d86e2ef5253cd4bf19628aee53215ed1",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsnewapprox(xsve,xsvc):=BEGIN\nIF xsapproxstate(xsvc,0)==0 THEN RETURN 0; END;\nIF xsisapprox(xsve) THEN RETURN 0; END;\nRETURN 1;\nEND))==DOM_FUNC)",
+    "commandSha256": "9430985b90d417f52b173012e8a27f5608af3bc788b0f484f366a655ce0fba85",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsnewapprox)",
+    "commandSha256": "01d104059a994a163a2f56061fecde3bb4b3161597879c62d936c5dffb4c93dc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xscomplexradwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvt,xsvh,xsvl,xsvk,xsvs,xsvimag,xsvrad,xsvparent;\nxsvt:=type(xsve);\nIF xsvt==DOM_COMPLEX OR xsvt==DOM_RAT THEN\nIF string(im(xsve))<>\"0\" THEN RETURN...",
+    "commandSha256": "7499bc14ff11fc14ed1643a45de5ea0fa8d51b7a869fa45b2053b073f69c11a4",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xscomplexradwalk)",
+    "commandSha256": "d29a74151497749df9c69bbc24799e79614330a8aa9a37401d043d1da3379754",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xscomplexrad(xsve):=BEGIN\nIF type(xsve)<>DOM_SYMBOLIC AND type(xsve)<>DOM_LIST THEN RETURN 0; END;\nIF size(lname(xsve))<>0 THEN RETURN 0; END;\nIF xscomplexradwalk(xsve,0)<>3 THEN RETURN 0; END;...",
+    "commandSha256": "d80f18361aa92982244f7867afc0f602289da315ea03821d9623e468e9d6324c",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xscomplexrad)",
+    "commandSha256": "691cae1072e1da405f30f085c4b17d6d9e8fbf2731dd07eace259671f1d63cb7",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsradtrigsquare(xsve):=BEGIN\nLOCAL xsvh,xsvl,xsvb;\nIF type(xsve)<>DOM_SYMBOLIC THEN RETURN mid([0],1,0); END;\nxsvh:=string(xshead(xsve));\nIF xsvh<>\"'^'\" AND xsvh<>\"^\" THEN RETURN mid([0],1,0); ...",
+    "commandSha256": "635a058a36d07840a9379d11f5dcf70fa598083babc1e87d2fd0bedf57a86f7e",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsradtrigsquare)",
+    "commandSha256": "4c9b8381d557ff240d5bc29c239a063a90cda8b7cf9e71a5881f883fdeb3ba97",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsradtrigunit(xsve):=BEGIN\nLOCAL xsvh,xsvl,xsvk,xsvj,xsva,xsvb,xsvhit,xsvchanged,xsvr;\nIF type(xsve)<>DOM_SYMBOLIC THEN RETURN xsve; END;\nxsvh:=string(xshead(xsve));\nIF xsvh<>\"'+'\" AND xsvh<>\"+...",
+    "commandSha256": "697fc329db11d07cfd6709f85c66be48e2af63ec1373c5825f0bea3b2cab1b68",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsradtrigunit)",
+    "commandSha256": "d7cb2df108812c3f07c4bbbb4ff17bd65551ff90617e86777070517436aa4c0c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspos(xsve):=BEGIN\nIF type(xsve)==DOM_INT OR type(xsve)==DOM_RAT THEN RETURN xsve>0; END;\nIF size(lname(xsve))!=0 THEN RETURN 0; END;\nIF string(simplify(im(xsve)))!=\"0\" THEN RETURN 0; END;\nRETU...",
+    "commandSha256": "28a2344e55066e403430ff7aaeae76fbad8c951d0d976d8082af594b8b91e8c7",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspos)",
+    "commandSha256": "ad39a9d6410bbd8dbe0d61a2a2cc0b4b74dd51af2cffa313ca73bad132575336",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xslogswalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvr,xsvk,xsvj,xsva,xsvparent,xsvh;\nxsvr:=mid([0],1,0);\nIF xsvdepth>=24 THEN RETURN xsvr; END;\n\n\nxsvparent:=string(xsve);\nIF inString(xsvparent,\"ln\")...",
+    "commandSha256": "10c029573b8d6ce0e7772d05d59695ab082a51c6db752a10f8e8bc033eecea30",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xslogswalk)",
+    "commandSha256": "b7480fbd0c9204126acdeaf9d51bfc3f0709b77cfe12e9e8405627064e83a8b9",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xslogs(xsve):=BEGIN RETURN xslogswalk(xsve,0); END))==DOM_FUNC)",
+    "commandSha256": "d62d071b8e4a02599170f642c56ea21ed657d24eaac9e8a3a6c9371b5a84f920",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xslogs)",
+    "commandSha256": "fc7844bc1a79eb21e8b37d55090ee3c6b3daea4279773bd2cc01ada6994f7504",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshyppoly(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpl,xhpk;\nIF xhpd>=20 THEN RETURN 0; END;\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1...",
+    "commandSha256": "f928025d80c08f6d09dc23787f7e88b5c2b89fd7dce392672549c61282faa734",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshyppoly)",
+    "commandSha256": "6a31d5a80211839c26497b06914a9dc53b61e57303e242e5e1a4322e0da1ccba",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsrwwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvr,xsvk,xsvu,xsvb,xsvc,xsvq,xsvparent,xsvh,xsvt,xsvheadtext;\nIF xsvdepth>=24 THEN RETURN xsve; END;\n\n\nxsvt:=type(xsve);\nIF xsvt<>DOM_LIST AND xsvt<>D...",
+    "commandSha256": "78ad7d4e2e577284d62952a58a1bc2ba0e82c0f83d3c59a803b771a5794c83dc",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsrwwalk)",
+    "commandSha256": "bb39ed5a6b7e3665bc2f4ed5d5fde79c56ddd185510718e2c8a8fd1f94499667",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsrewrite(xsve):=BEGIN RETURN xsrwwalk(xsve,0); END))==DOM_FUNC)",
+    "commandSha256": "3c9afef0fc40c76a33e4a24c53e40dd4537e2c912cbc20c6ebb36d05bb234c6f",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsrewrite)",
+    "commandSha256": "81e71396ab8874429c872245a279f559b0cc967ceec0c75733826d1219b88851",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsweightwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvk,xsvw,xsvh,xsvparent,xsvt,xsvheadtext;\nIF xsvdepth>=24 THEN RETURN 1000; END;\nxsvw:=1;\nxsvt:=type(xsve);\nIF xsvt==DOM_LIST THEN xsvl:=xsve;\nELS...",
+    "commandSha256": "cf00bccc27da564879fe5fc217e968f8c229189196a1591a1593a24df19138fe",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsweightwalk)",
+    "commandSha256": "a4f5a5ec10fbb514f001c22b64bcbfa168730c9b577186f2dce958c485b2b5d4",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsweight(xsve):=BEGIN RETURN xsweightwalk(xsve,0); END))==DOM_FUNC)",
+    "commandSha256": "67d734ad05626210afb36c644b9df98e289925c37956029144ae2dcf37ac8b70",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsweight)",
+    "commandSha256": "9f1fd2e7815adcf3cc6eae8970a7f3868ea2d80a6bc03c5a9abdf24b238f4009",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsscore(xsve):=BEGIN RETURN 20*xsweight(xsve)+size(string(xsve)); END))==DOM_FUNC)",
+    "commandSha256": "b58ddaf5680ae4548afbbb9282268d99591879a115b507575e70fb32609d2401",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsscore)",
+    "commandSha256": "4b6f07cd6e61325b46b1aebface34c3fc89614fc739e570892a4e49b51ce4b7c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xstrans(xsve,xsvk):=BEGIN\nLOCAL xsvr;\nxsvr:=xsve;\nIFERR\nIF xsvk==1 THEN xsvr:=simplify(xsve); END;\nIF xsvk==2 THEN xsvr:=normal(xsve); END;\nIF xsvk==5 THEN\nxsvr:=trig2exp(xsve);\nIF string(xsvr)...",
+    "commandSha256": "6b537f67b82f648521597fd5d8a1f509ce445f3c2486e81432cf6b1d54353eb0",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xstrans)",
+    "commandSha256": "f158ebfc2752fccd92aab238622ac95758ea9752092dc2848365e07e1085f4fc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsbounded(xsve,xsvdepth,xsvmatrix):=BEGIN\nLOCAL xsvb,xsvc,xsvk,xsvr,xsvsteps,xsvbest,xsvscore,xsvparent,xsvseen,xsvtext,xsvsafe;\nIF xsvdepth>=24 THEN RETURN xsve; END;\nIF type(xsve)==DOM_STRING...",
+    "commandSha256": "bf7946ef7b85d89a722dc22f4f544f3081ca220e205fb38a43023e5789aaea80",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsbounded)",
+    "commandSha256": "ca77cc98ef6eed75c7f6c8070810a0f1d25f3bd3e09d117a20c753051931d192",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsscalar(xsve):=BEGIN RETURN xsbounded(xsve,0,0); END))==DOM_FUNC)",
+    "commandSha256": "d6f61423a77475f71fed6bd8d313596ef33a5bcf6f264d531794610009af7bbf",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsscalar)",
+    "commandSha256": "2fc3611164f3024cc6d6a2ede15f39a5d5ab7b13bbe8c9980a83ce0904c3231b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XFAST(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run XS...",
+    "commandSha256": "a9edd3ddf7e903db48c605ec6bb8841ead1525939a97df0d445feb4d0affd04f",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XFAST)",
+    "commandSha256": "654d9eef0e8e0e59fd5649e23b558db5be47f9270a0910205a2b767d91063233",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XREWRITE(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run...",
+    "commandSha256": "4bba5677bec267ef31d774d77c7b030f50bfd1f1f6cf65610d232b06c70734f4",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XREWRITE)",
+    "commandSha256": "7434cdb31af872761fd6959157f7ecead687a16dcfa8b83e1e449ef11ba28b38",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsclean(xsve):=BEGIN RETURN xsbounded(xsve,0,1); END))==DOM_FUNC)",
+    "commandSha256": "4fff522a459f614ae973235b26baf751af7c712d2ec68308a75958ae920a0fd9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsclean)",
+    "commandSha256": "adb8199ee5ccd690b1e551aef3adc81a20bd333d84eae03a1cea15cb225a3c9a",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsrectwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvk,xsvr,xsvparent;\nIF xsvdepth>=24 THEN RETURN xsve; END;\nIF type(xsve)==DOM_LIST THEN\nxsvr:=mid([0],1,0); xsvparent:=string(xsve);\nFOR xsvk FROM 1 TO s...",
+    "commandSha256": "7ebf1ad7c6cc1c8744c61f0e00934902e029330b5c7e9bf3f2d4549f02bf4cef",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsrectwalk)",
+    "commandSha256": "3b4b0373036112fba2356a1823d103387121383b34bfa074c9d7fbd42d92dd36",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XRECT(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run XS...",
+    "commandSha256": "42d96c597bd584e7fae7ee155d96b84021026515ea0fd73179d5d2782d753e32",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XRECT)",
+    "commandSha256": "de2d2c87baaf29f4378f756f82907d22a9429d5b1b96146ebf45e52bf8830f63",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpisradian(xsmpdummy):=BEGIN\nLOCAL xsmpflag;\nxsmpflag:=simplify(acos(-1))==pi;\nRETURN type(xsmpflag)==DOM_INT AND xsmpflag==1;\nEND))==DOM_FUNC)",
+    "commandSha256": "3f3c1ff0394a008a18348c5ba0f70705fb13ddce8189f082274feab91b481d6e",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpisradian)",
+    "commandSha256": "c6f20948fbbe6edfd0447fac5411b39c2b244322d30c40af3cb2b8fb0e53e961",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpunbound(xsmpe,xsmpdepth):=BEGIN\nLOCAL xsmpt,xsmpl,xsmpk,xsmpinfo;\nIF xsmpdepth>=12 THEN RETURN 0; END;\nxsmpt:=type(xsmpe);\nIF xsmpt==DOM_IDENT THEN\nxsmpinfo:=about(xsmpe);\nRETURN type(xsmpi...",
+    "commandSha256": "f0a3a896672e49dbbb2bc11d2583f6ac0c5ca15c0ec20903c928a92d35e449ed",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpunbound)",
+    "commandSha256": "066ca30166acd22e7d5f1f6bec5d98e4f3b6cbce3097ae672507dcadad86a174",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpnonzero(xsmpe,xsmpdepth):=BEGIN\nLOCAL xsmpt,xsmph,xsmpl,xsmpk;\nIF xsmpdepth>=16 THEN RETURN 0; END;\nxsmpt:=type(xsmpe);\nIF xsmpt==DOM_INT OR xsmpt==DOM_RAT OR xsmpt==DOM_COMPLEX THEN RETURN...",
+    "commandSha256": "b7bad01057059918d5351f6d8bb6e15c66da1753ab1ed231e7571ef332818ba1",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpnonzero)",
+    "commandSha256": "d26ea25e0c088672ed2adeb378ce6d4b9e295d11b76a0a6dfc008ad3e0f7568d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpwalk(xsmpe,xsmpdepth,xsmpbudget,xsmpphase):=BEGIN\nLOCAL xsmpt,xsmph,xsmpl,xsmpk,xsmpcount,xsmpchild,xsmpmaxdepth,xsmphead,xsmpchildphase;\nIF xsmpphase<>1 THEN xsmpmaxdepth:=12; ELSE xsmpmax...",
+    "commandSha256": "243b6009e185aeeaef8422ff5fd9c87dbdf21f7ce771b0f4903adf716a389b8a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpwalk)",
+    "commandSha256": "fb572ede9b6cd35765da4a97d4ef6e3c3b34c84fb78d08097dea7bb66d140b93",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmptry(xsmpinput):=BEGIN\nLOCAL xsmporiginal,xsmpcurrent,xsmpcandidate,xsmpbest,\nxsmpbestscore,xsmpscore,xsmpstep,xsmptext,xsmpseen;\nxsmporiginal:=xsmpinput;\nIFERR\n\nIF size(string(xsmporiginal)...",
+    "commandSha256": "0268f827a86b023825c1d8b6c1c9fd39d8b9b92845a0dc6d6c1faed7c5c954e7",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmptry)",
+    "commandSha256": "0737482f3a7bac9f842761154b452ff481b16d972c3857c20d4e00164461abf0",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpauto(xsmpinput):=BEGIN\nLOCAL xsmptext;\nIF type(xsmpinput)<>DOM_SYMBOLIC THEN RETURN xsmpinput; END;\nxsmptext:=string(xsmpinput);\nIF size(xsmptext)>256 THEN RETURN xsmpinput; END;\nIF inStrin...",
+    "commandSha256": "10d7fc4bff102be98b52dee427f754d36e268ee054cbde5f0bd630648ac68f08",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpauto)",
+    "commandSha256": "315513a879d710d701ed55b2c61498b45b01f34d485d24e581c46f06a56b7f7e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmz(xsmvee):=BEGIN\nLOCAL xsmvs;\nxsmvs:=string(normal(xsmvee));\nRETURN (xsmvs==\"0\") OR (xsmvs==\"0.0\");\nEND))==DOM_FUNC)",
+    "commandSha256": "975056db34a6e6c9aa430ad2ab59ca1380f9046a6bf0ba590aa161a58837f252",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmz)",
+    "commandSha256": "7f1768f917285bea732b6a9253dd7a80029b0f1d385c763b6c0a8829ce71ddbc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmsign(xsmvee):=BEGIN\nLOCAL xsmvs;\nxsmvs:=string(simplify(sign(xsmvee)));\nIF xsmvs==\"1\" THEN RETURN 1; END;\nIF xsmvs==\"-1\" THEN RETURN -1; END;\nRETURN 0;\nEND))==DOM_FUNC)",
+    "commandSha256": "7023f059cf576a75f48c8460a5dbcf4564fc531f31f5211a443841e5cb452c87",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmsign)",
+    "commandSha256": "4c544d5fc8b12dba50e3754ae1d62cf4356a833dc2663850d117a7fbe3fdde1c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmroot(xsmvz):=BEGIN\nLOCAL xsmva,xsmvb,xsmvrho,xsmvu,xsmvv;\nIF type(xsmvz)==DOM_INT THEN RETURN sqrt(xsmvz); END;\n\n\nIF type(xsmvz)==DOM_RAT THEN\nIF string(im(xsmvz))==\"0\" THEN RETURN sqrt(xsmv...",
+    "commandSha256": "288d00c667c8870141e00b7eaa48365e93f595a33a2e847242463a1c7a11c665",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmroot)",
+    "commandSha256": "e734214e02d2d4991d6a63233eaa6905cad00f6447bf87a716e1f9b0d2c951bc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmzero(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmva) DO\nIF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;\nEND;\nEND;\nRETURN 1;\nEND))=...",
+    "commandSha256": "622bc7683cfb4cf6b7239dc327a9207ad51b12b5f69593966accf23b905a7a49",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmzero)",
+    "commandSha256": "4fd435962ed6d03c663bf0b6ad6aeef781f1a6a50df60724b000f82d9dcbcd47",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmclean(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk,xsmvr;\nxsmvr:=xsmva;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmva) DO\nxsmvr[xsmvj,xsmvk]:=xsclean(xsmva[xsmvj,xsmvk]);\nEND;\nEND...",
+    "commandSha256": "15a01ceb433cc51b071e7a1b9d9e05088bab96b719e036136d1aaf79271fe14f",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmclean)",
+    "commandSha256": "86c9dd54d420326e7caddbc16e8117cb24a72e334ce1b6676e8882318b5780f5",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmrewrite(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk,xsmvr;\nxsmvr:=xsmva;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmva) DO\nxsmvr[xsmvj,xsmvk]:=xsrewrite(xsmva[xsmvj,xsmvk]);\nEND;...",
+    "commandSha256": "1e84f180f9b1f6e4ce6ae8f4bb2bcd1252f7cafb109fb9b5925eab506ea6663b",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmrewrite)",
+    "commandSha256": "5ebd14f7da76df208392a13a956a35326af475426c1e33e086104e0172e0f0fd",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmid(xsmvn):=BEGIN\nLOCAL xsmvj;\nRETURN diag(seq(1,xsmvj,1,xsmvn));\nEND))==DOM_FUNC)",
+    "commandSha256": "5d3e539eb6fe41ee7dc4c800529d0bc3032fdf0b74471072ec484035f3cd67e6",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmid)",
+    "commandSha256": "a81cbe770d1eee397d92acaf5443fefeee13070108849b750990874eb76fe1db",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmdiagonal(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmva) DO\nIF xsmvj!=xsmvk THEN\nIF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;\nE...",
+    "commandSha256": "a27b9de19df59baf7542abce5b0045a358691f32f5d99abd25300421c319a865",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmdiagonal)",
+    "commandSha256": "9246cfd1fa86f8f6326934ee337f7ba7c1f6b8ae903143510bc9466952ea30e3",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmhyperexp(xsmvt,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,xsmvc;\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xsmvn);\nxsmvpref:=xsclean(exp(normal(x...",
+    "commandSha256": "94e71b2b13dfb384823c4e0b5b3ba7d774e9af18caa4947ecafb3b00f3e933c1",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmhyperexp)",
+    "commandSha256": "32c055320974e43d38d98ad956544571ae94d78ab72020ffa4bfefa985512d07",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmhyperpower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,xsmvc,xsmvrational;\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xsmvn);\nxsmvrational:...",
+    "commandSha256": "4dfcb009bc4d9db885c09c85ab9a702b17fae9fe8538854a3d8fd259d7808879",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmhyperpower)",
+    "commandSha256": "d386e5b13a73b202181f853f58c9c6d7ed9deba9dda836cee7b2afecac58d004",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpospower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvup,xsmvdn,xsmvb,xsmvc,xsmvd,xsmvlup,xsmvldn,xsmvrational,xsmvhyp;\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xs...",
+    "commandSha256": "658a10e893b2ac0584f60347f875add4b4737670a99797bbef7ff253631f102a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpospower)",
+    "commandSha256": "d74ca9961f0398fe68c9f7ffd1d102665d3f6a4fafe596cf0235360aa48ce8f3",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmcore(xsmva,xsmvt,xsmvbas,xsmvkind):=BEGIN\nLOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvpref,xsmvj,xsmvk,xsmvpp,xsmvtotal,xsmvup,xsmvdn,xsmvres,xsmvtheta;\nxsmvn:=rowDim(xs...",
+    "commandSha256": "0ac0563fb7240899b23b2754884e3299e5e81470d6bac7c9bc7e0c7b2e65aba7",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmcore)",
+    "commandSha256": "b792c5ab0ff81cf3e7b597a846b7e079410f2c01940eb07ec6e874d0e3c75ac5",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XEXP(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run XS...",
+    "commandSha256": "98bb6c6329a7d09a94cc561bd76415a94d308e8ca862ac73bf047a2168ce6d67",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XEXP)",
+    "commandSha256": "9697eae9ac89cea2aba87e188406f9d3ae3efc7a7a0409e7a501f564c9b6fa7b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XEXPT(xsmva,xsmvt):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7:...",
+    "commandSha256": "2e86944dfd7897fd1d0277ead0b9dad4bc8cce232243f2e666ee8fec95a696bb",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XEXPT)",
+    "commandSha256": "47e143ac6db9eb3fe3dad4f2d5c61ceebddbdfc4b3035c7909703b47d7e60d15",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XPOW(xsmvbas,xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7...",
+    "commandSha256": "757c9b0e3a7b07b15e25d7afcdebfb00e20f346f319ab05932c96eaa3cd3228a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XPOW)",
+    "commandSha256": "9856855709e6abbe1662709f0f8a698758e175e541aa411c8c8e24e7b90aa4e7",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmtrigcore(xsmva,xsmvkind):=BEGIN\nLOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvj,xsmvpp,xsmvtotal,xsmvsm,xsmvcm,xsmvres;\nxsmvn:=rowDim(xsmva);\nIF xsmvn!=colDim(xsmva) THEN ...",
+    "commandSha256": "b0699a9ad7b756c7c54850535c304cd5ba8f0486ec85cc45a008fff691cdf19a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmtrigcore)",
+    "commandSha256": "f54417b0ae6f8b5bc5961d927fe98a5ebf18958773bfb6594657d1b6dff99425",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XSIN(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run XS...",
+    "commandSha256": "34832784af2b400941dfd65e8b4776ac4fd8836254c2a868268f060998299b3e",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XSIN)",
+    "commandSha256": "63e48cc58033d4c7bbf4a6766430d2045cebd64d7869ca97854b3b879c3fda6d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XCOS(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: run XS...",
+    "commandSha256": "ba3a6eaf7a6f5c8836f8deef68957d6cc37255077341b7bf8494331ab5dfdcc0",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XCOS)",
+    "commandSha256": "731eb5e4f3528e40373c912d33b0dcb2e44f03da3cee3c01175cdc6f92c51677",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspnative(xspv):=BEGIN\nLOCAL xsps,xspr,xspk,xspn,xspi,xspni,xspch,xspquoted,xspescape;\nxsps:=string(xspv);\nIF type(xspv)==DOM_STRING THEN\nxsps:=string([xspv]); xsps:=mid(xsps,2,size(xsps)-2);\n\n...",
+    "commandSha256": "ffa23de23d8f027678685e33268d0a08fd7cb78e7e22762d70bf24588a233fd9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspnative)",
+    "commandSha256": "9ded2d4a5f8fab9680223c13e2ecd7dc4f273de0d9b6bb5445f99bd695638ddf",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspunaryname(xsph):=BEGIN\nLOCAL xspalias;\nIF xsph==exp THEN RETURN \"exp\"; END;\nIF xsph==ln THEN RETURN \"ln\"; END;\nIF xsph==sqrt THEN RETURN \"sqrt\"; END;\nIF xsph==sin THEN RETURN \"sin\"; END;\nIF ...",
+    "commandSha256": "d8fb16f01f366b052f2093500f4cb77063c239fe566610872ac23f499fc592fe",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspunaryname)",
+    "commandSha256": "9482262b5714427f3650af6757e7d76a79fb60e5b787cd03b7a566091c7a6494",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsptrigarg(xspu):=BEGIN\nLOCAL xsps,xspc,xspneg,xspsign,xspnew;\nxsps:=string(xspu);\nIF size(xsps)>256 THEN RETURN mid([0],1,0); END;\n\nIF inString(\" \"+xsps,string(i))<=0 AND inString(\" \"+xsps,\"i\"...",
+    "commandSha256": "560c6d3ac414553c9b80cecd2b15dba520b201c1915c173112a3d494d0a84f95",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsptrigarg)",
+    "commandSha256": "a30b962c4ea5d22d64e22bf608d0f1487e2940d100cec51b8200b21f8667629d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspimagwalk(xspv,xspd):=BEGIN\nLOCAL xsph,xspname,xspl,xspr,xspk,xspq,xspu,xspc,xspneg,xspchanged,xspnew,xspparent,xspunary,xspsafe;\nxspsafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspsafe[1]...",
+    "commandSha256": "e944f23260b1c3084daea654791eb68eaf4dd7494fa36938a2977aa6e5fbc132",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspimagwalk)",
+    "commandSha256": "9eeac1d83bab438d4d2e17f73eda71e3ced40cd6fd1a9dc687d0b7c23329ac7f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspflatproduct(xspv,xspd):=BEGIN\nLOCAL xsph,xspl,xspr,xspk,xspj,xspsub;\nIF xspd>=24 OR type(xspv)<>DOM_SYMBOLIC THEN RETURN [xspv]; END;\nxsph:=string(xshead(xspv));\nIF xsph<>\"'*'\" AND xsph<>\"*\"...",
+    "commandSha256": "b0e27eb6ef56c993892f4e13becb3425871c8956ab0556bfbf4fe40f0e0340a6",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspflatproduct)",
+    "commandSha256": "fff2e4f674a3862706c9ed48d0c551dab7e402dc0a05610b26664e3066f255f6",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspproducttext(xspv,xspl,xspd):=BEGIN\nLOCAL xspk,xspf,xsph,xspa,xspnum,xspden,xspnf,xspdf,xspnt,xspdt;\nxspl:=xspflatproduct(xspv,xspd);\nxspnum:=\"\"; xspden:=\"\";\nFOR xspk FROM 1 TO size(xspl) DO\n...",
+    "commandSha256": "de46b87c8e7ba79e26345b096e9f7b172bb364626184c8220c20e58c0dcdecd5",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspproducttext)",
+    "commandSha256": "d328cf029fc44acbe1650150922ead4566c755826b0c5c959c7a45e07c3738ed",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsptext(xspv,xspd):=BEGIN\nLOCAL xsps,xsph,xspname,xspl,xspr,xspk,xspu,xspb,xspc,xspn,xspopen,xspclose,xspchild,xspreal,xspsafe;\nxspsafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspnative(xsps...",
+    "commandSha256": "e6fc903582b8673b1002be08f587757f58b3a1d1d7c1c1e94667f0af597e3839",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsptext)",
+    "commandSha256": "35e640ff2cc5b828ba716b5ccd68c86c68095a92881ce7a937ef03b0af053f11",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspatomwalk(xsav,xsaname,xsad):=BEGIN\nLOCAL xsar,xsal,xsak,xsan,xsah;\nIF inString(string(xsav),xsaname)==0 THEN RETURN [1,xsav]; END;\nIF type(xsav)==DOM_IDENT THEN\nIF string(xsav)==xsaname THEN...",
+    "commandSha256": "1779090a9ba6cb218a8f86ecaeca0cab3b1c5a0dc4c7047fbd741066486b8fa1",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspatomwalk)",
+    "commandSha256": "f7ef6ae7daa84c82a01288c935531b9f35376124db5811a57a9054ee842dd9e8",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsphold(xsps):=BEGIN\nLOCAL xspr,xspname,xsptextvalue,xspk,xspquoted,xspescape,xspch,xspfound;\nIF inString(xsps,\"@@XSIMP_I@@\")==0 THEN RETURN expr(\"quote(\"+xsps+\")\"); END;\n\nxspname:=\"xsppimagato...",
+    "commandSha256": "7315cab0022b93588e6e52546e6db2597e6b502fdb21772114d89ea7772746fc",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsphold)",
+    "commandSha256": "bc20cf16e957a53f3fec3831eb60839648ba3d2d95970138fc9be3378c70d447",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspresent(xspv):=BEGIN\nLOCAL xsps,xspclean,xspresult,xspsafe;\nIF type(xspv)==DOM_STRING THEN RETURN xspv; END;\nxspsafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspsafe[1]; END;\nxspv:=xspsafe[...",
+    "commandSha256": "3bac64ed3a3b66e70771eb826bc4bfe835220e200ff22b44b61f8a2df1363c74",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspresent)",
+    "commandSha256": "6e54e3fb5f3b66e13f7e55e8f50a2174e68b84edd1e7493e9524d640334e0582",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsppa(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvr,xsvk,xsvj,xsvpart;\nxsvr:=mid([0],1,0);\nIF xsvdepth>=24 THEN RETURN [0,0,0]; END;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsvr; END;\nxsvh:=xsve[1...",
+    "commandSha256": "2f410f1e1f62b88da48542dc912b59412afc70dc54fefc05a035ddd66fab9343",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsppa)",
+    "commandSha256": "2092a706d352aa797db4ec80ca37a6b1e1d0686deacec06b1cb12304d3ea91dc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspppowers(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;\nxsvh:=string(xsve[1]); xsvl:=[op(xsve)];\nIF xsvh==\"'^'...",
+    "commandSha256": "7470606d0950062036521aea7e69bc4510c8d14517bb240f23dcbedd6882b6bd",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspppowers)",
+    "commandSha256": "5f5f3fa1cffc8f34f69b7fa0ba7d211e81aa00fe76cf4e996d0ae44eceaa5759",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsppnz(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk,xsvs;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF size(xsppa(xsve,0))==0 THEN\nIF size(lname(xsve))!=0 THEN RETURN 0; END;\nxsvs:=string(normal(sign(x...",
+    "commandSha256": "a7c1327aa3cc2f8fdbe60391f82fb692ebcac2379a91d48aa47dd13734ecc244",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsppnz)",
+    "commandSha256": "ec9c6a1435dc1b0cd081c89005f3f858be97f343f4eadbdb16601de428ec830d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsppsafe(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;\nxsvh:=string(xsve[1]); xsvl:=[op(xsve)];\nIF xsvh==\"'inv'...",
+    "commandSha256": "e3e1bd9c40fed936e409cf68f8b3c68936ac4f957b8d7daf2e9b9be971e5f11d",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsppsafe)",
+    "commandSha256": "587971da08adf68ce83f8370437a706062e2ce3c63e262e1304798f1d0730b7f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspppowhint(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 OR type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;\nxsvh:=xsve[1];\nIF type(xsvh)!=DOM_FUNC THEN RETURN 0; END;\nIF string(xsvh...",
+    "commandSha256": "a6ce45f82ec9b8dc5bd5a33bb00f484dfd3472927021b6aeb95e583922607447",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspppowhint)",
+    "commandSha256": "5369845c17bce60d134e336fa580dc7b59fec4e789ec30995e0a63f1555a6c3e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspprecover(xsve,xsvf,xsva,xsvlen):=BEGIN\nLOCAL xsvu,xsvv,xsvm,xsvp,xsvz,xsvpoly,xsvden,xsv0,xsv1,xsv2,xsvc,xsvs,xsvr,xsvk,xsvtrig,xsvangle,xsvrlen,xsvtlen;\nIF size(xsva)<1 OR size(xsva)>2 THEN...",
+    "commandSha256": "ed553a8df724ee9067389d23d3f8c1965a1a331598bc27e88abcd5c1eef8b71f",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspprecover)",
+    "commandSha256": "786ad2788d804c5713ea1d853b32462d61640fea4a7299eea6baae09c12e75aa",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsppostscalar(xsve):=BEGIN\nLOCAL xsvf,xsva,xsvr,xsvoldlogs,xsvnewlogs,xsvk,xsvtext,xsvlen;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsve; END;\nxsvtext:=string(xsve); xsvlen:=size(xsvtext);\nIF xs...",
+    "commandSha256": "4130f10d43a877bbe60635dc15283c98db5e8307e59e915028c1365de88d0724",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsppostscalar)",
+    "commandSha256": "963bf15e4d3255f7b2270b7cf12d414615a2d3e2c09cf2d85a60707915594523",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsmpost(xsmv):=BEGIN\nLOCAL xsmvr,xsmvi,xsmvj;\nIF NOT xsumatrix(xsmv) THEN RETURN xsmv; END;\nIF size(string(xsmv))>1600 THEN RETURN xsmv; END;\nxsmvr:=xsmv;\nFOR xsmvi FROM 1 TO rowDim(xsmv) DO\nFO...",
+    "commandSha256": "cbecaec00251be4ffd6984b41136ac444fe057a853d22e8348e3ff098bc187e4",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsmpost)",
+    "commandSha256": "ff4c63042b1cd2639ab2b05ebfe4e0244f6eb33b36fc530d9ab35e19c08be514",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypnatural(xhpe):=BEGIN\nLOCAL xhpl;\nIF type(xhpe)<>DOM_SYMBOLIC THEN RETURN 0; END;\nIF xshead(xhpe)==exp THEN RETURN 1; END;\nxhpl:=[op(xhpe)];\nIF string(xshead(xhpe))==\"'^'\" OR string(xshead(...",
+    "commandSha256": "3064144e38f53a916a357cd9ef7b3456fef1e7e92e5efe596f5f4c51d4de379a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypnatural)",
+    "commandSha256": "1568b198428946ebf86b5db571f1691faf3f080cc7d245489db0a24b8b347dcb",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshyparg(xhpe):=BEGIN\nLOCAL xhpl;\nIF xshead(xhpe)==exp THEN RETURN op(xhpe); END;\nxhpl:=[op(xhpe)]; RETURN xhpl[2];\nEND))==DOM_FUNC)",
+    "commandSha256": "376d76ef3384dc9944c6892bea0538f7a1a48ff29fe2f9874faf9cfdafb4b441",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshyparg)",
+    "commandSha256": "6ceef101a522fd58f84d71d3497480b5155fc2c6bd4aeef6a104ab9ab5633cce",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypguard(xhpe,xhpd,xhpb):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpc,xhpv;\nIF xhpd>=24 OR xhpb<1 THEN RETURN -1; END;\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR typ...",
+    "commandSha256": "52b72640ff87588cc9a6efef2eaedf097fb9bc1994b0926b9002004c48697c91",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypguard)",
+    "commandSha256": "72f110a43ea36975e23008ef13144012ceec6fb008f3c7b1ec8f59000eb47829",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypholes(xhpe,xhpd,xhpinside,xhpstrict):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpr,xhpv,xhpj,xhpden;\nIF xhpd>=24 THEN RETURN [0]; END;\nxhpr:=mid([0],1,0); IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN x...",
+    "commandSha256": "75043922c627219ed57e4693d0882a2fb816c59ebb42a3dea50864830281ce96",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypholes)",
+    "commandSha256": "e37ec57dc977f812db12b3e9f7bb55057891a047aa86836137714d83451b29de",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypmono(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpv,xhpr,xhpj,xhpsgn,xhpa,xhpb;\nIF xhpd>=24 THEN RETURN [0]; END;\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT THEN RETURN [1,xhpe,mid([0...",
+    "commandSha256": "8d3a49d0f69f6985520bb20b66f6bd29fdab82cc28f9edf0ccbaf7a5dbc9f4be",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypmono)",
+    "commandSha256": "4ddb15c8bd815a21639038566defbec1b6ac29572498fa1786bc246eed1e9a09",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypcoeftext(xhpm):=BEGIN\nLOCAL xhps,xhpt,xhpk;\nxhps:=\"\";\nIF string(xhpm[2])<>\"1\" OR size(xhpm[3])==0 THEN xhps:=xspnative(xhpm[2]); END;\nFOR xhpk FROM 1 TO size(xhpm[3]) DO\nIF xhps<>\"\" THEN x...",
+    "commandSha256": "a1deedc3dd09fe088c090461355733f28f890ea737f01ab937acfbca4ca1eeda",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypcoeftext)",
+    "commandSha256": "ac826b0bf74f70fc362f6d891588d057b00a32332d63d5d4b49d8311291c6950",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshyphold(xhps):=BEGIN RETURN xsphold(xhps); END))==DOM_FUNC)",
+    "commandSha256": "e6fe8d7e0a9cad92bf83d3dc7b05ad450d685c608d2ecd6ade5e52850d3e95a6",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshyphold)",
+    "commandSha256": "0af9bed0c39dd9b2d38c728172a12c1cd3110dd62d957e72c2ee9713acbc0b0d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshyprebuild(xhph,xhpl):=BEGIN\nLOCAL xhpn,xhps,xhpk;\nxhpn:=xspunaryname(xhph);\nIF xhpn<>\"\" AND size(xhpl)==1 THEN RETURN xshyphold(xhpn+\"(\"+xspnative(xhpl[1])+\")\"); END;\nxhpn:=string(xhph); IF ...",
+    "commandSha256": "320610d89b5a18f9cfd8c4e04bb458b91bd8c19519fe0d003b643da688d8a5bd",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshyprebuild)",
+    "commandSha256": "6bad9b0332646308f9b7a9196dde72e3111ede54ef1e9a327af3328fb2661047",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshyproots(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpr,xhpv,xhpk,xhpj;\nIF xhpd>=24 THEN RETURN [0]; END;\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==...",
+    "commandSha256": "157b186c1186c817045c7fe46ed92c8e450e81748e570f48fd12fd5fed00788b",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshyproots)",
+    "commandSha256": "e3ef632fbf6d2f2559ed0b5fd357ed65b3689c5ac0ea5f559d036934384170ae",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypangle(xhpe):=BEGIN\nLOCAL xhpr,xhpv,xhpz,xhpinfo,xhproot,xhparg,xhpq,xhptext,xhpname,xhpk;\nIF size(string(xhpe))>1000 THEN RETURN xhpe; END;\nxhpr:=xshyproots(xhpe,0); IF xhpr[1]==0 THEN RET...",
+    "commandSha256": "bc779d635d8c5b3fcfbe25574c1789ba77d03519dc457b25d170086bad69050c",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypangle)",
+    "commandSha256": "d62b750822d23b536e9d64edb4da6fb0311294fb751f6f1d9977c442e657d200",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypwalk(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpr,xhpk,xhpq,xhpv,xhpa,xhpb,xhpc1,xhpc2,xhpu,xhpcenter,xhpdelta,xhps,xhpkind,xhptmp,xhpchanged,xhpbest,xhporigroots;\nIF xhpd>=24 OR type(xhpe)...",
+    "commandSha256": "0a0848d898d9552fba32e3f58e0cc3e79da7f2ad3301ff223f8cd4b6541ee56c",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypwalk)",
+    "commandSha256": "89962607afb50e4e239c9400b6a555dcb35f99b290f6fc4b5b8289beff21715a",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xshypcompact(xhpe):=BEGIN\nLOCAL xhpoldholes,xhpnewholes,xhpprod,xhpk,xhpv,xhpr,xhptext,xhpden;\nIF type(xhpe)<>DOM_SYMBOLIC OR size(string(xhpe))>1600 THEN RETURN xhpe; END;\nxhptext:=string(xhpe...",
+    "commandSha256": "e88c656daf5685cf67ef431d0a172b10c3b677c40e764c11c821c431e4c71c14",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xshypcompact)",
+    "commandSha256": "aa26a58c4a1ed7e1122f50da832e8f7e0aca2069aeb6334bdcf8c5a27bd2b951",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsidpoly(xsie,xsid,xsimode):=BEGIN\nLOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsii,xsim;\nIF xsid>=16 THEN RETURN 0; END;\nxsit:=type(xsie);\nIF xsit==DOM_INT OR xsit==DOM_RAT OR xsit==DOM_COMPLEX T...",
+    "commandSha256": "d4815ce35552aa20e1ab74e2c59dc07914ae6a22b6f339c6bafcef28062dc296",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsidpoly)",
+    "commandSha256": "860fd08da0b78b6901dcf521f1a86a3933e633ddc804001d510fd207a7489211",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsidroot(xsie):=BEGIN\nLOCAL xsic,xsil,xsik,xsif,xsicoef,xsinn,xsidd,xsisn,xsisd,xsis,xsir,xsia;\nIF size(string(xsie))>256 OR xsidpoly(xsie,0,1)<>2 THEN RETURN xsphold(\"sqrt(\"+xspnative(xsie)+\")...",
+    "commandSha256": "ca8b04101afaf5e6c1d18d05db460387e34ec9815d15e6eab5e1b425bbf56042",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsidroot)",
+    "commandSha256": "213a4ea6b3621b05b25dfb543dd955d2bdf3e0e0a9e7e0ebcd4821c9770cfb69",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsidmono(xsie,xsid):=BEGIN\nLOCAL xsih,xsin,xsil,xsik,xsij,xsia,xsib,xsir;\nIF xsid>=24 THEN RETURN [0]; END;\nIF type(xsie)==DOM_INT OR type(xsie)==DOM_RAT THEN RETURN [1,xsie,mid([0],1,0),mid([0...",
+    "commandSha256": "57a98e54f6caf010200acd8cf2d8bd835f9dae9c5fff0766964c1c42c31656bd",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsidmono)",
+    "commandSha256": "e6c70acde83044eecf5df9f0e08e2a25f6f989629fd14b99584a3150beb4d81e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsidwalk(xsie,xsid):=BEGIN\nLOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsiflag,xsiarg,xsic,xsim,xsinn,xsidd,xsis,xsia,xsichanged;\nxsit:=type(xsie); xsiflag:=0;\nIF xsid>=24 OR size(string(xsie))>16...",
+    "commandSha256": "265fff61363ccfa9ff0d30a517e35fc58c36327e33167562ae951cba6ae2c2f0",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsidwalk)",
+    "commandSha256": "dd098b1d37d9040ec5e6f53ecec53aa7ce35562d1c34dee3995fc89ec35f22e1",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsidauto(xsie):=BEGIN\nLOCAL xsis;\nIF type(xsie)<>DOM_SYMBOLIC THEN RETURN [xsie,0]; END;\nxsis:=string(xsie);\nIF inString(xsis,\"sin\")==0 AND inString(xsis,\"cos\")==0 AND\ninString(xsis,\"SIN\")==0 A...",
+    "commandSha256": "96d42dd394a93c66b5a7914e031a5becf3984acf8e630b4e17aa77d2f098a163",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsidauto)",
+    "commandSha256": "54682eb1745a49d28223a11dd5cfbe8f3d7533458b62f17a5fd3156a65d6e085",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspfcheck(xspfe,xspfc):=BEGIN\nIF type(xspfc)==DOM_STRING OR NOT xsidpoly(xspfc,0,0) THEN RETURN 0; END;\nIF xsnewapprox(xspfe,xspfc) THEN RETURN 0; END;\nIFERR RETURN string(ratnormal(xspfc-xspfe...",
+    "commandSha256": "19ee90985d7028f7ac2e676ae673fb1b2b5761325998bcf75efcda45410a387c",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspfcheck)",
+    "commandSha256": "bba816ccaed5aa0065bcb41656f86b73465dbc5fcfebab92a58cb86d5ae841e0",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspfpoly(xspfe,xspfd):=BEGIN\nLOCAL xspfbest,xspff,xspfh,xspfn,xspfl,xspfnew,xspfv,xspfvars,xspfdeg,xspfk,xspfj,xspfcoef,xspfs,xspft,xspfchanged,xspfcount;\nIF xspfd>2 OR size(string(xspfe))>512 ...",
+    "commandSha256": "a05e430548684c983a122b80c6bb74d1175aefefb58b25bc426872c3dfd6d5bc",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspfpoly)",
+    "commandSha256": "462cd68eba03d022730c56ad1f3f632e1a9e94923b81b054ddf1315ba8168227",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspfwalk(xsfe,xsfd,xsfcache):=BEGIN\nLOCAL xsfh,xsfn,xsfl,xsfr,xsfk,xsfv,xsfq,xsfkey,xsfchanged,xsfterms,xsfpolys,xsfothers,xsftext,xsfsgn,xsft;\nIF xsfd>=24 THEN RETURN [xsfe,xsfcache]; END;\nIF ...",
+    "commandSha256": "78f04026b97de2ebeb2d84a1809c43c09731a358f23ed76cebc62fc03ff720c6",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspfwalk)",
+    "commandSha256": "d3748abb67603ce68b8ba90003982ceed796d37d8c082692f76f7a5fc1d6af0f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspfterms(xsfe,xsfd,xsfsgn):=BEGIN\nLOCAL xsfn,xsfl,xsfr,xsfv,xsfk,xsfj,xsfs;\nIF xsfd>=16 OR type(xsfe)<>DOM_SYMBOLIC THEN RETURN [[xsfsgn,xsfe]]; END;\nxsfn:=string(xshead(xsfe)); xsfl:=[op(xsfe...",
+    "commandSha256": "db16a15459078c58875ba2b73f47ad77336785411660136c154f1761db0ccfce",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspfterms)",
+    "commandSha256": "06822917b091572a1a1879d2df68703f4072ac40f8511aef2cdb138f50429740",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xspfauto(xsfe):=BEGIN\nLOCAL xsfr,xsfv;\nIF type(xsfe)<>DOM_SYMBOLIC AND type(xsfe)<>DOM_LIST THEN RETURN xsfe; END;\nIF size(string(xsfe))>1600 OR xsapproxstate(xsfe,0)<>0 THEN RETURN xsfe; END;\n...",
+    "commandSha256": "af3e5cf66249fea606070ec67b80c4482fc2e1db43249a5bc9fad20d253fa412",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xspfauto)",
+    "commandSha256": "5f3520ca5fb9e45a27654e9f991bd49b5dbd9bd7d067d8ea656b6167c08cb032",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsumatrix(xsuinput):=BEGIN\nLOCAL xsuj,xsun;\nIF type(xsuinput)!=DOM_LIST THEN RETURN 0; END;\nIF size(xsuinput)==0 THEN RETURN 0; END;\nIF type(xsuinput[1])!=DOM_LIST THEN RETURN 0; END;\nxsun:=siz...",
+    "commandSha256": "c58ba463bf087b425956ee056bd8987ed80ecccdd44db0fec4fa0894cef27338",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsumatrix)",
+    "commandSha256": "cbf5ee994cc93a34045a08efbcf8e0be5fc3a7f6b3829f02a020ad00762110a6",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsutree0(xsuinput,xsulevel):=BEGIN\nLOCAL xsuhead,xsulist,xsures,xsuj,xsuarg,xsupow,xsucoef,xsumat,xsufound,xsufact,xsuscalar,xsusafe;\nIF xsulevel>24 THEN RETURN \"XSIMP: expression depth exceeds...",
+    "commandSha256": "8211929e328315227c3ae0b36d89d98be8d435ca14f23a3b90b485589655c967",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsutree0)",
+    "commandSha256": "3384be74c93e0cb3c5efaf99a0735142ac1be5d54f1151b5f5412da21b8b1933",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuindexok(xsuunused):=BEGIN\n\nRETURN expr(\"([17,23])[1]==17\");\nEND))==DOM_FUNC)",
+    "commandSha256": "73fc166b23dc98c30bde044aa263643d690ba5d272a1a317daafba3c89b082bc",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuindexok)",
+    "commandSha256": "d08d6e4147514ce9530439259747f5b6173f5a60fdee71ca5d9f30cd18b2ad06",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsucorecheck(xsuunused):=BEGIN\nLOCAL xsut,xsuh,xsua;\nIF NOT xsuindexok(0) THEN RETURN \"XSIMP 1.8.7: CAS index starts at 0; run of:=1\"; END;\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7:...",
+    "commandSha256": "dcfa6cec9b68f7c183968709d6cac2c18ea84339ccc29eb7678a5e5b351c26d9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsucorecheck)",
+    "commandSha256": "5ee98b6981c4a20dd3f7a2c374dea1151d100cdb8b394f00fd15cc692f915c54",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsutree(xsuinput):=BEGIN\nIF type(xsuinput)==DOM_STRING THEN\nRETURN xsutree0(expr(\"quote(\"+xsuinput+\")\"),0);\nEND;\nRETURN xsutree0(xsuinput,0);\nEND))==DOM_FUNC)",
+    "commandSha256": "3b8f1bff1b4d737dd7e2c33fa41b4094aa3ab66a7c9d54a25cdaefc656a664b3",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsutree)",
+    "commandSha256": "8f239be2172d7d00ccab8e94c00c0bacd40bec669007a73bda4a4394e999499c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsufold(xsue,xsud):=BEGIN\nLOCAL xsur,xsuk,xsuc,xsusafe;\nIF xsud>=24 THEN RETURN xsue; END;\nxsusafe:=xsidauto(xsue);\nIF xsusafe[2] THEN RETURN xsusafe[1]; END;\nxsue:=xsusafe[1];\nIF type(xsue)==D...",
+    "commandSha256": "a79e19a3a6c60d1d9e55b781817c3af83b025c4fe8ca0ab15b4af71b4f800400",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsufold)",
+    "commandSha256": "12e2b6c0538a7fe15b38d8a324d4d4873b5da03e4b812ca16450847ee3a3fa01",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuhypcandidate(xsue,xsud):=BEGIN\nLOCAL xsur,xsuk;\nIF xsud>=24 THEN RETURN xsue; END;\nIF type(xsue)<>DOM_LIST THEN RETURN xshypcompact(xsue); END;\nxsur:=mid([0],1,0);\nFOR xsuk FROM 1 TO size(xs...",
+    "commandSha256": "ec6c5c5f5fc37a328114c8c0f6410279b55e339a54afc8ec026c59ae7aeb65d6",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuhypcandidate)",
+    "commandSha256": "8668205cad516ebd5c0c876bfb934fdd7cae1aa05d6034394656968a6d6f29ea",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuholefactor(xsue,xsud,xsub):=BEGIN\nLOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuc,xsunew;\nIF xsud>=24 OR xsub<1 THEN RETURN [0]; END;\nIF type(xsue)==DOM_INT OR type(xsue)==DOM_RAT OR type(xsue...",
+    "commandSha256": "a021881aa0c0aa0bc7e548b8e71cc1516c07e9936db89f98e7341c6945b6e78a",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuholefactor)",
+    "commandSha256": "fe7a72f5fcb2790d17561b283fd009b43687f8979d5dba433af4e67906f2e610",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuholewalk(xsue,xsud,xsub):=BEGIN\nLOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuden;\nIF xsud>=24 OR xsub<1 THEN RETURN [0]; END;\nxsur:=[1,1,mid([0],1,0)];\nIF type(xsue)==DOM_LIST THEN xsul:=xsue...",
+    "commandSha256": "428f24351bed025e53138990718db57e3a143bcf533254f5dbe0c996faadafd9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuholewalk)",
+    "commandSha256": "847ba9da14b39d34b3443444c406ce1fcfe86d60c90af383f1693a3ab0a7136b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuholegate(xsuprior,xsunext):=BEGIN\nLOCAL xsuold,xsunew,xsuprod,xsuk,xsuj,xsuv,xsumatch,xsukey,xsuallmatch,xsuden;\nIFERR\nxsuold:=xsuholewalk(xsuprior,0,2048); IF xsuold[1]==0 THEN RETURN 0; EN...",
+    "commandSha256": "efac13c6f289cce743e26ea7824169e5e462923be0c96caf8fc8a34f97090d29",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuholegate)",
+    "commandSha256": "b689d718cfd27a5e0ccb42ef863f29dde1ccfa5e68760d12efdbb478ab5acccb",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuend(xsue):=BEGIN\nLOCAL xsuc,xsuo,xsuraw,xsusafe;\nxsusafe:=xsidauto(xsue);\nIF xsusafe[2] THEN RETURN xsusafe[1]; END;\nxsue:=xsusafe[1];\nxsuc:=xsuhypcandidate(xsue,0);\nIF string(xsuc)==string(...",
+    "commandSha256": "a9a5c8cf990aec24aaa043adabda677280a900f22270d270418e6f3765015469",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuend)",
+    "commandSha256": "ffa90f8eb3a125b8a4b7670165bc3a2d1cbea243a09890ddd83edb9f3de9347f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((xsuorigselect(xsuprior,xsunext,xsud):=BEGIN\nLOCAL xsur,xsuk;\nIF xsud>=24 OR type(xsunext)==DOM_STRING THEN RETURN xsunext; END;\nIF type(xsuprior)==DOM_LIST AND type(xsunext)==DOM_LIST THEN\nIF s...",
+    "commandSha256": "dc1039d91c375c7d00c23d594da7d0541be5f894e100f7882448d497c5157128",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(xsuorigselect)",
+    "commandSha256": "761dcadd3db4291fd2814ca4122c34bb5f0d1d35422a395d8ac94e75fb879873",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XSIMP(xsuinput):=BEGIN\nLOCAL xsures,xsuoriginal,xsuoldroots,xsunewroots,xsuoldarg,xsunewarg,xsucheckroot,xsurootok,xsusafe,xsuwork;\nIF NOT xsuindexok(0) THEN RETURN \"XSIMP 1.8.7: CAS index star...",
+    "commandSha256": "c143a76cbdc1d1a55323f026aed51885da80fc3d42c6622cd756ba257c529540",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XSIMP)",
+    "commandSha256": "760230ef0bbaae604be7ff021d9d1437c157f3d41fee97fce4bab39491badcfe",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XSDIAG(xsuunused):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETURN \"XSIMP 1.8.7: ...",
+    "commandSha256": "a11af833facdd382100a1d6e0bd484527274a2e851ccb84ef5be5f8f7ae42080",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XSDIAG)",
+    "commandSha256": "45493d33c482e443213c5d8091f71c776f763e40c1b07d267289e4f793962e5d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "(type((XSCHECK(xsuunused):=BEGIN\nLOCAL xsucheck;\nIF type(xsinitok)<>DOM_FUNC THEN RETURN \"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\"; END;\nIF NOT xsinitok(0) THEN RETU...",
+    "commandSha256": "8e852730c336e22ba6802266bb7f4729032179001d16220c90513f6238ab58e5",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "type(XSCHECK)",
+    "commandSha256": "471a3d1e59ccfe3946f1c7d52dbd1c23b55e451b0dba991a979aa9c7947044ae",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshead)",
+    "commandSha256": "7ac0b056de4bd16d9454e28e87a6fb3125da5da6c4248c465483698e9560e1b8",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsinitok)",
+    "commandSha256": "55bb2af03dc2af84d744feaaef2dcc08bf3a318d4ee90923fa9074d073f54218",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsapproxstate)",
+    "commandSha256": "5e6b788774346b918dbc3d1772a07932ac227211bb7e02f6f1bf423f9c806aff",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsisapprox)",
+    "commandSha256": "5444561576038ecb91968d40de4c3735d86e2ef5253cd4bf19628aee53215ed1",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsnewapprox)",
+    "commandSha256": "01d104059a994a163a2f56061fecde3bb4b3161597879c62d936c5dffb4c93dc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xscomplexradwalk)",
+    "commandSha256": "d29a74151497749df9c69bbc24799e79614330a8aa9a37401d043d1da3379754",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xscomplexrad)",
+    "commandSha256": "691cae1072e1da405f30f085c4b17d6d9e8fbf2731dd07eace259671f1d63cb7",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsradtrigsquare)",
+    "commandSha256": "4c9b8381d557ff240d5bc29c239a063a90cda8b7cf9e71a5881f883fdeb3ba97",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsradtrigunit)",
+    "commandSha256": "d7cb2df108812c3f07c4bbbb4ff17bd65551ff90617e86777070517436aa4c0c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspos)",
+    "commandSha256": "ad39a9d6410bbd8dbe0d61a2a2cc0b4b74dd51af2cffa313ca73bad132575336",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xslogswalk)",
+    "commandSha256": "b7480fbd0c9204126acdeaf9d51bfc3f0709b77cfe12e9e8405627064e83a8b9",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xslogs)",
+    "commandSha256": "fc7844bc1a79eb21e8b37d55090ee3c6b3daea4279773bd2cc01ada6994f7504",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshyppoly)",
+    "commandSha256": "6a31d5a80211839c26497b06914a9dc53b61e57303e242e5e1a4322e0da1ccba",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsrwwalk)",
+    "commandSha256": "bb39ed5a6b7e3665bc2f4ed5d5fde79c56ddd185510718e2c8a8fd1f94499667",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsrewrite)",
+    "commandSha256": "81e71396ab8874429c872245a279f559b0cc967ceec0c75733826d1219b88851",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsweightwalk)",
+    "commandSha256": "a4f5a5ec10fbb514f001c22b64bcbfa168730c9b577186f2dce958c485b2b5d4",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsweight)",
+    "commandSha256": "9f1fd2e7815adcf3cc6eae8970a7f3868ea2d80a6bc03c5a9abdf24b238f4009",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsscore)",
+    "commandSha256": "4b6f07cd6e61325b46b1aebface34c3fc89614fc739e570892a4e49b51ce4b7c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xstrans)",
+    "commandSha256": "f158ebfc2752fccd92aab238622ac95758ea9752092dc2848365e07e1085f4fc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsbounded)",
+    "commandSha256": "ca77cc98ef6eed75c7f6c8070810a0f1d25f3bd3e09d117a20c753051931d192",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsscalar)",
+    "commandSha256": "2fc3611164f3024cc6d6a2ede15f39a5d5ab7b13bbe8c9980a83ce0904c3231b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XFAST)",
+    "commandSha256": "654d9eef0e8e0e59fd5649e23b558db5be47f9270a0910205a2b767d91063233",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XREWRITE)",
+    "commandSha256": "7434cdb31af872761fd6959157f7ecead687a16dcfa8b83e1e449ef11ba28b38",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsclean)",
+    "commandSha256": "adb8199ee5ccd690b1e551aef3adc81a20bd333d84eae03a1cea15cb225a3c9a",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsrectwalk)",
+    "commandSha256": "3b4b0373036112fba2356a1823d103387121383b34bfa074c9d7fbd42d92dd36",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XRECT)",
+    "commandSha256": "de2d2c87baaf29f4378f756f82907d22a9429d5b1b96146ebf45e52bf8830f63",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpisradian)",
+    "commandSha256": "c6f20948fbbe6edfd0447fac5411b39c2b244322d30c40af3cb2b8fb0e53e961",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpunbound)",
+    "commandSha256": "066ca30166acd22e7d5f1f6bec5d98e4f3b6cbce3097ae672507dcadad86a174",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpnonzero)",
+    "commandSha256": "d26ea25e0c088672ed2adeb378ce6d4b9e295d11b76a0a6dfc008ad3e0f7568d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpwalk)",
+    "commandSha256": "fb572ede9b6cd35765da4a97d4ef6e3c3b34c84fb78d08097dea7bb66d140b93",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmptry)",
+    "commandSha256": "0737482f3a7bac9f842761154b452ff481b16d972c3857c20d4e00164461abf0",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpauto)",
+    "commandSha256": "315513a879d710d701ed55b2c61498b45b01f34d485d24e581c46f06a56b7f7e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmz)",
+    "commandSha256": "7f1768f917285bea732b6a9253dd7a80029b0f1d385c763b6c0a8829ce71ddbc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmsign)",
+    "commandSha256": "4c544d5fc8b12dba50e3754ae1d62cf4356a833dc2663850d117a7fbe3fdde1c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmroot)",
+    "commandSha256": "e734214e02d2d4991d6a63233eaa6905cad00f6447bf87a716e1f9b0d2c951bc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmzero)",
+    "commandSha256": "4fd435962ed6d03c663bf0b6ad6aeef781f1a6a50df60724b000f82d9dcbcd47",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmclean)",
+    "commandSha256": "86c9dd54d420326e7caddbc16e8117cb24a72e334ce1b6676e8882318b5780f5",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmrewrite)",
+    "commandSha256": "5ebd14f7da76df208392a13a956a35326af475426c1e33e086104e0172e0f0fd",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmid)",
+    "commandSha256": "a81cbe770d1eee397d92acaf5443fefeee13070108849b750990874eb76fe1db",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmdiagonal)",
+    "commandSha256": "9246cfd1fa86f8f6326934ee337f7ba7c1f6b8ae903143510bc9466952ea30e3",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmhyperexp)",
+    "commandSha256": "32c055320974e43d38d98ad956544571ae94d78ab72020ffa4bfefa985512d07",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmhyperpower)",
+    "commandSha256": "d386e5b13a73b202181f853f58c9c6d7ed9deba9dda836cee7b2afecac58d004",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpospower)",
+    "commandSha256": "d74ca9961f0398fe68c9f7ffd1d102665d3f6a4fafe596cf0235360aa48ce8f3",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmcore)",
+    "commandSha256": "b792c5ab0ff81cf3e7b597a846b7e079410f2c01940eb07ec6e874d0e3c75ac5",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XEXP)",
+    "commandSha256": "9697eae9ac89cea2aba87e188406f9d3ae3efc7a7a0409e7a501f564c9b6fa7b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XEXPT)",
+    "commandSha256": "47e143ac6db9eb3fe3dad4f2d5c61ceebddbdfc4b3035c7909703b47d7e60d15",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XPOW)",
+    "commandSha256": "9856855709e6abbe1662709f0f8a698758e175e541aa411c8c8e24e7b90aa4e7",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmtrigcore)",
+    "commandSha256": "f54417b0ae6f8b5bc5961d927fe98a5ebf18958773bfb6594657d1b6dff99425",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XSIN)",
+    "commandSha256": "63e48cc58033d4c7bbf4a6766430d2045cebd64d7869ca97854b3b879c3fda6d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XCOS)",
+    "commandSha256": "731eb5e4f3528e40373c912d33b0dcb2e44f03da3cee3c01175cdc6f92c51677",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspnative)",
+    "commandSha256": "9ded2d4a5f8fab9680223c13e2ecd7dc4f273de0d9b6bb5445f99bd695638ddf",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspunaryname)",
+    "commandSha256": "9482262b5714427f3650af6757e7d76a79fb60e5b787cd03b7a566091c7a6494",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsptrigarg)",
+    "commandSha256": "a30b962c4ea5d22d64e22bf608d0f1487e2940d100cec51b8200b21f8667629d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspimagwalk)",
+    "commandSha256": "9eeac1d83bab438d4d2e17f73eda71e3ced40cd6fd1a9dc687d0b7c23329ac7f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspflatproduct)",
+    "commandSha256": "fff2e4f674a3862706c9ed48d0c551dab7e402dc0a05610b26664e3066f255f6",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspproducttext)",
+    "commandSha256": "d328cf029fc44acbe1650150922ead4566c755826b0c5c959c7a45e07c3738ed",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsptext)",
+    "commandSha256": "35e640ff2cc5b828ba716b5ccd68c86c68095a92881ce7a937ef03b0af053f11",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspatomwalk)",
+    "commandSha256": "f7ef6ae7daa84c82a01288c935531b9f35376124db5811a57a9054ee842dd9e8",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsphold)",
+    "commandSha256": "bc20cf16e957a53f3fec3831eb60839648ba3d2d95970138fc9be3378c70d447",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspresent)",
+    "commandSha256": "6e54e3fb5f3b66e13f7e55e8f50a2174e68b84edd1e7493e9524d640334e0582",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsppa)",
+    "commandSha256": "2092a706d352aa797db4ec80ca37a6b1e1d0686deacec06b1cb12304d3ea91dc",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspppowers)",
+    "commandSha256": "5f5f3fa1cffc8f34f69b7fa0ba7d211e81aa00fe76cf4e996d0ae44eceaa5759",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsppnz)",
+    "commandSha256": "ec9c6a1435dc1b0cd081c89005f3f858be97f343f4eadbdb16601de428ec830d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsppsafe)",
+    "commandSha256": "587971da08adf68ce83f8370437a706062e2ce3c63e262e1304798f1d0730b7f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspppowhint)",
+    "commandSha256": "5369845c17bce60d134e336fa580dc7b59fec4e789ec30995e0a63f1555a6c3e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspprecover)",
+    "commandSha256": "786ad2788d804c5713ea1d853b32462d61640fea4a7299eea6baae09c12e75aa",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsppostscalar)",
+    "commandSha256": "963bf15e4d3255f7b2270b7cf12d414615a2d3e2c09cf2d85a60707915594523",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsmpost)",
+    "commandSha256": "ff4c63042b1cd2639ab2b05ebfe4e0244f6eb33b36fc530d9ab35e19c08be514",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypnatural)",
+    "commandSha256": "1568b198428946ebf86b5db571f1691faf3f080cc7d245489db0a24b8b347dcb",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshyparg)",
+    "commandSha256": "6ceef101a522fd58f84d71d3497480b5155fc2c6bd4aeef6a104ab9ab5633cce",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypguard)",
+    "commandSha256": "72f110a43ea36975e23008ef13144012ceec6fb008f3c7b1ec8f59000eb47829",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypholes)",
+    "commandSha256": "e37ec57dc977f812db12b3e9f7bb55057891a047aa86836137714d83451b29de",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypmono)",
+    "commandSha256": "4ddb15c8bd815a21639038566defbec1b6ac29572498fa1786bc246eed1e9a09",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypcoeftext)",
+    "commandSha256": "ac826b0bf74f70fc362f6d891588d057b00a32332d63d5d4b49d8311291c6950",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshyphold)",
+    "commandSha256": "0af9bed0c39dd9b2d38c728172a12c1cd3110dd62d957e72c2ee9713acbc0b0d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshyprebuild)",
+    "commandSha256": "6bad9b0332646308f9b7a9196dde72e3111ede54ef1e9a327af3328fb2661047",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshyproots)",
+    "commandSha256": "e3ef632fbf6d2f2559ed0b5fd357ed65b3689c5ac0ea5f559d036934384170ae",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypangle)",
+    "commandSha256": "d62b750822d23b536e9d64edb4da6fb0311294fb751f6f1d9977c442e657d200",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypwalk)",
+    "commandSha256": "89962607afb50e4e239c9400b6a555dcb35f99b290f6fc4b5b8289beff21715a",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xshypcompact)",
+    "commandSha256": "aa26a58c4a1ed7e1122f50da832e8f7e0aca2069aeb6334bdcf8c5a27bd2b951",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsidpoly)",
+    "commandSha256": "860fd08da0b78b6901dcf521f1a86a3933e633ddc804001d510fd207a7489211",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsidroot)",
+    "commandSha256": "213a4ea6b3621b05b25dfb543dd955d2bdf3e0e0a9e7e0ebcd4821c9770cfb69",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsidmono)",
+    "commandSha256": "e6c70acde83044eecf5df9f0e08e2a25f6f989629fd14b99584a3150beb4d81e",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsidwalk)",
+    "commandSha256": "dd098b1d37d9040ec5e6f53ecec53aa7ce35562d1c34dee3995fc89ec35f22e1",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsidauto)",
+    "commandSha256": "54682eb1745a49d28223a11dd5cfbe8f3d7533458b62f17a5fd3156a65d6e085",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspfcheck)",
+    "commandSha256": "bba816ccaed5aa0065bcb41656f86b73465dbc5fcfebab92a58cb86d5ae841e0",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspfpoly)",
+    "commandSha256": "462cd68eba03d022730c56ad1f3f632e1a9e94923b81b054ddf1315ba8168227",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspfwalk)",
+    "commandSha256": "d3748abb67603ce68b8ba90003982ceed796d37d8c082692f76f7a5fc1d6af0f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspfterms)",
+    "commandSha256": "06822917b091572a1a1879d2df68703f4072ac40f8511aef2cdb138f50429740",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xspfauto)",
+    "commandSha256": "5f3520ca5fb9e45a27654e9f991bd49b5dbd9bd7d067d8ea656b6167c08cb032",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsumatrix)",
+    "commandSha256": "cbf5ee994cc93a34045a08efbcf8e0be5fc3a7f6b3829f02a020ad00762110a6",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsutree0)",
+    "commandSha256": "3384be74c93e0cb3c5efaf99a0735142ac1be5d54f1151b5f5412da21b8b1933",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuindexok)",
+    "commandSha256": "d08d6e4147514ce9530439259747f5b6173f5a60fdee71ca5d9f30cd18b2ad06",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsucorecheck)",
+    "commandSha256": "5ee98b6981c4a20dd3f7a2c374dea1151d100cdb8b394f00fd15cc692f915c54",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsutree)",
+    "commandSha256": "8f239be2172d7d00ccab8e94c00c0bacd40bec669007a73bda4a4394e999499c",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsufold)",
+    "commandSha256": "12e2b6c0538a7fe15b38d8a324d4d4873b5da03e4b812ca16450847ee3a3fa01",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuhypcandidate)",
+    "commandSha256": "8668205cad516ebd5c0c876bfb934fdd7cae1aa05d6034394656968a6d6f29ea",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuholefactor)",
+    "commandSha256": "fe7a72f5fcb2790d17561b283fd009b43687f8979d5dba433af4e67906f2e610",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuholewalk)",
+    "commandSha256": "847ba9da14b39d34b3443444c406ce1fcfe86d60c90af383f1693a3ab0a7136b",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuholegate)",
+    "commandSha256": "b689d718cfd27a5e0ccb42ef863f29dde1ccfa5e68760d12efdbb478ab5acccb",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuend)",
+    "commandSha256": "ffa90f8eb3a125b8a4b7670165bc3a2d1cbea243a09890ddd83edb9f3de9347f",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(xsuorigselect)",
+    "commandSha256": "761dcadd3db4291fd2814ca4122c34bb5f0d1d35422a395d8ac94e75fb879873",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XSIMP)",
+    "commandSha256": "760230ef0bbaae604be7ff021d9d1437c157f3d41fee97fce4bab39491badcfe",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XSDIAG)",
+    "commandSha256": "45493d33c482e443213c5d8091f71c776f763e40c1b07d267289e4f793962e5d",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "type(XSCHECK)",
+    "commandSha256": "471a3d1e59ccfe3946f1c7d52dbd1c23b55e451b0dba991a979aa9c7947044ae",
+    "status": "returned",
+    "result": "DOM_FUNC"
+  },
+  {
+    "command": "zzigsentinel:=1729",
+    "commandSha256": "9c5dfaaf58b0da289bffeb829888c8a096b144ddb837824cfd467dfd7d87f418",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue:=7",
+    "commandSha256": "6a4202516a11258ce3d4b0292569ec29a79b13433fc70ab1ca99301d8051c854",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "assume(zzigpositive>0)",
+    "commandSha256": "8cdf5479a8bb906b44291399c3ae22ae229feafe8e2142a72a0116a1c6bc8865",
+    "status": "returned",
+    "result": "zzigpositive"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "of:=0",
+    "commandSha256": "bb58e82376e0602cc0d6e8caa925534b063cee8b1d58bf02b937dacd86b55abc",
+    "status": "returned",
+    "result": "\"[] index start 0\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSCHECK(0)",
+    "commandSha256": "4f1e7fd8569cce58a75dde85f8e9ee577d81aba7a8c205e776bc20c32cdf8867",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "xsucorecheck(0)",
+    "commandSha256": "3e9e81cb3ef0bb6b368d27f1c9f4118bc28b6a7e34638bdc53a50d44b96eb0b1",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(sinh(x)+i*sin(i*x))",
+    "commandSha256": "db1ee81df88c5ad7269af3262a13c701b50111535ad40e42ed63a5f4728edb8f",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(\"sinh(x)+i*sin(i*x)\")",
+    "commandSha256": "b195b106e0fe2f88e57e74ccdb93b0dd460eb451c6537fa436c7acc6dcd38a3b",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(quote(sinh(x)+i*sin(i*x)))",
+    "commandSha256": "21e0ae5a8ca7612fa99e2b3fde51c179acf0f78653feb7cb86ff38957ce8408d",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7: CAS index starts at 0; run of:=1\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "xsuindexok(0)",
+    "commandSha256": "67a6c87e8c725547ce2dcb41b32db0869102718d308cc2b157ac3d2f1c445e3b",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "23"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "of:=1",
+    "commandSha256": "5cb8c010b2712a1d0caf2ca0d6f58f868d58e8241f40ec85279b898c4eb00f1f",
+    "status": "returned",
+    "result": "\"[] index start 1\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "xsuindexok(0)",
+    "commandSha256": "67a6c87e8c725547ce2dcb41b32db0869102718d308cc2b157ac3d2f1c445e3b",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSCHECK(0)",
+    "commandSha256": "4f1e7fd8569cce58a75dde85f8e9ee577d81aba7a8c205e776bc20c32cdf8867",
+    "status": "returned",
+    "result": "\"XSIMP 1.8.7 CHECK OK\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(sinh(x)+i*sin(i*x))",
+    "commandSha256": "db1ee81df88c5ad7269af3262a13c701b50111535ad40e42ed63a5f4728edb8f",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(\"sinh(x)+i*sin(i*x)\")",
+    "commandSha256": "b195b106e0fe2f88e57e74ccdb93b0dd460eb451c6537fa436c7acc6dcd38a3b",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(quote(sinh(x)+i*sin(i*x)))",
+    "commandSha256": "21e0ae5a8ca7612fa99e2b3fde51c179acf0f78653feb7cb86ff38957ce8408d",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "XSIMP(\"zzigvalue\")",
+    "commandSha256": "c9f10ffad31f90203a6bd8699929bb785cd5f970745572397c44202af5aaf590",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  },
+  {
+    "command": "[17,23][1]",
+    "commandSha256": "5c1cfb895d506fb0b7cf9c19ca75acfc06c0ca8f2722458d411a3977767643c9",
+    "status": "returned",
+    "result": "17"
+  },
+  {
+    "command": "angle_radian()",
+    "commandSha256": "4e3be6e6623cc9dc567e1de1560d761ac79295ae1bf3bf745c325fd6fc9b84b9",
+    "status": "returned",
+    "result": "1"
+  },
+  {
+    "command": "complex_variables()",
+    "commandSha256": "4a8f267a7aa9dacaef67ee9beafcf69cf5e8111f9e1ad75fb386074f214ee8b7",
+    "status": "returned",
+    "result": "0"
+  },
+  {
+    "command": "zzigsentinel",
+    "commandSha256": "0bafe57031ac92bb60f8a3d752eb139ec19e04ecb48b355d264c6ca18a5450d6",
+    "status": "returned",
+    "result": "1729"
+  },
+  {
+    "command": "zzigvalue",
+    "commandSha256": "044c658b2110488e2dd721d04a3ec1660cd258467e6d0ba1b0c5f145eff276a8",
+    "status": "returned",
+    "result": "7"
+  },
+  {
+    "command": "string(about(quote(zzigpositive)))",
+    "commandSha256": "fc6d5a952641de4d6e256b8d8bcbfc152efca8bd9582450a25ae2cc72d46f1e8",
+    "status": "returned",
+    "result": "\"assume[[],[line[0,∞]],[0]]\""
+  },
+  {
+    "command": "string(1/3)",
+    "commandSha256": "3836dbdd9c18995db4b716bb4812ec0ec6d69b67acf5ca89018278d59fed752b",
+    "status": "returned",
+    "result": "\"1/3\""
+  }
+]

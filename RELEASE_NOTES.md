@@ -1,11 +1,19 @@
-# XSIMPKIT 1.7
+# XSIMPKIT 1.8.7 完整候选版
 
-Exact complex-radical matrix functions and a fix for the native complex-radical denominator simplification stall.
+1.8.7 在完整 1.8.6 上加入局部因式分解，无需旧版或补丁。导入 `XSIMPKIT187.hpprgm`，保持程序的 CAS 复选框关闭，从程序目录运行一次；成功应返回 `XSIMP 1.8.7 CHECK OK`。日常入口仍为 `XSIMP`。
 
-Import `XSIMPKIT.hpprgm` through the HP Connectivity Kit into the calculator Programs area. Use CAS Simplify=None, Exact ON, Complex ON, and Radians; `XSCHECK(0)` should return `XSIMP 1.7 CHECK OK`.
+新增规则按变量分组并分解系数，同时改进已有乘积中的多项式因子。例如截图中的判别式可缩成：
 
-For the matrix A=[[1,-2*i],[1+2*i,1]], use `XEXP(i*[[1,-2*i],[1+2*i,1]])`, `XEXPT([[1,-2*i],[1+2*i,1]],i)`, or `XSIMP("exp(i*[[1,-2*i],[1+2*i,1]])")`. Unprotected native evaluation may lose exactness before `XSIMP` receives its argument.
+```text
+(a+b)*(a*c^2+b*(c+2*d)^2)
+```
 
-The official HP Prime Linux Virtual Calculator 2.1.14290 completed the quoted example in a median 0.069 s, direct XEXPT in 0.0127 s and direct XEXP in 0.0120 s over three samples. These are simulator timings, not physical G2 timings. Existing hyperbolic, rotation and Pauli examples passed.
+完整根号保留主值，不拆分根式。截图通解的 HOST 规范显示从 1.8.6 的 134 字符缩至 118 字符，两个积分常量保留；仅在精确恒等验证通过且实际显示更短时采用候选。
 
-The full archive contains source, regression records and native evidence. See README and docs/TESTING.md for supported paths and limits.
+搜索与缓存受限：每次调用缓存最多 24 个多项式块，缓存容量不是分析总块数上限；单块 512 字符、5 个变量、分组时该变量的次数不超过 4、递归深度 2。这些是搜索预算，不是 CAS 硬超时或 G2 提速保证。
+
+当前通过 365 项 HOST 检查（新增 88 项、保留 277 项）和 12 项安装器检查。当前完整安装器在官方 Linux 2019 Virtual Calculator 2.1.14290 中独立通过 Check、Run 和代表性数学验证；物理 G2 未测试。
+
+保留整数指数合并、三角根内整理、精确虚数常量、加权指数配对及主值保护。原生 CAS 对保存结果再次求值时仍可能改错主值；Degree/Grad 的旧混合复双曲数值问题也未修复。直接代值方式、输入边界及已知排除见 README 与 `docs/VALIDATION.md`。
+
+GitHub v1.8.7 发布日期：2026-10-28。

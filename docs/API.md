@@ -1,26 +1,28 @@
-# Public CAS functions — 1.7
+# XSIMPKIT 1.8.7 函数参考
 
-Matrix-function inputs must be square matrices. `t` denotes a scalar, `e` an expression, and `A` a matrix.
+日常使用 `XSIMP(表达式)`。完整示例、输入方式和矩阵预求值边界见[项目说明](../README.md)。
 
-| Function | Meaning |
-|---|---|
-| `XSIMP(e)` | Unified simplification, quoted-input parsing, matrix-function dispatch and final presentation. Accepts evaluated expressions, `quote(...)`, or strings. |
-| `XEXP(A)` | Matrix exponential `exp(A)`. |
-| `XEXPT(A,t)` | Matrix exponential `exp(t*A)`. |
-| `XPOW(b,A)` | Matrix function `exp(ln(b)*A)`. `b` must be a provably positive real constant with no free variables. |
-| `XSIN(A)` | Matrix sine, not elementwise sine. |
-| `XCOS(A)` | Matrix cosine, not elementwise cosine. |
-| `XRECT(e)` | Attempts real-part plus `i` times imaginary-part form; traverses lists and matrices elementwise. Variable assumptions affect the result. |
-| `XREWRITE(e)` | Bounded, directed structural rewrites without the full simplification strategy. |
-| `XFAST(e)` | Scalar simplification; traverses lists and existing matrices elementwise. |
-| `XDEEP(e)` | Compatibility alias for the same scalar strategy as `XFAST`; no additional deep search. |
-| `XSCHECK(0)` | Checks version and basic expression-tree compatibility. Expected: `XSIMP 1.7 CHECK OK`. |
-| `XSDIAG(0)` | Version, compatibility and fixed-example output diagnostics. |
+| 函数 | 用途 |
+| --- | --- |
+| `XSIMP(e)` | 统一化简普通表达式、引用输入和字符串，支持列表、矩阵及矩阵函数分派。 |
+| `XEXP(A)` | 矩阵指数 `exp(A)`。 |
+| `XEXPT(A,t)` | 矩阵指数 `exp(t*A)`。 |
+| `XPOW(b,A)` | 矩阵函数 `exp(ln(b)*A)`，底数须为可确认的正实常量。 |
+| `XSIN(A)`、`XCOS(A)` | 矩阵正弦和余弦。 |
+| `XFAST(e)` | 较轻量的标量整理，不含矩阵函数分派和最终表示选择。 |
+| `XRECT(e)` | 尝试整理成实部加 `i` 乘虚部的形式。 |
+| `XREWRITE(e)` | 有界的定向结构改写。 |
+| `XSCHECK(0)` | 检查函数运行能力与代表性化简结果。 |
+| `XSDIAG(0)` | 版本与诊断信息。 |
 
-`XFAST`, `XDEEP`, and `XREWRITE` do not provide `XSIMP`'s string parsing, matrix-function dispatch or final presentation. For example, `XFAST("exp(A)")` is not a substitute for `XSIMP("exp(A)")`.
+共 11 个公开函数；小写 `xs...` 名称为内部实现。已移除的转发入口 `XMSIMP`、`XMSCHECK`、`XDEEP` 分别改用 `XSIMP`、`XSCHECK`、`XFAST`。
 
-There are no separate `XSINH`/`XCOSH` entries. Use `XSIMP("sinh(A)")` or `XSIMP("cosh(A)")` after assigning a square matrix to `A`, or put the matrix literal inside the string.
+矩阵函数要求方阵。使用精确模式与弧度制；纯虚双曲到三角的转换要求弧度制。普通输入在进入函数前可能已由原生 CAS 求值：需要保留原始结构时使用字符串或 `quote(...)`。原生 `2^A` 的逐元素结果应通过字符串输入或 `XPOW(2,A)` 避免。
 
-`XPOW(2,A)` computes `2^A`; ordinary integer matrix powers such as `A^2` should use the native operator. Small-letter `xs...` names are internal helpers. `XSIMPKIT()` is the PPL installation container, not a calculation entry point.
+分式消约沿用原生 CAS 的约定；新增表示规则的分母检查不代表整个 CAS 管线追踪原定义域。带系数指数配对与主值根式整理沿用同一 `XSIMP` 入口；任意常量与符号系数参与完整候选长度比较。预算与已知限制见[验证范围](VALIDATION.md)。
 
-Special structures have dedicated formulas; general higher-order matrix functions may fall back to native matrix exponentials. Exact information lost during native evaluation cannot be reconstructed by these functions.
+## 1.8.7 局部因式分解
+
+通过原有 `XSIMP` 入口自动处理受支持的精确多项式块，包括列表、矩阵元素及完整主值根内部。尝试整体分解、局部变量分组和系数分解，按实际显示长度择优；不会把完整 `sqrt(P)` 拆成多个根式。没有新增公开函数。
+
+每次调用缓存最多 24 个多项式块，复用重复块的结果；缓存容量不是分析总块数上限。单块不超过 512 字符与 5 个变量，分组时该变量的次数不超过 4，递归深度不超过 2。已绑定变量、假设或不受支持的表达式结构会保守跳过。采用候选前验证精确多项式恒等、近似状态与相应分母限制。预算不是 G2 执行时间保证，也不是内置 CAS 的硬超时。

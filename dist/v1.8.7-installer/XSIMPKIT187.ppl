@@ -1,0 +1,2216 @@
+EXPORT XSIMPKIT187()
+BEGIN
+  LOCAL xsis,xsik;
+  xsis:="of:=1";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:index:set";
+  END;
+  xsis:="([17,23])[1]==17";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:index:verify";
+  END;
+  IF xsik<>1 THEN RETURN "stage:index:verify"; END;
+  xsis:="(type((xshead(xsve):=BEGIN RETURN xsve[1]; END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshead";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshead"; END;
+  xsis:="(type((xsinitok(xsinitunused):=BEGIN\nLOCAL xsinitlist;\nIFERR\nIF NOT expr(""([17,23])[1]==17"") THEN RETURN 0; END;\nxsinitl"+
+    "ist:=[];\nxsinitlist:=append(xsinitlist,17);\nRETURN string(xsinitlist)==""[17]"";\nTHEN RETURN 0;\nEND;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsinitok";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsinitok"; END;
+  xsis:="(type((xsapproxstate(xsve,xsvdepth):=BEGIN\nLOCAL xsvt,xsvl,xsvk,xsvs,xsvr,xsvtext;\nxsvt:=type(xsve);\nIF xsvt==DOM_FLOAT "+
+    "THEN RETURN 1; END;\nIF xsvt==DOM_COMPLEX THEN\nIF type(re(xsve))==DOM_FLOAT OR type(im(xsve))==DOM_FLOAT THEN RETURN 1; E"+
+    "ND;\nRETURN 0;\nEND;\nIF xsvt<>DOM_SYMBOLIC AND xsvt<>DOM_LIST THEN RETURN 0; END;\nxsvtext:=string(xsve);\nIF inString(xsvte"+
+    "xt,""."")==0 AND inString(xsvtext,""E"")==0 AND\ninString(xsvtext,""e"")==0 AND inString(xsvtext,""inf"")==0 AND\ninString(xsvtext"+
+    ",""nan"")==0 THEN RETURN 0; END;\nIF xsvdepth>=24 THEN RETURN 2; END;\nIF xsvt==DOM_LIST THEN xsvl:=xsve; ELSE xsvl:=[op(xsv"+
+    "e)]; END;\nxsvr:=0;\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])==xsvtext THEN xsvs:=2;\nELSE xsvs:=xsapproxstat"+
+    "e(xsvl[xsvk],xsvdepth+1); END;\nIF xsvs==1 THEN RETURN 1; END;\nIF xsvs==2 THEN xsvr:=2; END;\nEND;\nRETURN xsvr;\nEND))==DOM"+
+    "_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsapproxstate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsapproxstate"; END;
+  xsis:="(type((xsisapprox(xsve):=BEGIN RETURN xsapproxstate(xsve,0)==1; END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsisapprox";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsisapprox"; END;
+  xsis:="(type((xsnewapprox(xsve,xsvc):=BEGIN\nIF xsapproxstate(xsvc,0)==0 THEN RETURN 0; END;\nIF xsisapprox(xsve) THEN RETURN 0; "+
+    "END;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsnewapprox";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsnewapprox"; END;
+  xsis:="(type((xscomplexradwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvt,xsvh,xsvl,xsvk,xsvs,xsvimag,xsvrad,xsvparent;\nxsvt:=type(xsve);"+
+    "\nIF xsvt==DOM_COMPLEX OR xsvt==DOM_RAT THEN\nIF string(im(xsve))<>""0"" THEN RETURN 1; END;\nRETURN 0;\nEND;\nIF xsvt<>DOM_SYM"+
+    "BOLIC AND xsvt<>DOM_LIST THEN RETURN 0; END;\nIF xsvdepth>=24 THEN RETURN 0; END;\nxsvimag:=0; xsvrad:=0;\nIF xsvt==DOM_LIS"+
+    "T THEN xsvl:=xsve;\nELSE\nxsvh:=xshead(xsve); xsvl:=[op(xsve)];\nIF xsvh==sqrt THEN xsvrad:=1; END;\nIF string(xsvh)==""'^'"" "+
+    "OR string(xsvh)==""^"" THEN\nIF size(xsvl)==2 THEN\nIF type(xsvl[2])==DOM_RAT AND string(im(xsvl[2]))==""0"" THEN xsvrad:=1; E"+
+    "ND;\nEND;\nEND;\nEND;\nxsvparent:=string(xsve);\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])<>xsvparent THEN\nxsvs:"+
+    "=xscomplexradwalk(xsvl[xsvk],xsvdepth+1);\nIF xsvs==1 OR xsvs==3 THEN xsvimag:=1; END;\nIF xsvs==2 OR xsvs==3 THEN xsvrad:"+
+    "=1; END;\nIF xsvimag AND xsvrad THEN RETURN 3; END;\nEND;\nEND;\nRETURN xsvimag+2*xsvrad;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xscomplexradwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xscomplexradwalk"; END;
+  xsis:="(type((xscomplexrad(xsve):=BEGIN\nIF type(xsve)<>DOM_SYMBOLIC AND type(xsve)<>DOM_LIST THEN RETURN 0; END;\nIF size(lname("+
+    "xsve))<>0 THEN RETURN 0; END;\nIF xscomplexradwalk(xsve,0)<>3 THEN RETURN 0; END;\nIF xsisapprox(xsve) THEN RETURN 0; END;"+
+    "\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xscomplexrad";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xscomplexrad"; END;
+  xsis:="(type((xsradtrigsquare(xsve):=BEGIN\nLOCAL xsvh,xsvl,xsvb;\nIF type(xsve)<>DOM_SYMBOLIC THEN RETURN mid([0],1,0); END;\nxsv"+
+    "h:=string(xshead(xsve));\nIF xsvh<>""'^'"" AND xsvh<>""^"" THEN RETURN mid([0],1,0); END;\nxsvl:=[op(xsve)];\nIF size(xsvl)<>2 "+
+    "THEN RETURN mid([0],1,0); END;\nIF type(xsvl[2])<>DOM_INT OR xsvl[2]<>2 THEN RETURN mid([0],1,0); END;\nxsvb:=xsvl[1];\nIF "+
+    "type(xsvb)<>DOM_SYMBOLIC THEN RETURN mid([0],1,0); END;\nxsvh:=xshead(xsvb);\nIF xsvh==sin THEN RETURN [1,op(xsvb)]; END;\n"+
+    "IF xsvh==cos THEN RETURN [2,op(xsvb)]; END;\nRETURN mid([0],1,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsradtrigsquare";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsradtrigsquare"; END;
+  xsis:="(type((xsradtrigunit(xsve):=BEGIN\nLOCAL xsvh,xsvl,xsvk,xsvj,xsva,xsvb,xsvhit,xsvchanged,xsvr;\nIF type(xsve)<>DOM_SYMBOLI"+
+    "C THEN RETURN xsve; END;\nxsvh:=string(xshead(xsve));\nIF xsvh<>""'+'"" AND xsvh<>""+"" THEN RETURN xsve; END;\nxsvl:=[op(xsve)"+
+    "];\nIF size(xsvl)>32 THEN RETURN xsve; END;\nxsvchanged:=0;\nFOR xsvk FROM 1 TO size(xsvl) DO\nxsva:=xsradtrigsquare(xsvl[xs"+
+    "vk]);\nIF size(xsva)==2 THEN\nxsvhit:=0;\nFOR xsvj FROM xsvk+1 TO size(xsvl) DO\nIF NOT xsvhit THEN\nxsvb:=xsradtrigsquare(xs"+
+    "vl[xsvj]);\nIF size(xsvb)==2 THEN\nIF xsva[1]<>xsvb[1] AND string(xsva[2])==string(xsvb[2]) THEN\nxsvl[xsvk]:=1; xsvl[xsvj]"+
+    ":=0; xsvhit:=1; xsvchanged:=1;\nEND;\nEND;\nEND;\nEND;\nEND;\nEND;\nIF NOT xsvchanged THEN RETURN xsve; END;\nxsvr:=0;\nFOR xsvk "+
+    "FROM 1 TO size(xsvl) DO xsvr:=xsvr+xsvl[xsvk]; END;\nIF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;\nRETURN xsvr;\nEND))="+
+    "=DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsradtrigunit";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsradtrigunit"; END;
+  xsis:="(type((xspos(xsve):=BEGIN\nIF type(xsve)==DOM_INT OR type(xsve)==DOM_RAT THEN RETURN xsve>0; END;\nIF size(lname(xsve))!=0"+
+    " THEN RETURN 0; END;\nIF string(simplify(im(xsve)))!=""0"" THEN RETURN 0; END;\nRETURN string(simplify(sign(xsve)))==""1"";\nEN"+
+    "D))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspos";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspos"; END;
+  xsis:="(type((xslogswalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvr,xsvk,xsvj,xsva,xsvparent,xsvh;\nxsvr:=mid([0],1,0);\nIF xsvdepth>="+
+    "24 THEN RETURN xsvr; END;\n\n\nxsvparent:=string(xsve);\nIF inString(xsvparent,""ln"")==0 AND inString(xsvparent,""LN"")==0 AND\n"+
+    "inString(xsvparent,""log"")==0 AND inString(xsvparent,""LOG"")==0 THEN RETURN xsvr; END;\nIF type(xsve)==DOM_LIST THEN xsvl:="+
+    "xsve;\nELSE\nIF type(xsve)<>DOM_SYMBOLIC THEN RETURN xsvr; END;\nxsvh:=xshead(xsve);\nIF type(xsvh)<>DOM_FUNC THEN RETURN xs"+
+    "vr; END;\nIF string(xsvh)==""'of'"" OR string(xsvh)==""of"" THEN RETURN xsvr; END;\nIF xsvh==ln THEN RETURN [xsve]; END;\nxsvl:"+
+    "=[op(xsve)];\nEND;\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])<>xsvparent THEN\nxsva:=xslogswalk(xsvl[xsvk],xsv"+
+    "depth+1);\nFOR xsvj FROM 1 TO size(xsva) DO\nIF NOT member(xsva[xsvj],xsvr) THEN\nxsvr:=append(xsvr,xsva[xsvj]);\nEND;\nEND;\n"+
+    "END;\nEND;\nRETURN xsvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xslogswalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xslogswalk"; END;
+  xsis:="(type((xslogs(xsve):=BEGIN RETURN xslogswalk(xsve,0); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xslogs";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xslogs"; END;
+  xsis:="(type((xshyppoly(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpl,xhpk;\nIF xhpd>=20 THEN RETURN 0; END;\nIF type(xhpe)==DOM_INT OR type("+
+    "xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1; END;\nIF type(xhpe)<>DOM_SYMBOLIC THEN "+
+    "RETURN 0; END;\nxhph:=string(xshead(xhpe)); xhpl:=[op(xhpe)];\nIF xhph==""'^'"" OR xhph==""^"" THEN\nIF size(xhpl)<>2 OR type(x"+
+    "hpl[2])<>DOM_INT OR xhpl[2]<0 OR xhpl[2]>8 THEN RETURN 0; END;\nRETURN xshyppoly(xhpl[1],xhpd+1);\nEND;\nIF NOT member(xhph"+
+    ",[""'+'"",""+"",""'-'"",""-"",""'*'"",""*""]) THEN RETURN 0; END;\nFOR xhpk FROM 1 TO size(xhpl) DO IF NOT xshyppoly(xhpl[xhpk],xhpd+"+
+    "1) THEN RETURN 0; END; END;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshyppoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshyppoly"; END;
+  xsis:="(type((xsrwwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvr,xsvk,xsvu,xsvb,xsvc,xsvq,xsvparent,xsvh,xsvt,xsvheadtext;\nIF xsvde"+
+    "pth>=24 THEN RETURN xsve; END;\n\n\nxsvt:=type(xsve);\nIF xsvt<>DOM_LIST AND xsvt<>DOM_SYMBOLIC THEN RETURN xsve; END;\nIF xs"+
+    "vt==DOM_SYMBOLIC AND xshyppoly(xsve,0) THEN RETURN xsve; END;\nxsvparent:=string(xsve);\nIF xsvt==DOM_LIST THEN\nxsvr:=mid("+
+    "[0],1,0);\nFOR xsvk FROM 1 TO size(xsve) DO\nIF string(xsve[xsvk])==xsvparent THEN\nxsvr:=append(xsvr,xsve[xsvk]);\nELSE\nxsv"+
+    "r:=append(xsvr,xsrwwalk(xsve[xsvk],xsvdepth+1));\nEND;\nEND;\nRETURN xsvr;\nEND;\nxsvh:=xshead(xsve);\nIF type(xsvh)<>DOM_FUNC"+
+    " THEN RETURN xsve; END;\n\n\nxsvheadtext:=string(xsvh);\nIF xsvheadtext==""'of'"" OR xsvheadtext==""of"" THEN RETURN xsve; END;\n"+
+    "xsvl:=[op(xsve)]; xsvr:=mid([0],1,0);\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])==xsvparent THEN\nxsvr:=appen"+
+    "d(xsvr,xsvl[xsvk]);\nELSE\nxsvr:=append(xsvr,xsrwwalk(xsvl[xsvk],xsvdepth+1));\nEND;\nEND;\n\n\nIF string(xsvr)==string(xsvl) T"+
+    "HEN xsvq:=xsve;\nELSE\nxsvq:=xsvh(op(xsvr));\nIF xsnewapprox(xsve,xsvq) THEN RETURN xsve; END;\nEND;\nIF type(xsvq)<>DOM_SYMB"+
+    "OLIC THEN RETURN xsvq; END;\nxsvh:=xshead(xsvq);\nxsvheadtext:=string(xsvh);\nIF xsvheadtext==""'^'"" OR xsvheadtext==""^"" THE"+
+    "N\nxsvl:=[op(xsvq)];\nIF size(xsvl)==2 THEN\nxsvb:=xsvl[1]; xsvc:=xsvl[2];\nIF type(xsvb)<>DOM_LIST AND type(xsvc)<>DOM_LIST"+
+    " THEN\n\nIF type(xsvc)==DOM_INT THEN RETURN xsvq; END;\nIF type(xsvc)==DOM_RAT AND string(im(xsvc))==""0"" THEN RETURN xsvq; "+
+    "END;\nIF xspos(xsvb) THEN\nIF string(simplify(im(xsvc)))!=""0"" THEN\nxsvr:=exp(ln(xsvb)*xsvc);\nIF xsnewapprox(xsvq,xsvr) THE"+
+    "N RETURN xsvq; END;\nRETURN xsvr;\nEND;\nEND;\nEND;\nEND;\nEND;\nIF xsvh<>exp THEN RETURN xsvq; END;\nxsvu:=op(xsvq); xsvl:=xslo"+
+    "gs(xsvu);\nFOR xsvk FROM 1 TO size(xsvl) DO\nxsvb:=op(xsvl[xsvk]);\nIF xspos(xsvb) AND xsvb<>1 THEN\nxsvc:=normal(xsvu/xsvl["+
+    "xsvk]);\nIF NOT xsnewapprox(xsvu,xsvc) AND size(xslogs(xsvc))==0 THEN\nIF string(simplify(im(xsvc)))==""0"" THEN\nxsvr:=xsvb^"+
+    "xsvc;\nIF xsnewapprox(xsvq,xsvr) THEN RETURN xsvq; END;\nRETURN xsvr;\nEND;\nEND;\nEND;\nEND;\nRETURN xsvq;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsrwwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsrwwalk"; END;
+  xsis:="(type((xsrewrite(xsve):=BEGIN RETURN xsrwwalk(xsve,0); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsrewrite";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsrewrite"; END;
+  xsis:="(type((xsweightwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvl,xsvk,xsvw,xsvh,xsvparent,xsvt,xsvheadtext;\nIF xsvdepth>=24 THEN RET"+
+    "URN 1000; END;\nxsvw:=1;\nxsvt:=type(xsve);\nIF xsvt==DOM_LIST THEN xsvl:=xsve;\nELSE\nIF xsvt<>DOM_SYMBOLIC THEN RETURN 1; E"+
+    "ND;\nxsvh:=xshead(xsve);\nIF type(xsvh)<>DOM_FUNC THEN RETURN size(string(xsve)); END;\nxsvheadtext:=string(xsvh);\nIF xsvhe"+
+    "adtext==""'of'"" OR xsvheadtext==""of"" THEN RETURN size(string(xsve)); END;\nIF xsvh==re OR xsvh==im OR xsvh==arg THEN xsvw:"+
+    "=12; END;\nIF xsvh==sin OR xsvh==cos THEN xsvw:=3; END;\nxsvl:=[op(xsve)];\nEND;\nxsvparent:=string(xsve);\nFOR xsvk FROM 1 T"+
+    "O size(xsvl) DO\nIF string(xsvl[xsvk])==xsvparent THEN\nxsvw:=xsvw+1000;\nELSE\nxsvw:=xsvw+xsweightwalk(xsvl[xsvk],xsvdepth+"+
+    "1);\nEND;\nEND;\nRETURN xsvw;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsweightwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsweightwalk"; END;
+  xsis:="(type((xsweight(xsve):=BEGIN RETURN xsweightwalk(xsve,0); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsweight";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsweight"; END;
+  xsis:="(type((xsscore(xsve):=BEGIN RETURN 20*xsweight(xsve)+size(string(xsve)); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsscore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsscore"; END;
+  xsis:="(type((xstrans(xsve,xsvk):=BEGIN\nLOCAL xsvr;\nxsvr:=xsve;\nIFERR\nIF xsvk==1 THEN xsvr:=simplify(xsve); END;\nIF xsvk==2 THE"+
+    "N xsvr:=normal(xsve); END;\nIF xsvk==5 THEN\nxsvr:=trig2exp(xsve);\nIF string(xsvr)==string(xsve) THEN RETURN """"; END;\nxsvr"+
+    ":=simplify(xsvr);\nEND;\nIF xsvk==6 THEN\nIF size(lname(xsve))!=0 THEN RETURN """"; END;\nxsvr:=exp2trig(xsve);\nIF string(xsvr"+
+    ")==string(xsve) THEN RETURN """"; END;\nxsvr:=simplify(xsvr);\nEND;\nIF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;\nxsvr:=x"+
+    "srewrite(xsvr);\nIF type(xsvr)==DOM_STRING THEN RETURN xsve; END;\nIF has(xsvr,undef) OR has(xsvr,infinity) THEN RETURN xs"+
+    "ve; END;\nTHEN\nRETURN xsve;\nEND;\nRETURN xsvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xstrans";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xstrans"; END;
+  xsis:="(type((xsbounded(xsve,xsvdepth,xsvmatrix):=BEGIN\nLOCAL xsvb,xsvc,xsvk,xsvr,xsvsteps,xsvbest,xsvscore,xsvparent,xsvseen,x"+
+    "svtext,xsvsafe;\nIF xsvdepth>=24 THEN RETURN xsve; END;\nIF type(xsve)==DOM_STRING THEN RETURN xsve; END;\nxsvsafe:=xsidaut"+
+    "o(xsve);\nIF xsvsafe[2] OR (string(xsvsafe[1])<>string(xsve) AND xshypnatural(xsvsafe[1])) THEN RETURN xsvsafe[1]; END;\nx"+
+    "sve:=xsvsafe[1];\nIF type(xsve)==DOM_LIST THEN\nxsvr:=mid([0],1,0); xsvparent:=string(xsve);\nFOR xsvk FROM 1 TO size(xsve)"+
+    " DO\nIF string(xsve[xsvk])==xsvparent THEN\nxsvr:=append(xsvr,xsve[xsvk]);\nELSE\nxsvr:=append(xsvr,xsbounded(xsve[xsvk],xsv"+
+    "depth+1,xsvmatrix));\nEND;\nEND;\nRETURN xsvr;\nEND;\nxsvb:=xsrewrite(xsmpauto(xsve));\nIF type(xsvb)<>DOM_SYMBOLIC THEN RETUR"+
+    "N xsvb; END;\n\n\n\n\nIF xscomplexrad(xsvb) THEN\nxsvb:=xsradtrigunit(xsvb);\nIFERR\nxsvc:=ratnormal(xsvb);\nIF type(xsvc)<>DOM_S"+
+    "TRING AND NOT has(xsvc,undef) AND NOT has(xsvc,infinity) AND NOT xsnewapprox(xsvb,xsvc) THEN\nxsvb:=xsradtrigunit(xsvc);\n"+
+    "END;\nTHEN RETURN xsvb;\nEND;\nRETURN xsvb;\nEND;\nxsvtext:=string(xsvb); xsvseen:=[xsvtext];\nIF xsvmatrix THEN\nxsvbest:=size"+
+    "(xsvtext); xsvsteps:=[1,2];\nELSE\nxsvbest:=20*xsweight(xsvb)+size(xsvtext); xsvsteps:=[1,2,5];\nEND;\nIF size(lname(xsve))="+
+    "=0 THEN xsvsteps:=append(xsvsteps,6); END;\nFOR xsvk FROM 1 TO size(xsvsteps) DO\nxsvc:=xstrans(xsve,xsvsteps[xsvk]);\nIF t"+
+    "ype(xsvc)<>DOM_STRING THEN\nIF type(xsvc)<>DOM_SYMBOLIC AND type(xsvc)<>DOM_LIST THEN RETURN xsvc; END;\nxsvtext:=string(x"+
+    "svc);\nIF NOT member(xsvtext,xsvseen) THEN\nxsvseen:=append(xsvseen,xsvtext);\nIF xsvmatrix THEN xsvscore:=size(xsvtext);\nE"+
+    "LSE xsvscore:=20*xsweight(xsvc)+size(xsvtext); END;\nIF xsvscore<xsvbest THEN xsvb:=xsvc; xsvbest:=xsvscore; END;\nEND;\nEN"+
+    "D;\nEND;\nRETURN xsvb;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsbounded";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsbounded"; END;
+  xsis:="(type((xsscalar(xsve):=BEGIN RETURN xsbounded(xsve,0,0); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsscalar";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsscalar"; END;
+  xsis:="(type((XFAST(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refres"+
+    "h CAS functions""; END;\nRETURN xsscalar(xsve);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XFAST";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XFAST"; END;
+  xsis:="(type((XREWRITE(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog "+
+    "to refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to ref"+
+    "resh CAS functions""; END;\nRETURN xsrewrite(xsve);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XREWRITE";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XREWRITE"; END;
+  xsis:="(type((xsclean(xsve):=BEGIN RETURN xsbounded(xsve,0,1); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsclean";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsclean"; END;
+  xsis:="(type((xsrectwalk(xsve,xsvdepth):=BEGIN\nLOCAL xsvk,xsvr,xsvparent;\nIF xsvdepth>=24 THEN RETURN xsve; END;\nIF type(xsve)="+
+    "=DOM_LIST THEN\nxsvr:=mid([0],1,0); xsvparent:=string(xsve);\nFOR xsvk FROM 1 TO size(xsve) DO\nIF string(xsve[xsvk])==xsvp"+
+    "arent THEN xsvr:=append(xsvr,xsve[xsvk]);\nELSE xsvr:=append(xsvr,xsrectwalk(xsve[xsvk],xsvdepth+1)); END;\nEND;\nRETURN xs"+
+    "vr;\nEND;\nxsvr:=simplify(re(xsve))+i*simplify(im(xsve));\nIF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;\nRETURN xsvr;\nEN"+
+    "D))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsrectwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsrectwalk"; END;
+  xsis:="(type((XRECT(xsve):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refres"+
+    "h CAS functions""; END;\nRETURN xsrectwalk(xsve,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XRECT";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XRECT"; END;
+  xsis:="(type((xsmpisradian(xsmpdummy):=BEGIN\nLOCAL xsmpflag;\nxsmpflag:=simplify(acos(-1))==pi;\nRETURN type(xsmpflag)==DOM_INT A"+
+    "ND xsmpflag==1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpisradian";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpisradian"; END;
+  xsis:="(type((xsmpunbound(xsmpe,xsmpdepth):=BEGIN\nLOCAL xsmpt,xsmpl,xsmpk,xsmpinfo;\nIF xsmpdepth>=12 THEN RETURN 0; END;\nxsmpt:"+
+    "=type(xsmpe);\nIF xsmpt==DOM_IDENT THEN\nxsmpinfo:=about(xsmpe);\nRETURN type(xsmpinfo)==DOM_IDENT AND string(xsmpinfo)==st"+
+    "ring(xsmpe);\nEND;\nIF xsmpt<>DOM_SYMBOLIC THEN RETURN 1; END;\nxsmpl:=[op(xsmpe)];\nFOR xsmpk FROM 1 TO size(xsmpl) DO\nIF N"+
+    "OT xsmpunbound(xsmpl[xsmpk],xsmpdepth+1) THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpunbound";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpunbound"; END;
+  xsis:="(type((xsmpnonzero(xsmpe,xsmpdepth):=BEGIN\nLOCAL xsmpt,xsmph,xsmpl,xsmpk;\nIF xsmpdepth>=16 THEN RETURN 0; END;\nxsmpt:=ty"+
+    "pe(xsmpe);\nIF xsmpt==DOM_INT OR xsmpt==DOM_RAT OR xsmpt==DOM_COMPLEX THEN RETURN xsmpe<>0; END;\nIF xsmpt<>DOM_SYMBOLIC T"+
+    "HEN RETURN 0; END;\nxsmph:=xshead(xsmpe); xsmpl:=[op(xsmpe)];\nIF xsmph==exp AND size(xsmpl)==1 THEN RETURN 1; END;\nxsmph:"+
+    "=string(xsmph);\nIF xsmph==""'inv'"" OR xsmph==""inv"" THEN\nIF size(xsmpl)==1 THEN RETURN xsmpnonzero(xsmpl[1],xsmpdepth+1); "+
+    "END;\nEND;\nIF xsmph==""'-'"" OR xsmph==""-"" THEN\nIF size(xsmpl)==1 THEN RETURN xsmpnonzero(xsmpl[1],xsmpdepth+1); END;\nEND;\n"+
+    "IF xsmph==""'^'"" OR xsmph==""^"" THEN\nIF size(xsmpl)==2 AND type(xsmpl[2])==DOM_INT THEN\nRETURN xsmpnonzero(xsmpl[1],xsmpde"+
+    "pth+1);\nEND;\nEND;\nIF xsmph<>""'*'"" AND xsmph<>""*"" THEN RETURN 0; END;\nFOR xsmpk FROM 1 TO size(xsmpl) DO\nIF NOT xsmpnonze"+
+    "ro(xsmpl[xsmpk],xsmpdepth+1) THEN RETURN 0; END;\nEND;\nRETURN size(xsmpl)>0;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpnonzero";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpnonzero"; END;
+  xsis:="(type((xsmpwalk(xsmpe,xsmpdepth,xsmpbudget,xsmpphase):=BEGIN\nLOCAL xsmpt,xsmph,xsmpl,xsmpk,xsmpcount,xsmpchild,xsmpmaxde"+
+    "pth,xsmphead,xsmpchildphase;\nIF xsmpphase<>1 THEN xsmpmaxdepth:=12; ELSE xsmpmaxdepth:=16; END;\nxsmpchildphase:=xsmpphas"+
+    "e;\nIF xsmpdepth>=xsmpmaxdepth OR xsmpbudget<1 THEN RETURN -1; END;\nxsmpt:=type(xsmpe);\nIF xsmpt==DOM_INT OR xsmpt==DOM_R"+
+    "AT OR xsmpt==DOM_COMPLEX THEN RETURN 1; END;\nIF xsmpt==DOM_IDENT THEN RETURN 1; END;\nIF xsmpt<>DOM_SYMBOLIC THEN RETURN "+
+    "-1; END;\nxsmph:=xshead(xsmpe); xsmpl:=[op(xsmpe)]; xsmphead:=string(xsmph);\nIF xsmph==sin OR xsmph==cos OR xsmph==sinh O"+
+    "R xsmph==cosh OR xsmph==exp THEN\nIF size(xsmpl)<>1 THEN RETURN -1; END;\nELSE\nIF xsmphead==""'^'"" OR xsmphead==""^"" THEN\nIF"+
+    " size(xsmpl)<>2 OR type(xsmpl[2])<>DOM_INT THEN RETURN -1; END;\nIF xsmpphase==2 THEN RETURN -1; END;\nIF xsmpphase==0 THE"+
+    "N\nIF xsmpl[2]<1 OR xsmpl[2]>8 THEN RETURN -1; END;\nxsmpchildphase:=2;\nELSE\nIF xsmpl[2]<-16 OR xsmpl[2]>16 THEN RETURN -1"+
+    "; END;\nIF xsmpl[2]<=0 AND NOT xsmpnonzero(xsmpl[1],0) THEN RETURN -1; END;\nEND;\nELSE\nIF xsmphead==""'inv'"" OR xsmphead=="""+
+    "inv"" THEN\nIF xsmpphase<>1 OR size(xsmpl)<>1 THEN RETURN -1; END;\nIF NOT xsmpnonzero(xsmpl[1],0) THEN RETURN -1; END;\nELS"+
+    "E\nIF xsmphead==""'/'"" OR xsmphead==""/"" THEN\nIF xsmpphase<>1 OR size(xsmpl)<>2 THEN RETURN -1; END;\nIF NOT xsmpnonzero(xsm"+
+    "pl[2],0) THEN RETURN -1; END;\nELSE\nIF NOT member(xsmphead,[""'+'"",""+"",""'-'"",""-"",""'*'"",""*""]) THEN RETURN -1; END;\nIF size("+
+    "xsmpl)==0 THEN RETURN -1; END;\nEND;\nEND;\nEND;\nEND;\nxsmpcount:=1;\nFOR xsmpk FROM 1 TO size(xsmpl) DO\nIF string(xsmpl[xsmp"+
+    "k])==string(xsmpe) THEN RETURN -1; END;\nxsmpchild:=xsmpwalk(xsmpl[xsmpk],xsmpdepth+1,xsmpbudget-xsmpcount,xsmpchildphase"+
+    ");\nIF xsmpchild<0 THEN RETURN -1; END;\nxsmpcount:=xsmpcount+xsmpchild;\nEND;\nRETURN xsmpcount;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpwalk"; END;
+  xsis:="(type((xsmptry(xsmpinput):=BEGIN\nLOCAL xsmporiginal,xsmpcurrent,xsmpcandidate,xsmpbest,\nxsmpbestscore,xsmpscore,xsmpstep"+
+    ",xsmptext,xsmpseen;\nxsmporiginal:=xsmpinput;\nIFERR\n\nIF size(string(xsmporiginal))>256 THEN RETURN xsmporiginal; END;\nIF "+
+    "NOT xsmpisradian(0) THEN RETURN xsmporiginal; END;\nIF xsmpwalk(xsmporiginal,0,64,0)<0 THEN RETURN xsmporiginal; END;\nIF "+
+    "xsapproxstate(xsmporiginal,0)<>0 THEN RETURN xsmporiginal; END;\nIF NOT xsmpunbound(xsmporiginal,0) THEN RETURN xsmporigi"+
+    "nal; END;\nxsmpbest:=xsmporiginal; xsmpcurrent:=xsmporiginal;\nxsmpbestscore:=xsscore(xsmpbest);\nxsmpseen:=[string(type(xs"+
+    "mpbest))+"":""+string(xsmpbest)];\nFOR xsmpstep FROM 1 TO 3 DO\nIF type(xsmpcurrent)<>DOM_SYMBOLIC THEN RETURN xsmpbest; END"+
+    ";\nIF xsmpstep==1 THEN xsmpcandidate:=hyp2exp(xsmpcurrent); END;\nIF xsmpstep==2 THEN xsmpcandidate:=trig2exp(xsmpcurrent)"+
+    "; END;\nIF xsmpstep==3 THEN xsmpcandidate:=simplify(xsmpcurrent); END;\nIF type(xsmpcandidate)==DOM_STRING OR size(string("+
+    "xsmpcandidate))>1024 THEN RETURN xsmpbest; END;\nIF has(xsmpcandidate,undef) OR has(xsmpcandidate,infinity) THEN RETURN x"+
+    "smpbest; END;\nIF xsapproxstate(xsmpcandidate,0)<>0 OR xsmpwalk(xsmpcandidate,0,256,1)<0 THEN RETURN xsmpbest; END;\nxsmpt"+
+    "ext:=string(type(xsmpcandidate))+"":""+string(xsmpcandidate);\nIF NOT member(xsmptext,xsmpseen) THEN\nxsmpseen:=append(xsmps"+
+    "een,xsmptext);\nxsmpscore:=xsscore(xsmpcandidate);\nIF xsmpscore<xsmpbestscore THEN xsmpbest:=xsmpcandidate; xsmpbestscore"+
+    ":=xsmpscore; END;\nEND;\n\nxsmpcurrent:=xsmpcandidate;\nEND;\nRETURN xsmpbest;\nTHEN\nRETURN xsmporiginal;\nEND;\nEND))==DOM_FUNC"+
+    ")";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmptry";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmptry"; END;
+  xsis:="(type((xsmpauto(xsmpinput):=BEGIN\nLOCAL xsmptext;\nIF type(xsmpinput)<>DOM_SYMBOLIC THEN RETURN xsmpinput; END;\nxsmptext:"+
+    "=string(xsmpinput);\nIF size(xsmptext)>256 THEN RETURN xsmpinput; END;\nIF inString(xsmptext,""h("")==0 AND inString(xsmptex"+
+    "t,""H("")==0 THEN RETURN xsmpinput; END;\nIF inString(xsmptext,""sinh("")==0 AND inString(xsmptext,""cosh("")==0 AND\ninString(x"+
+    "smptext,""SINH("")==0 AND inString(xsmptext,""COSH("")==0 THEN RETURN xsmpinput; END;\nIF inString(xsmptext,""sin("")==0 AND in"+
+    "String(xsmptext,""cos("")==0 AND\ninString(xsmptext,""SIN("")==0 AND inString(xsmptext,""COS("")==0 THEN RETURN xsmpinput; END;"+
+    "\nRETURN xsmptry(xsmpinput);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpauto"; END;
+  xsis:="(type((xsmz(xsmvee):=BEGIN\nLOCAL xsmvs;\nxsmvs:=string(normal(xsmvee));\nRETURN (xsmvs==""0"") OR (xsmvs==""0.0"");\nEND))==DOM"+
+    "_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmz";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmz"; END;
+  xsis:="(type((xsmsign(xsmvee):=BEGIN\nLOCAL xsmvs;\nxsmvs:=string(simplify(sign(xsmvee)));\nIF xsmvs==""1"" THEN RETURN 1; END;\nIF x"+
+    "smvs==""-1"" THEN RETURN -1; END;\nRETURN 0;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmsign";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmsign"; END;
+  xsis:="(type((xsmroot(xsmvz):=BEGIN\nLOCAL xsmva,xsmvb,xsmvrho,xsmvu,xsmvv;\nIF type(xsmvz)==DOM_INT THEN RETURN sqrt(xsmvz); END"+
+    ";\n\n\nIF type(xsmvz)==DOM_RAT THEN\nIF string(im(xsmvz))==""0"" THEN RETURN sqrt(xsmvz); END;\nEND;\nIF xsisapprox(xsmvz) THEN "+
+    "RETURN sqrt(xsmvz); END;\nIF size(lname(xsmvz))==0 THEN\nIFERR\nxsmva:=re(xsmvz); xsmvb:=im(xsmvz);\nIF (type(xsmva)==DOM_IN"+
+    "T OR type(xsmva)==DOM_RAT) AND\n(type(xsmvb)==DOM_INT OR type(xsmvb)==DOM_RAT) THEN\nIF xsmvb==0 THEN RETURN sqrt(xsmva); "+
+    "END;\nxsmvrho:=sqrt(xsmva^2+xsmvb^2);\nxsmvu:=sqrt(ratnormal((xsmvrho+xsmva)/2));\nxsmvv:=sqrt(ratnormal((xsmvrho-xsmva)/2)"+
+    ");\nIF xsmvb<0 THEN xsmvv:=-xsmvv; END;\nRETURN xsmvu+i*xsmvv;\nEND;\n\nIF string(xsmvb)==""0"" THEN RETURN sqrt(xsmvz); END;\nT"+
+    "HEN\nRETURN xsphold(""sqrt(""+xspnative(xsmvz)+"")"");\nEND;\nEND;\nRETURN xsphold(""sqrt(""+xspnative(xsmvz)+"")"");\nEND))==DOM_FUN"+
+    "C)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmroot";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmroot"; END;
+  xsis:="(type((xsmzero(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmva) D"+
+    "O\nIF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;\nEND;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmzero";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmzero"; END;
+  xsis:="(type((xsmclean(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk,xsmvr;\nxsmvr:=xsmva;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM"+
+    " 1 TO colDim(xsmva) DO\nxsmvr[xsmvj,xsmvk]:=xsclean(xsmva[xsmvj,xsmvk]);\nEND;\nEND;\nRETURN xsmvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmclean";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmclean"; END;
+  xsis:="(type((xsmrewrite(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk,xsmvr;\nxsmvr:=xsmva;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FR"+
+    "OM 1 TO colDim(xsmva) DO\nxsmvr[xsmvj,xsmvk]:=xsrewrite(xsmva[xsmvj,xsmvk]);\nEND;\nEND;\nRETURN xsmvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmrewrite";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmrewrite"; END;
+  xsis:="(type((xsmid(xsmvn):=BEGIN\nLOCAL xsmvj;\nRETURN diag(seq(1,xsmvj,1,xsmvn));\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmid";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmid"; END;
+  xsis:="(type((xsmdiagonal(xsmva):=BEGIN\nLOCAL xsmvj,xsmvk;\nFOR xsmvj FROM 1 TO rowDim(xsmva) DO\nFOR xsmvk FROM 1 TO colDim(xsmv"+
+    "a) DO\nIF xsmvj!=xsmvk THEN\nIF NOT xsmz(xsmva[xsmvj,xsmvk]) THEN RETURN 0; END;\nEND;\nEND;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmdiagonal";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmdiagonal"; END;
+  xsis:="(type((xsmhyperexp(xsmvt,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,xsmvc"+
+    ";\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xsmvn);\nxsmvpref:=xsclean(exp(normal(xsmvt*xsmvmu)));\nxsmvu:=normal(xsmvt*xsmv"+
+    "rr);\nxsmvch:=cosh(xsmvu); xsmvsh:=sinh(xsmvu);\nFOR xsmvj FROM 1 TO xsmvn DO\nFOR xsmvk FROM 1 TO xsmvn DO\nxsmvc:=xsclean("+
+    "xsmvbb[xsmvj,xsmvk]/xsmvrr);\nIF xsmvj==xsmvk THEN\nxsmvres[xsmvj,xsmvk]:=xsmvpref*(xsmvch+xsmvc*xsmvsh);\nELSE\nxsmvc:=xscl"+
+    "ean(xsmvpref*xsmvc);\nxsmvres[xsmvj,xsmvk]:=xsmvc*xsmvsh;\nEND;\nEND;\nEND;\nRETURN xsmvres;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmhyperexp";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmhyperexp"; END;
+  xsis:="(type((xsmhyperpower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvpref,xsmvu,xsmvch,xsmvsh,x"+
+    "smvc,xsmvrational;\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xsmvn);\nxsmvrational:=type(xsmvmu)==DOM_INT OR type(xsmvmu)=="+
+    "DOM_RAT;\nIF xsmvrational THEN xsmvpref:=xsclean(xsmvbas^xsmvmu);\nELSE xsmvpref:=exp(xsmvmu*ln(xsmvbas)); END;\nxsmvu:=nor"+
+    "mal(xsmvrr*ln(xsmvbas));\nxsmvch:=cosh(xsmvu); xsmvsh:=sinh(xsmvu);\nFOR xsmvj FROM 1 TO xsmvn DO\nFOR xsmvk FROM 1 TO xsmv"+
+    "n DO\nxsmvc:=xsclean(xsmvbb[xsmvj,xsmvk]/xsmvrr);\nIF xsmvj==xsmvk THEN\nxsmvres[xsmvj,xsmvk]:=xsmvpref*(xsmvch+xsmvc*xsmvs"+
+    "h);\nELSE\nIF xsmvrational THEN xsmvc:=xsclean(xsmvpref*xsmvc);\nELSE xsmvc:=xsmvpref*xsmvc; END;\nxsmvres[xsmvj,xsmvk]:=xsm"+
+    "vc*xsmvsh;\nEND;\nEND;\nEND;\nRETURN xsmvres;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmhyperpower";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmhyperpower"; END;
+  xsis:="(type((xsmpospower(xsmvbas,xsmvmu,xsmvbb,xsmvrr):=BEGIN\nLOCAL xsmvn,xsmvres,xsmvj,xsmvk,xsmvup,xsmvdn,xsmvb,xsmvc,xsmvd,"+
+    "xsmvlup,xsmvldn,xsmvrational,xsmvhyp;\nxsmvn:=rowDim(xsmvbb);\nxsmvres:=0*xsmid(xsmvn);\nxsmvlup:=normal(xsmvmu+xsmvrr); xs"+
+    "mvldn:=normal(xsmvmu-xsmvrr);\nxsmvrational:=1;\nIF type(xsmvlup)==DOM_INT OR type(xsmvlup)==DOM_RAT THEN\nxsmvup:=xsclean("+
+    "xsmvbas^xsmvlup);\nELSE\nxsmvrational:=0;\nxsmvup:=exp(xsmvlup*ln(xsmvbas));\nEND;\nIF type(xsmvldn)==DOM_INT OR type(xsmvldn"+
+    ")==DOM_RAT THEN\nxsmvdn:=xsclean(xsmvbas^xsmvldn);\nELSE\nxsmvrational:=0;\nxsmvdn:=exp(xsmvldn*ln(xsmvbas));\nEND;\nFOR xsmvj"+
+    " FROM 1 TO xsmvn DO\nFOR xsmvk FROM 1 TO xsmvn DO\nxsmvb:=xsmvbb[xsmvj,xsmvk];\nIF xsmvj==xsmvk THEN\nIF xsmz(xsmvb) THEN\nxs"+
+    "mvres[xsmvj,xsmvk]:=(xsmvup+xsmvdn)/2;\nELSE\nxsmvc:=xsclean((1+xsmvb/xsmvrr)/2);\nxsmvd:=xsclean((1-xsmvb/xsmvrr)/2);\nxsmv"+
+    "res[xsmvj,xsmvk]:=xsmvc*xsmvup+xsmvd*xsmvdn;\nEND;\nELSE\nxsmvc:=xsclean(xsmvb/(2*xsmvrr));\nxsmvres[xsmvj,xsmvk]:=xsmvc*(xs"+
+    "mvup-xsmvdn);\nEND;\nEND;\nEND;\nIF xsmvrational THEN RETURN xsmclean(xsmvres); END;\n\n\nxsmvhyp:=xsmhyperpower(xsmvbas,xsmvmu"+
+    ",xsmvbb,xsmvrr);\nIF size(xsptext(xsmvhyp,0))<=size(xsptext(xsmvres,0)) THEN RETURN xsmvhyp; END;\nRETURN xsmvres;\nEND))=="+
+    "DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpospower";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpospower"; END;
+  xsis:="(type((xsmcore(xsmva,xsmvt,xsmvbas,xsmvkind):=BEGIN\nLOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvpre"+
+    "f,xsmvj,xsmvk,xsmvpp,xsmvtotal,xsmvup,xsmvdn,xsmvres,xsmvtheta;\nxsmvn:=rowDim(xsmva);\nIF xsmvn!=colDim(xsmva) THEN RETUR"+
+    "N ""XEXP/XPOW requires a square matrix""; END;\nxsmvii:=xsmid(xsmvn);\nIF xsmdiagonal(xsmva) THEN\nxsmvres:=0*xsmvii;\nFOR xsm"+
+    "vj FROM 1 TO xsmvn DO\nIF xsmvkind==1 THEN xsmvres[xsmvj,xsmvj]:=xsmvbas^xsmva[xsmvj,xsmvj];\nELSE xsmvres[xsmvj,xsmvj]:=e"+
+    "xp(xsmvt*xsmva[xsmvj,xsmvj]); END;\nEND;\nRETURN xsmclean(xsmvres);\nEND;\nxsmvmu:=xsclean(trace(xsmva)/xsmvn);\nxsmvbb:=xsmv"+
+    "a-xsmvmu*xsmvii;\nxsmvqq:=xsclean((xsmvbb*xsmvbb)[1,1]);\nIF xsmvkind==1 THEN xsmvpref:=xsmvbas^xsmvmu;\nELSE xsmvpref:=exp"+
+    "(xsmvt*xsmvmu); END;\nIF xsmzero(xsmvbb*xsmvbb-xsmvqq*xsmvii) THEN\nIF xsmz(xsmvqq) THEN RETURN xsmclean(xsmvpref*(xsmvii+"+
+    "xsmvt*xsmvbb)); END;\nIF size(lname(xsmvqq))!=0 THEN\nRETURN xsmclean(exp(xsmvt*xsmva));\nEND;\nIF xsmsign(xsmvqq)==-1 THEN\n"+
+    "xsmvrr:=sqrt(-xsmvqq);\nxsmvcc:=cos(xsmvt*xsmvrr);\nxsmvdd:=sin(xsmvt*xsmvrr)/xsmvrr;\nRETURN xsmclean(xsmvpref*(xsmvcc*xsm"+
+    "vii+xsmvdd*xsmvbb));\nEND;\nIF xsmsign(xsmvqq)==1 THEN\nxsmvrr:=sqrt(xsmvqq);\nIF xsmvkind==1 THEN\nRETURN xsmpospower(xsmvba"+
+    "s,xsmvmu,xsmvbb,xsmvrr);\nEND;\n\n\nIF xsmz(re(xsmvt)) THEN\nxsmvtheta:=normal(-i*xsmvt*xsmvrr);\nRETURN xsmclean(xsmvpref*(co"+
+    "s(xsmvtheta)*xsmvii+i*sin(xsmvtheta)/xsmvrr*xsmvbb));\nEND;\nRETURN xsmhyperexp(xsmvt,xsmvmu,xsmvbb,xsmvrr);\nEND;\n\nxsmvrr:"+
+    "=xsmroot(-xsmvqq);\nxsmvcc:=cos(xsmvt*xsmvrr);\nxsmvdd:=sin(xsmvt*xsmvrr)/xsmvrr;\nRETURN xsmclean(xsmvpref*(xsmvcc*xsmvii+"+
+    "xsmvdd*xsmvbb));\nEND;\n\nxsmvpp:=xsmvii; xsmvtotal:=xsmvii;\nFOR xsmvj FROM 1 TO xsmvn DO\nxsmvpp:=xsmvpp*xsmvbb;\nIF xsmzero"+
+    "(xsmvpp) THEN RETURN xsmclean(xsmvpref*xsmvtotal); END;\nxsmvtotal:=xsmvtotal+xsmvt^xsmvj/xsmvj!*xsmvpp;\nEND;\n\nRETURN xsm"+
+    "clean(exp(xsmvt*xsmva));\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmcore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmcore"; END;
+  xsis:="(type((XEXP(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refres"+
+    "h CAS functions""; END;\nRETURN xsmcore(xsmva,1,0,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XEXP";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XEXP"; END;
+  xsis:="(type((XEXPT(xsmva,xsmvt):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Cata"+
+    "log to refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to"+
+    " refresh CAS functions""; END;\nRETURN xsmcore(xsmva,xsmvt,0,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XEXPT";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XEXPT"; END;
+  xsis:="(type((XPOW(xsmvbas,xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Cat"+
+    "alog to refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog t"+
+    "o refresh CAS functions""; END;\nIF size(lname(xsmvbas))!=0 THEN\nRETURN ""XPOW requires a positive real constant base"";\nEND"+
+    ";\nIF NOT xsmz(im(xsmvbas)) THEN\nRETURN ""XPOW requires a positive real base"";\nEND;\nIF xsmsign(xsmvbas)!=1 THEN\nRETURN ""XP"+
+    "OW requires a provably positive real base"";\nEND;\nRETURN xsmcore(xsmva,ln(xsmvbas),xsmvbas,1);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XPOW";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XPOW"; END;
+  xsis:="(type((xsmtrigcore(xsmva,xsmvkind):=BEGIN\nLOCAL xsmvn,xsmvii,xsmvmu,xsmvbb,xsmvqq,xsmvrr,xsmvcc,xsmvdd,xsmvj,xsmvpp,xsmv"+
+    "total,xsmvsm,xsmvcm,xsmvres;\nxsmvn:=rowDim(xsmva);\nIF xsmvn!=colDim(xsmva) THEN RETURN ""XSIN/XCOS requires a square matr"+
+    "ix""; END;\nxsmvii:=xsmid(xsmvn);\nIF xsmdiagonal(xsmva) THEN\nxsmvres:=0*xsmvii;\nFOR xsmvj FROM 1 TO xsmvn DO\nIF xsmvkind=="+
+    "0 THEN xsmvres[xsmvj,xsmvj]:=sin(xsmva[xsmvj,xsmvj]);\nELSE xsmvres[xsmvj,xsmvj]:=cos(xsmva[xsmvj,xsmvj]); END;\nEND;\nRETU"+
+    "RN xsmclean(xsmvres);\nEND;\nxsmvmu:=xsclean(trace(xsmva)/xsmvn);\nxsmvbb:=xsmva-xsmvmu*xsmvii;\nxsmvqq:=xsclean((xsmvbb*xsm"+
+    "vbb)[1,1]);\nxsmvsm:=sin(xsmvmu); xsmvcm:=cos(xsmvmu);\nIF xsmzero(xsmvbb*xsmvbb-xsmvqq*xsmvii) THEN\nIF xsmz(xsmvqq) THEN\n"+
+    "IF xsmvkind==0 THEN RETURN xsmclean(xsmvsm*xsmvii+xsmvcm*xsmvbb); END;\nRETURN xsmclean(xsmvcm*xsmvii-xsmvsm*xsmvbb);\nEND"+
+    ";\nIF size(lname(xsmvqq))==0 THEN\nIF xsmsign(xsmvqq)==-1 THEN\nxsmvrr:=sqrt(-xsmvqq); xsmvcc:=cosh(xsmvrr); xsmvdd:=sinh(x"+
+    "smvrr)/xsmvrr;\nELSE\nxsmvrr:=xsmroot(xsmvqq); xsmvcc:=cos(xsmvrr); xsmvdd:=sin(xsmvrr)/xsmvrr;\nEND;\nIF xsmvkind==0 THEN R"+
+    "ETURN xsmclean(xsmvsm*xsmvcc*xsmvii+xsmvcm*xsmvdd*xsmvbb); END;\nRETURN xsmclean(xsmvcm*xsmvcc*xsmvii-xsmvsm*xsmvdd*xsmvb"+
+    "b);\nEND;\nEND;\n\nxsmvpp:=xsmvii;\nIF xsmvkind==0 THEN xsmvtotal:=xsmvsm*xsmvii; ELSE xsmvtotal:=xsmvcm*xsmvii; END;\nFOR xsm"+
+    "vj FROM 1 TO xsmvn DO\nxsmvpp:=xsmvpp*xsmvbb;\nIF xsmzero(xsmvpp) THEN RETURN xsmclean(xsmvtotal); END;\nIF xsmvkind==0 THE"+
+    "N xsmvtotal:=xsmvtotal+sin(xsmvmu+xsmvj*pi/2)/xsmvj!*xsmvpp;\nELSE xsmvtotal:=xsmvtotal+cos(xsmvmu+xsmvj*pi/2)/xsmvj!*xsm"+
+    "vpp; END;\nEND;\nIF xsmvkind==0 THEN RETURN xsmclean((exp(i*xsmva)-exp(-i*xsmva))/(2*i)); END;\nRETURN xsmclean((exp(i*xsmv"+
+    "a)+exp(-i*xsmva))/2);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmtrigcore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmtrigcore"; END;
+  xsis:="(type((XSIN(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refres"+
+    "h CAS functions""; END;\nRETURN xsmtrigcore(xsmva,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XSIN";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XSIN"; END;
+  xsis:="(type((XCOS(xsmva):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refres"+
+    "h CAS functions""; END;\nRETURN xsmtrigcore(xsmva,1);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XCOS";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XCOS"; END;
+  xsis:="(type((xspnative(xspv):=BEGIN\nLOCAL xsps,xspr,xspk,xspn,xspi,xspni,xspch,xspquoted,xspescape;\nxsps:=string(xspv);\nIF typ"+
+    "e(xspv)==DOM_STRING THEN\nxsps:=string([xspv]); xsps:=mid(xsps,2,size(xsps)-2);\n\n\nRETURN xsps;\nEND;\nxspi:=string(i); xspn"+
+    "i:=size(xspi);\nIF xspi==""i"" THEN RETURN xsps; END;\nIF size(xsps)>6400 THEN RETURN xsps; END;\n\n\nIF inString(xsps,xspi)==0"+
+    " THEN RETURN xsps; END;\nxspr:=""""; xspk:=1; xspn:=size(xsps); xspquoted:=0; xspescape:=0;\nWHILE xspk<=xspn DO\nxspch:=mid("+
+    "xsps,xspk,1);\nIF xspquoted==0 AND mid(xsps,xspk,xspni)==xspi THEN\nxspr:=xspr+""@@XSIMP_I@@""; xspk:=xspk+xspni;\nELSE\nxspr:"+
+    "=xspr+xspch; xspk:=xspk+1;\nIF xspescape==1 THEN xspescape:=0;\nELSE\nIF xspch==char(92) THEN xspescape:=1;\nELSE IF xspch=="+
+    "char(34) THEN xspquoted:=1-xspquoted; END; END;\nEND;\nEND;\nEND;\nRETURN xspr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspnative";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspnative"; END;
+  xsis:="(type((xspunaryname(xsph):=BEGIN\nLOCAL xspalias;\nIF xsph==exp THEN RETURN ""exp""; END;\nIF xsph==ln THEN RETURN ""ln""; END;"+
+    "\nIF xsph==sqrt THEN RETURN ""sqrt""; END;\nIF xsph==sin THEN RETURN ""sin""; END;\nIF xsph==cos THEN RETURN ""cos""; END;\nIF xsp"+
+    "h==tan THEN RETURN ""tan""; END;\nIF xsph==asin THEN RETURN ""asin""; END;\nIF xsph==acos THEN RETURN ""acos""; END;\nIF xsph==at"+
+    "an THEN RETURN ""atan""; END;\nIF xsph==sinh THEN RETURN ""sinh""; END;\nIF xsph==cosh THEN RETURN ""cosh""; END;\nIF xsph==tanh "+
+    "THEN RETURN ""tanh""; END;\nIF xsph==asinh THEN RETURN ""asinh""; END;\nIF xsph==acosh THEN RETURN ""acosh""; END;\nIF xsph==atan"+
+    "h THEN RETURN ""atanh""; END;\nIF xsph==abs THEN RETURN ""abs""; END;\nIF xsph==re THEN RETURN ""re""; END;\nIF xsph==im THEN RET"+
+    "URN ""im""; END;\nIF xsph==arg THEN RETURN ""arg""; END;\nIF xsph==conj THEN RETURN ""conj""; END;\nIF xsph==sign THEN RETURN ""si"+
+    "gn""; END;\n\n\n\nIF type(xsph)==DOM_FUNC THEN\nxspalias:=string(xsph);\nIF xspalias==""'SINH'"" OR xspalias==""SINH"" THEN RETURN "+
+    """sinh""; END;\nIF xspalias==""'COSH'"" OR xspalias==""COSH"" THEN RETURN ""cosh""; END;\nIF xspalias==""'SIN'"" OR xspalias==""SIN"" "+
+    "THEN RETURN ""sin""; END;\nIF xspalias==""'COS'"" OR xspalias==""COS"" THEN RETURN ""cos""; END;\nEND;\nRETURN """";\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspunaryname";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspunaryname"; END;
+  xsis:="(type((xsptrigarg(xspu):=BEGIN\nLOCAL xsps,xspc,xspneg,xspsign,xspnew;\nxsps:=string(xspu);\nIF size(xsps)>256 THEN RETURN "+
+    "mid([0],1,0); END;\n\nIF inString("" ""+xsps,string(i))<=0 AND inString("" ""+xsps,""i"")<=0 THEN RETURN mid([0],1,0); END;\n\n\nIF"+
+    " NOT xsmpisradian(0) THEN RETURN mid([0],1,0); END;\nxspc:=-i*xspu;\n\n\nIF xsnewapprox(xspu,xspc) THEN RETURN mid([0],1,0);"+
+    " END;\nxspnew:=normal(xspc);\nIF NOT xsnewapprox(xspc,xspnew) THEN xspc:=xspnew; END;\nxspneg:=-xspc; xspnew:=normal(xspneg"+
+    "); xspsign:=1;\nIF NOT xsnewapprox(xspneg,xspnew) THEN xspneg:=xspnew; END;\nIF NOT xsnewapprox(xspc,xspneg) AND size(stri"+
+    "ng(xspneg))<size(string(xspc)) THEN xspc:=xspneg; xspsign:=-1; END;\nIF size(string(xspc))<size(xsps) THEN RETURN [xspc,x"+
+    "spsign]; END;\nRETURN mid([0],1,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsptrigarg";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsptrigarg"; END;
+  xsis:="(type((xspimagwalk(xspv,xspd):=BEGIN\nLOCAL xsph,xspname,xspl,xspr,xspk,xspq,xspu,xspc,xspneg,xspchanged,xspnew,xspparent"+
+    ",xspunary,xspsafe;\nxspsafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspsafe[1]; END;\nxspv:=xspsafe[1];\nxspparent:=stri"+
+    "ng(xspv);\nIF xspd>=24 OR size(xspparent)>1600 THEN RETURN xspv; END;\n\n\nIF inString(xspparent,""sin"")==0 AND inString(xspp"+
+    "arent,""cos"")==0 AND\ninString(xspparent,""SIN"")==0 AND inString(xspparent,""COS"")==0 THEN RETURN xspv; END;\nIF type(xspv)=="+
+    "DOM_LIST THEN\nxspr:=xspv;\nFOR xspk FROM 1 TO size(xspv) DO\nIF string(xspv[xspk])==xspparent THEN RETURN xspv; END;\nxspr["+
+    "xspk]:=xspimagwalk(xspv[xspk],xspd+1);\nEND;\nRETURN xspr;\nEND;\nIF type(xspv)<>DOM_SYMBOLIC THEN RETURN xspv; END;\nxsph:=x"+
+    "shead(xspv);\nIF type(xsph)<>DOM_FUNC THEN RETURN xspv; END;\nxspname:=string(xsph);\nIF xspname==""'of'"" OR xspname==""of"" T"+
+    "HEN RETURN xspv; END;\nxspunary:=xspunaryname(xsph);\nIF xspunary=="""" AND xspname<>""'+'"" AND xspname<>""+"" AND xspname<>""'-"+
+    "'"" AND xspname<>""-"" AND xspname<>""'*'"" AND xspname<>""*"" AND xspname<>""'/'"" AND xspname<>""/"" AND xspname<>""'inv'"" AND xsp"+
+    "name<>""inv"" AND xspname<>""'^'"" AND xspname<>""^"" THEN RETURN xspv; END;\nxspl:=[op(xspv)]; xspr:=mid([0],1,0); xspchanged:"+
+    "=0;\n\nFOR xspk FROM 1 TO size(xspl) DO\nIF type(xspl[xspk])==DOM_LIST THEN RETURN xspv; END;\nIF string(xspl[xspk])==xsppar"+
+    "ent THEN RETURN xspv; END;\nEND;\nFOR xspk FROM 1 TO size(xspl) DO\nxspnew:=xspimagwalk(xspl[xspk],xspd+1);\nIF string(xspne"+
+    "w)<>string(xspl[xspk]) THEN xspchanged:=1; END;\nxspr:=append(xspr,xspnew);\nEND;\nxspq:=xspv;\nIF xspchanged THEN\nxspnew:=x"+
+    "sph(op(xspr));\nIF NOT xsnewapprox(xspv,xspnew) THEN xspq:=xspnew; END;\nEND;\nIF size(xspr)==1 AND size(string(xspr[1]))<="+
+    "256 THEN\nxspu:=xspr[1];\nIF xspunary==""cosh"" OR xspunary==""sinh"" THEN\nxspc:=xsptrigarg(xspu);\nIF size(xspc)==2 THEN\nIF xs"+
+    "punary==""cosh"" THEN xspnew:=cos(xspc[1]);\nELSE xspnew:=xspc[2]*i*sin(xspc[1]); END;\nIF NOT xsnewapprox(xspv,xspnew) THEN"+
+    " RETURN xspnew; END;\nEND;\nEND;\nIF xspunary==""sin"" OR xspunary==""cos"" THEN\nxspneg:=-xspu; xspnew:=normal(xspneg);\nIF NOT "+
+    "xsnewapprox(xspneg,xspnew) THEN xspneg:=xspnew; END;\nIF NOT xsnewapprox(xspu,xspneg) AND size(string(xspneg))<size(strin"+
+    "g(xspu)) THEN\nIF xspunary==""cos"" THEN xspnew:=cos(xspneg);\nELSE xspnew:=-sin(xspneg); END;\nIF NOT xsnewapprox(xspv,xspne"+
+    "w) THEN RETURN xspnew; END;\nEND;\nEND;\nEND;\nIF xspchanged THEN\nIF xspname==""'+'"" OR xspname==""+"" OR xspname==""'-'"" OR xsp"+
+    "name==""-"" OR xspname==""'*'"" OR xspname==""*"" OR xspname==""'/'"" OR xspname==""/"" OR xspname==""'inv'"" OR xspname==""inv"" THEN"+
+    "\nxspnew:=regroup(regroup(xspq));\nIF type(xspnew)<>DOM_STRING AND NOT has(xspnew,undef) AND NOT has(xspnew,infinity) AND "+
+    "NOT xsnewapprox(xspv,xspnew) THEN RETURN xspnew; END;\nEND;\nEND;\nRETURN xspq;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspimagwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspimagwalk"; END;
+  xsis:="(type((xspflatproduct(xspv,xspd):=BEGIN\nLOCAL xsph,xspl,xspr,xspk,xspj,xspsub;\nIF xspd>=24 OR type(xspv)<>DOM_SYMBOLIC T"+
+    "HEN RETURN [xspv]; END;\nxsph:=string(xshead(xspv));\nIF xsph<>""'*'"" AND xsph<>""*"" THEN RETURN [xspv]; END;\nxspl:=[op(xspv"+
+    ")]; xspr:=mid([0],1,0);\nFOR xspk FROM 1 TO size(xspl) DO\nIF string(xspl[xspk])==string(xspv) THEN RETURN [xspv]; END;\nxs"+
+    "psub:=xspflatproduct(xspl[xspk],xspd+1);\nFOR xspj FROM 1 TO size(xspsub) DO\nxspr:=append(xspr,xspsub[xspj]);\nIF size(xsp"+
+    "r)>256 THEN RETURN [xspv]; END;\nEND;\nEND;\nRETURN xspr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspflatproduct";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspflatproduct"; END;
+  xsis:="(type((xspproducttext(xspv,xspl,xspd):=BEGIN\nLOCAL xspk,xspf,xsph,xspa,xspnum,xspden,xspnf,xspdf,xspnt,xspdt;\nxspl:=xspf"+
+    "latproduct(xspv,xspd);\nxspnum:=""""; xspden:="""";\nFOR xspk FROM 1 TO size(xspl) DO\nxspf:=xspl[xspk];\nIF type(xspf)==DOM_LIS"+
+    "T THEN RETURN """"; END;\nIF string(xspf)==string(xspv) THEN RETURN """"; END;\nxspnf:=xspf; xspdf:=1;\nIF type(xspf)==DOM_RAT "+
+    "THEN\nxspnf:=numer(xspf); xspdf:=denom(xspf);\nELSE\nIF type(xspf)==DOM_SYMBOLIC THEN\nxsph:=string(xshead(xspf));\nIF xsph=="+
+    """'inv'"" OR xsph==""inv"" THEN\nxspdf:=op(xspf);\nIF type(xspdf)==DOM_LIST THEN RETURN """"; END;\nxspnf:=1;\nELSE\nIF xsph==""'^'"""+
+    " OR xsph==""^"" OR xsph==""'/'"" OR xsph==""/"" THEN\nxspa:=[op(xspf)];\nIF size(xspa)==2 THEN\nIF type(xspa[1])==DOM_LIST OR typ"+
+    "e(xspa[2])==DOM_LIST THEN RETURN """"; END;\nIF xsph==""'/'"" OR xsph==""/"" THEN\nxspnf:=xspa[1]; xspdf:=xspa[2];\nELSE\nIF strin"+
+    "g(xspa[2])==""-1"" THEN xspnf:=1; xspdf:=xspa[1]; END;\nEND;\nEND;\nEND;\nEND;\nEND;\nEND;\nIF string(xspnf)<>""1"" THEN\nxspnt:=xsp"+
+    "text(xspnf,xspd+1);\nIF xspnum<>"""" THEN xspnum:=xspnum+""*""; END;\nxspnum:=xspnum+""(""+xspnt+"")"";\nEND;\nIF string(xspdf)<>""1"""+
+    " THEN\nxspdt:=xsptext(xspdf,xspd+1);\nIF xspden<>"""" THEN xspden:=xspden+""*""; END;\nxspden:=xspden+""(""+xspdt+"")"";\nEND;\nIF si"+
+    "ze(xspnum)+size(xspden)>6400 THEN RETURN """"; END;\nEND;\nIF xspnum=="""" THEN xspnum:=""1""; END;\nIF xspden=="""" THEN RETURN ""("+
+    """+xspnum+"")""; END;\nRETURN ""(""+xspnum+"")/(""+xspden+"")"";\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspproducttext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspproducttext"; END;
+  xsis:="(type((xsptext(xspv,xspd):=BEGIN\nLOCAL xsps,xsph,xspname,xspl,xspr,xspk,xspu,xspb,xspc,xspn,xspopen,xspclose,xspchild,xs"+
+    "preal,xspsafe;\nxspsafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspnative(xspsafe[1]); END;\nxspv:=xspsafe[1];\nxsps:=xs"+
+    "pnative(xspv);\nIF xspd>=24 OR size(xsps)>1600 THEN RETURN xsps; END;\nIF type(xspv)==DOM_LIST THEN\nxspopen:=mid(xsps,1,1)"+
+    ";\nIF xspopen==""["" THEN xspclose:=""]"";\nELSE IF xspopen==""{"" THEN xspclose:=""}"";\nELSE RETURN xsps; END; END;\nxspr:=xspopen"+
+    ";\nFOR xspk FROM 1 TO size(xspv) DO\nIF xspk>1 THEN xspr:=xspr+"",""; END;\nIF string(xspv[xspk])==string(xspv) THEN RETURN x"+
+    "sps; END;\nxspr:=xspr+xsptext(xspv[xspk],xspd+1);\nIF size(xspr)>6400 THEN RETURN xsps; END;\nEND;\nRETURN xspr+xspclose;\nEN"+
+    "D;\nIF type(xspv)<>DOM_SYMBOLIC THEN RETURN xsps; END;\nxsph:=xshead(xspv);\nIF type(xsph)<>DOM_FUNC THEN RETURN xsps; END;"+
+    "\nxspname:=xspunaryname(xsph);\nIF xspname<>"""" THEN\nxspu:=op(xspv);\n\nIF type(xspu)==DOM_LIST THEN xspu:=[xspu]; END;\nIF st"+
+    "ring(xspu)==string(xspv) THEN RETURN xsps; END;\nIF type(xspu)<>DOM_LIST THEN\nIF xsph==exp THEN\nxspl:=xslogs(xspu);\nIF si"+
+    "ze(xspl)<=8 THEN\nFOR xspk FROM 1 TO size(xspl) DO\nxspb:=op(xspl[xspk]);\n\n\n\nIF type(xspb)<>DOM_LIST AND xspb<>0 AND xspb<"+
+    ">1 AND NOT has(xspb,undef) AND NOT has(xspb,infinity) THEN\nxspc:=ratnormal(xspu/xspl[xspk]);\nIF NOT xsnewapprox(xspu,xsp"+
+    "c) AND size(xslogs(xspc))==0 THEN\nxspchild:=im(xspc); xspreal:=simplify(xspchild);\nIF NOT xsnewapprox(xspc,xspchild) AND"+
+    " NOT xsnewapprox(xspchild,xspreal) THEN\nIF string(xspreal)==""0"" THEN\nRETURN ""(""+xsptext(xspb,xspd+1)+"")^(""+xsptext(xspc,"+
+    "xspd+1)+"")"";\nEND;\nEND;\nEND;\nEND;\nEND;\nEND;\nEND;\nIF xspname==""cosh"" OR xspname==""sinh"" THEN\nxspc:=xsptrigarg(xspu);\nIF si"+
+    "ze(xspc)==2 THEN\nIF xspname==""cosh"" THEN RETURN ""cos(""+xsptext(xspc[1],xspd+1)+"")""; END;\nIF xspc[2]==-1 THEN RETURN ""(-@"+
+    "@XSIMP_I@@)*sin(""+xsptext(xspc[1],xspd+1)+"")""; END;\nRETURN ""@@XSIMP_I@@*sin(""+xsptext(xspc[1],xspd+1)+"")"";\nEND;\nEND;\nEND"+
+    ";\nRETURN xspname+""(""+xsptext(xspu,xspd+1)+"")"";\nEND;\nxspname:=string(xsph);\nIF mid(xspname,1,1)==""'"" THEN xspname:=mid(xs"+
+    "pname,2,size(xspname)-2); END;\nIF xspname<>""+"" AND xspname<>""-"" AND xspname<>""*"" AND xspname<>""/"" AND xspname<>""^"" AND x"+
+    "spname<>""="" AND xspname<>""=="" AND xspname<>""<"" AND xspname<>"">"" AND xspname<>""<="" AND xspname<>"">="" AND xspname<>""!="" AN"+
+    "D xspname<>""<>"" THEN RETURN xsps; END;\nxspl:=[op(xspv)]; xspn:=size(xspl);\nIF xspn==0 THEN RETURN xsps; END;\nIF xspname<"+
+    ">""+"" AND xspname<>""*"" AND xspname<>""-"" AND xspn<>2 THEN RETURN xsps; END;\nIF xspname==""-"" AND xspn>2 THEN RETURN xsps; E"+
+    "ND;\nIF xspname==""*"" THEN\nxspr:=xspproducttext(xspv,xspl,xspd);\nIF xspr<>"""" THEN RETURN xspr; END;\nEND;\n\nIF xspname==""^"" "+
+    "AND xspn==2 THEN\nIF type(xspl[1])<>DOM_LIST AND string(xspl[2])==""1/2"" THEN\nRETURN ""sqrt(""+xsptext(xspl[1],xspd+1)+"")"";\n"+
+    "END;\nEND;\nxspr:="""";\nIF xspname==""-"" AND xspn==1 THEN xspr:=""-""; END;\nFOR xspk FROM 1 TO xspn DO\nIF string(xspl[xspk])==s"+
+    "tring(xspv) THEN RETURN xsps; END;\nIF xspk>1 THEN xspr:=xspr+xspname; END;\nxspr:=xspr+""(""+xsptext(xspl[xspk],xspd+1)+"")"""+
+    ";\nIF size(xspr)>6400 THEN RETURN xsps; END;\nEND;\nRETURN ""(""+xspr+"")"";\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsptext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsptext"; END;
+  xsis:="(type((xspatomwalk(xsav,xsaname,xsad):=BEGIN\nLOCAL xsar,xsal,xsak,xsan,xsah;\nIF inString(string(xsav),xsaname)==0 THEN R"+
+    "ETURN [1,xsav]; END;\nIF type(xsav)==DOM_IDENT THEN\nIF string(xsav)==xsaname THEN RETURN [1,i]; END;\nRETURN [1,xsav];\nEND"+
+    ";\nIF type(xsav)<>DOM_LIST AND type(xsav)<>DOM_SYMBOLIC THEN RETURN [1,xsav]; END;\nIF xsad>=24 THEN RETURN [0]; END;\nxsar"+
+    ":=xsav;\nIF type(xsav)==DOM_LIST THEN\nFOR xsak FROM 1 TO size(xsav) DO\nxsan:=xspatomwalk(xsav[xsak],xsaname,xsad+1);\nIF x"+
+    "san[1]==0 THEN RETURN [0]; END;\nIF string(xsan[2])<>string(xsav[xsak]) THEN xsar[xsak]:=xsan[2]; END;\nEND;\nRETURN [1,xsa"+
+    "r];\nEND;\nxsah:=string(xshead(xsav));\n\n\nIF xsah==""of"" OR xsah==""'of'"" THEN RETURN [0]; END;\nxsal:=[op(xsav)];\nFOR xsak FR"+
+    "OM 1 TO size(xsal) DO\nIF string(xsal[xsak])==string(xsav) THEN RETURN [0]; END;\nxsan:=xspatomwalk(xsal[xsak],xsaname,xsa"+
+    "d+1);\nIF xsan[1]==0 THEN RETURN [0]; END;\nIF string(xsan[2])<>string(xsal[xsak]) THEN xsar[xsak+1]:=xsan[2]; END;\nEND;\nR"+
+    "ETURN [1,xsar];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspatomwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspatomwalk"; END;
+  xsis:="(type((xsphold(xsps):=BEGIN\nLOCAL xspr,xspname,xsptextvalue,xspk,xspquoted,xspescape,xspch,xspfound;\nIF inString(xsps,""@"+
+    "@XSIMP_I@@"")==0 THEN RETURN expr(""quote(""+xsps+"")""); END;\n\nxspname:=""xsppimagatom"";\nWHILE inString(xsps,xspname)>0 DO xs"+
+    "pname:=xspname+""x""; END;\nxsptextvalue:=""""; xspk:=1; xspquoted:=0; xspescape:=0; xspfound:=0;\nWHILE xspk<=size(xsps) DO\nx"+
+    "spch:=mid(xsps,xspk,1);\nIF xspquoted==0 AND mid(xsps,xspk,11)==""@@XSIMP_I@@"" THEN\nxsptextvalue:=xsptextvalue+xspname; xs"+
+    "pk:=xspk+11; xspfound:=1;\nELSE\nxsptextvalue:=xsptextvalue+xspch; xspk:=xspk+1;\nIF xspescape==1 THEN xspescape:=0;\nELSE\nI"+
+    "F xspch==char(92) THEN xspescape:=1;\nELSE IF xspch==char(34) THEN xspquoted:=1-xspquoted; END; END;\nEND;\nEND;\nEND;\nxspr:"+
+    "=expr(""quote(""+xsptextvalue+"")"");\nIF xspfound THEN\nxspr:=xspatomwalk(xspr,xspname,0);\nIF xspr[1]==0 THEN RETURN undef; E"+
+    "ND;\nRETURN xspr[2];\nEND;\nRETURN xspr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsphold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsphold"; END;
+  xsis:="(type((xspresent(xspv):=BEGIN\nLOCAL xsps,xspclean,xspresult,xspsafe;\nIF type(xspv)==DOM_STRING THEN RETURN xspv; END;\nxs"+
+    "psafe:=xsidauto(xspv);\nIF xspsafe[2] THEN RETURN xspsafe[1]; END;\nxspv:=xspsafe[1];\nIFERR\nxspclean:=xspimagwalk(xspv,0);"+
+    "\nIF xsnewapprox(xspv,xspclean) THEN xspclean:=xspv; END;\n\n\n\nIF string(xspclean)<>string(xspv) AND type(xsuholegate)==DOM"+
+    "_FUNC THEN\nIF NOT xsuholegate(xspv,xspclean) THEN xspclean:=xspv; END;\nEND;\nxsps:=xsptext(xspclean,0);\nIF size(xsps)>640"+
+    "0 THEN RETURN xspv; END;\nxspresult:=xsphold(xsps);\nIF type(xspresult)==DOM_STRING OR has(xspresult,undef) OR has(xspresu"+
+    "lt,infinity) OR xsnewapprox(xspv,xspresult) THEN RETURN xspv; END;\n\n\nIF string(xspresult)<>string(xspclean) AND type(xsu"+
+    "holegate)==DOM_FUNC THEN\nIF NOT xsuholegate(xspclean,xspresult) THEN RETURN xspv; END;\nEND;\nRETURN xspresult;\nTHEN\nRETUR"+
+    "N xspv;\nEND;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspresent";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspresent"; END;
+  xsis:="(type((xsppa(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvr,xsvk,xsvj,xsvpart;\nxsvr:=mid([0],1,0);\nIF xsvdepth>=24 THEN RETU"+
+    "RN [0,0,0]; END;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsvr; END;\nxsvh:=xsve[1];\nIF xsvh==exp THEN RETURN [xsve]; END;"+
+    "\nIF type(xsvh)!=DOM_FUNC THEN RETURN [0,0,0]; END;\nIF string(xsvh)==""of"" OR string(xsvh)==""'of'"" THEN RETURN [0,0,0]; EN"+
+    "D;\nxsvl:=[op(xsve)];\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])==string(xsve) THEN RETURN [0,0,0]; END;\nxsvp"+
+    "art:=xsppa(xsvl[xsvk],xsvdepth+1);\nIF size(xsvpart)>2 THEN RETURN [0,0,0]; END;\nFOR xsvj FROM 1 TO size(xsvpart) DO\nIF N"+
+    "OT member(xsvpart[xsvj],xsvr) THEN xsvr:=append(xsvr,xsvpart[xsvj]); END;\nIF size(xsvr)>2 THEN RETURN [0,0,0]; END;\nEND;"+
+    "\nEND;\nRETURN xsvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsppa";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsppa"; END;
+  xsis:="(type((xspppowers(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF type(xsve)!=DOM_SYM"+
+    "BOLIC THEN RETURN 1; END;\nxsvh:=string(xsve[1]); xsvl:=[op(xsve)];\nIF xsvh==""'^'"" OR xsvh==""^"" THEN\nIF size(xsvl)!=2 THE"+
+    "N RETURN 0; END;\nIF type(xsvl[2])!=DOM_INT AND type(xsvl[2])!=DOM_RAT THEN\nIF NOT xspos(xsvl[1]) THEN RETURN 0; END;\nEND"+
+    ";\nEND;\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;\nIF NOT xspppowers(xsvl[x"+
+    "svk],xsvdepth+1) THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspppowers";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspppowers"; END;
+  xsis:="(type((xsppnz(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk,xsvs;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF size(xsppa(xsve,0)"+
+    ")==0 THEN\nIF size(lname(xsve))!=0 THEN RETURN 0; END;\nxsvs:=string(normal(sign(xsve)));\nRETURN xsvs==""1"" OR xsvs==""-1"";\n"+
+    "END;\nIF type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;\nxsvh:=xsve[1];\nIF xsvh==exp THEN RETURN 1; END;\nxsvl:=[op(xsve)];\nI"+
+    "F string(xsvh)==""'^'"" OR string(xsvh)==""^"" THEN\nIF size(xsvl)==2 AND type(xsvl[2])==DOM_INT THEN RETURN xsppnz(xsvl[1],x"+
+    "svdepth+1); END;\nEND;\nIF string(xsvh)!=""'*'"" AND string(xsvh)!=""*"" THEN RETURN 0; END;\nFOR xsvk FROM 1 TO size(xsvl) DO\n"+
+    "IF NOT xsppnz(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsppnz";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsppnz"; END;
+  xsis:="(type((xsppsafe(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 THEN RETURN 0; END;\nIF type(xsve)!=DOM_SYMBO"+
+    "LIC THEN RETURN 1; END;\nxsvh:=string(xsve[1]); xsvl:=[op(xsve)];\nIF xsvh==""'inv'"" OR xsvh==""inv"" THEN\nIF NOT xsppnz(xsvl"+
+    "[1],0) THEN RETURN 0; END;\nEND;\nIF xsvh==""'/'"" OR xsvh==""/"" THEN\nIF size(xsvl)!=2 THEN RETURN 0; END;\nIF NOT xsppnz(xsvl"+
+    "[2],0) THEN RETURN 0; END;\nEND;\nIF xsvh==""'^'"" OR xsvh==""^"" THEN\nIF size(xsvl)!=2 THEN RETURN 0; END;\nIF type(xsvl[2])=="+
+    "DOM_INT OR type(xsvl[2])==DOM_RAT THEN\nIF xsvl[2]<0 THEN\nIF NOT xsppnz(xsvl[1],0) THEN RETURN 0; END;\nEND;\nEND;\nEND;\nFOR"+
+    " xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;\nIF NOT xsppsafe(xsvl[xsvk],xsvdept"+
+    "h+1) THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsppsafe";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsppsafe"; END;
+  xsis:="(type((xspppowhint(xsve,xsvdepth):=BEGIN\nLOCAL xsvh,xsvl,xsvk;\nIF xsvdepth>=24 OR type(xsve)!=DOM_SYMBOLIC THEN RETURN 0"+
+    "; END;\nxsvh:=xsve[1];\nIF type(xsvh)!=DOM_FUNC THEN RETURN 0; END;\nIF string(xsvh)==""of"" OR string(xsvh)==""'of'"" THEN RET"+
+    "URN 0; END;\nxsvl:=[op(xsve)];\nIF string(xsvh)==""'^'"" OR string(xsvh)==""^"" THEN\nIF size(xsvl)==2 THEN\nIF type(xsvl[2])!=D"+
+    "OM_INT AND type(xsvl[2])!=DOM_RAT THEN RETURN 1; END;\nEND;\nEND;\nFOR xsvk FROM 1 TO size(xsvl) DO\nIF string(xsvl[xsvk])=="+
+    "string(xsve) THEN RETURN 0; END;\nIF xspppowhint(xsvl[xsvk],xsvdepth+1) THEN RETURN 1; END;\nEND;\nRETURN 0;\nEND))==DOM_FUN"+
+    "C)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspppowhint";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspppowhint"; END;
+  xsis:="(type((xspprecover(xsve,xsvf,xsva,xsvlen):=BEGIN\nLOCAL xsvu,xsvv,xsvm,xsvp,xsvz,xsvpoly,xsvden,xsv0,xsv1,xsv2,xsvc,xsvs,"+
+    "xsvr,xsvk,xsvtrig,xsvangle,xsvrlen,xsvtlen;\nIF size(xsva)<1 OR size(xsva)>2 THEN RETURN xsve; END;\nIFERR\n\n\nxsvz:=expr(""q"+
+    "uote(xsppostauxv)"");\nIF type(eval(xsvz))!=DOM_IDENT OR string(eval(xsvz))!=""xsppostauxv"" THEN RETURN xsve; END;\nIF has(x"+
+    "sve,xsvz) THEN RETURN xsve; END;\nIF NOT xsppsafe(xsvf,0) THEN RETURN xsve; END;\nxsvu:=op(xsva[1]);\nIF size(xsva)==1 THEN"+
+    "\nxsvf:=subst(xsvf,xsva[1],xsvz);\nELSE\nxsvv:=op(xsva[2]);\nxsvm:=normal((xsvu+xsvv)/2);\nxsvu:=normal((xsvu-xsvv)/2);\nxsvp:"+
+    "=xsclean(exp(xsvm));\nxsvf:=subst(xsvf,xsva,[xsvp*xsvz,xsvp/xsvz]);\nEND;\nIF size(xsppa(xsvf,0))>0 THEN\n\n\nFOR xsvk FROM 1 "+
+    "TO size(xsva) DO\nIF has(xsvf,xsva[xsvk]) THEN RETURN xsve; END;\nEND;\nEND;\nxsvpoly:=ratnormal(xsvf*xsvz);\nIF size(string("+
+    "xsvpoly))>3000 THEN RETURN xsve; END;\nxsvden:=denom(xsvpoly);\nIF has(xsvden,xsvz) THEN RETURN xsve; END;\nxsv0:=coeff(xsv"+
+    "poly,xsvz,0);\nxsv1:=coeff(xsvpoly,xsvz,1);\nxsv2:=coeff(xsvpoly,xsvz,2);\nIF has(xsv0,xsvz) OR has(xsv1,xsvz) OR has(xsv2,"+
+    "xsvz) THEN RETURN xsve; END;\nIF string(ratnormal(xsvpoly-xsv0-xsv1*xsvz-xsv2*xsvz^2))!=""0"" THEN RETURN xsve; END;\nxsvc:="+
+    "normal(xsv0+xsv2); xsvs:=normal(xsv2-xsv0);\nxsvr:=normal(xsv1)+xsvc*cosh(xsvu)+xsvs*sinh(xsvu);\n\n\nxsvangle:=normal(-i*xs"+
+    "vu);\nxsvtrig:=normal(xsv1)+xsvc*cos(xsvangle)+normal(i*xsvs)*sin(xsvangle);\nxsvrlen:=size(string(xsvr)); xsvtlen:=size(s"+
+    "tring(xsvtrig));\n\nIF xsnewapprox(xsve,xsvr) THEN xsvr:=xsve; xsvrlen:=xsvlen; END;\nIF xsnewapprox(xsve,xsvtrig) THEN xsv"+
+    "trig:=xsve; xsvtlen:=xsvlen; END;\nIF xsvtlen<xsvrlen THEN xsvr:=xsvtrig; xsvrlen:=xsvtlen; END;\nIF has(xsvr,undef) OR ha"+
+    "s(xsvr,infinity) THEN RETURN xsve; END;\nIF xsvrlen<xsvlen THEN RETURN xsvr; END;\nTHEN RETURN xsve;\nEND;\nRETURN xsve;\nEND"+
+    "))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspprecover";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspprecover"; END;
+  xsis:="(type((xsppostscalar(xsve):=BEGIN\nLOCAL xsvf,xsva,xsvr,xsvoldlogs,xsvnewlogs,xsvk,xsvtext,xsvlen;\nIF type(xsve)!=DOM_SYM"+
+    "BOLIC THEN RETURN xsve; END;\nxsvtext:=string(xsve); xsvlen:=size(xsvtext);\nIF xsvlen>1000 THEN RETURN xsve; END;\nIF has("+
+    "xsve,undef) OR has(xsve,infinity) THEN RETURN xsve; END;\nIFERR\n\n\nxsva:=xsppa(xsve,0);\nIF size(xsva)>=1 AND size(xsva)<=2"+
+    " THEN\nxsvr:=xspprecover(xsve,xsve,xsva,xsvlen);\nIF string(xsvr)!=xsvtext THEN RETURN xsvr; END;\nEND;\nIF NOT xspppowhint("+
+    "xsve,0) THEN RETURN xsve; END;\nIF NOT xspppowers(xsve,0) THEN RETURN xsve; END;\nxsvoldlogs:=xslogs(xsve);\nxsvf:=pow2exp("+
+    "xsve);\nIF xsnewapprox(xsve,xsvf) THEN RETURN xsve; END;\nIF string(xsvf)==xsvtext OR size(string(xsvf))>2000 THEN RETURN "+
+    "xsve; END;\nxsvnewlogs:=xslogs(xsvf);\nIF size(xsvnewlogs)>8 THEN RETURN xsve; END;\nFOR xsvk FROM 1 TO size(xsvnewlogs) DO"+
+    "\nIF NOT member(xsvnewlogs[xsvk],xsvoldlogs) THEN\nIF NOT xspos(op(xsvnewlogs[xsvk])) THEN RETURN xsve; END;\nEND;\nEND;\nxsv"+
+    "a:=xsppa(xsvf,0);\nRETURN xspprecover(xsve,xsvf,xsva,xsvlen);\nTHEN RETURN xsve;\nEND;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsppostscalar";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsppostscalar"; END;
+  xsis:="(type((xsmpost(xsmv):=BEGIN\nLOCAL xsmvr,xsmvi,xsmvj;\nIF NOT xsumatrix(xsmv) THEN RETURN xsmv; END;\nIF size(string(xsmv))"+
+    ">1600 THEN RETURN xsmv; END;\nxsmvr:=xsmv;\nFOR xsmvi FROM 1 TO rowDim(xsmv) DO\nFOR xsmvj FROM 1 TO colDim(xsmv) DO\nxsmvr["+
+    "xsmvi,xsmvj]:=xsppostscalar(xsmv[xsmvi,xsmvj]);\nEND;\nEND;\nRETURN xsmvr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsmpost";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsmpost"; END;
+  xsis:="(type((xshypnatural(xhpe):=BEGIN\nLOCAL xhpl;\nIF type(xhpe)<>DOM_SYMBOLIC THEN RETURN 0; END;\nIF xshead(xhpe)==exp THEN R"+
+    "ETURN 1; END;\nxhpl:=[op(xhpe)];\nIF string(xshead(xhpe))==""'^'"" OR string(xshead(xhpe))==""^"" THEN\nIF size(xhpl)==2 THEN R"+
+    "ETURN string(xhpl[1])==string(exp(1)); END;\nEND;\nRETURN 0;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypnatural";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypnatural"; END;
+  xsis:="(type((xshyparg(xhpe):=BEGIN\nLOCAL xhpl;\nIF xshead(xhpe)==exp THEN RETURN op(xhpe); END;\nxhpl:=[op(xhpe)]; RETURN xhpl[2"+
+    "];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshyparg";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshyparg"; END;
+  xsis:="(type((xshypguard(xhpe,xhpd,xhpb):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpc,xhpv;\nIF xhpd>=24 OR xhpb<1 THEN RETURN -1; END;"+
+    "\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1; END;\nI"+
+    "F type(xhpe)<>DOM_SYMBOLIC THEN RETURN -1; END;\nxhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];\nIF xspunarynam"+
+    "e(xhph)=="""" AND NOT member(xhpn,[""'+'"",""+"",""'-'"",""-"",""'*'"",""*"",""'/'"",""/"",""'inv'"",""inv"",""'^'"",""^""]) THEN RETURN -1; END;\n"+
+    "xhpc:=1;\nFOR xhpk FROM 1 TO size(xhpl) DO\nxhpv:=xshypguard(xhpl[xhpk],xhpd+1,xhpb-xhpc); IF xhpv<0 THEN RETURN -1; END; "+
+    "xhpc:=xhpc+xhpv;\nEND;\nRETURN xhpc;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypguard";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypguard"; END;
+  xsis:="(type((xshypholes(xhpe,xhpd,xhpinside,xhpstrict):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpr,xhpv,xhpj,xhpden;\nIF xhpd>=24 THE"+
+    "N RETURN [0]; END;\nxhpr:=mid([0],1,0); IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpr; END;\nxhph:=xshead(xhpe); xhpn:=stri"+
+    "ng(xhph); xhpl:=[op(xhpe)];\nIF xshypnatural(xhpe) THEN RETURN xshypholes(xshyparg(xhpe),xhpd+1,1,xhpstrict); END;\nIF xhp"+
+    "h==sinh OR xhph==cosh THEN xhpinside:=1; END;\nIF xhpstrict AND xhpinside THEN\nIF xspunaryname(xhph)<>"""" AND xhph<>sqrt T"+
+    "HEN RETURN [0]; END;\nEND;\nxhpden:=1;\nIF xhpn==""'inv'"" OR xhpn==""inv"" THEN xhpden:=xhpl[1]; END;\nIF xhpn==""'/'"" OR xhpn=="+
+    """/"" THEN IF size(xhpl)==2 THEN xhpden:=xhpl[2]; END; END;\nIF xhpn==""'^'"" OR xhpn==""^"" THEN\nIF size(xhpl)==2 AND (type(xh"+
+    "pl[2])==DOM_INT OR type(xhpl[2])==DOM_RAT) THEN IF xhpl[2]<0 THEN xhpden:=xhpl[1]; END; END;\nEND;\nIF string(xhpden)<>""1"""+
+    " AND (xhpinside OR NOT xhpstrict) THEN\nIF xshyppoly(xhpden,0) THEN\nIF size(lname(xhpden))>0 THEN xhpr:=append(xhpr,xhpde"+
+    "n); END;\nELSE IF xhpstrict AND xhpinside THEN RETURN [0]; END; END;\nEND;\nFOR xhpk FROM 1 TO size(xhpl) DO\nxhpv:=xshyphol"+
+    "es(xhpl[xhpk],xhpd+1,xhpinside,xhpstrict);\nFOR xhpj FROM 1 TO size(xhpv) DO\nIF string(xhpv[xhpj])==""0"" THEN RETURN [0]; "+
+    "END;\nIF NOT member(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;\nIF size(xhpr)>16 THEN RETURN [0]; END;\nEND;"+
+    "\nEND;\nRETURN xhpr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypholes";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypholes"; END;
+  xsis:="(type((xshypmono(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpk,xhpv,xhpr,xhpj,xhpsgn,xhpa,xhpb;\nIF xhpd>=24 THEN RETURN [0"+
+    "]; END;\nIF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT THEN RETURN [1,xhpe,mid([0],1,0),mid([0],1,0),0,0]; END;\nIF xshypn"+
+    "atural(xhpe) THEN RETURN [1,1,mid([0],1,0),mid([0],1,0),xshyparg(xhpe),1]; END;\nIF type(xhpe)<>DOM_SYMBOLIC THEN RETURN "+
+    "[1,1,[xhpe],mid([0],1,0),0,0]; END;\nxhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];\nIF xhpn==""'-'"" OR xhpn==""-"+
+    """ THEN\nIF size(xhpl)==1 THEN\nxhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 THEN RETURN xhpr; END; xhpr[2]:=-xhpr[2]; RE"+
+    "TURN xhpr;\nEND;\nEND;\nIF xhpn==""'inv'"" OR xhpn==""inv"" OR (xhpn==""'^'"" OR xhpn==""^"") AND size(xhpl)==2 AND string(xhpl[2])"+
+    "==""-1"" THEN\nxhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 OR xhpr[2]==0 THEN RETURN [0]; END;\nRETURN [1,1/xhpr[2],xhpr["+
+    "4],xhpr[3],-xhpr[5],xhpr[6]];\nEND;\nIF xhpn==""'/'"" OR xhpn==""/"" THEN\nIF size(xhpl)<>2 THEN RETURN [0]; END;\nxhpa:=xshypmo"+
+    "no(xhpl[1],xhpd+1); xhpb:=xshypmono(xhpl[2],xhpd+1);\nIF xhpa[1]==0 OR xhpb[1]==0 OR xhpb[2]==0 THEN RETURN [0]; END;\nxhp"+
+    "r:=[1,xhpa[2]/xhpb[2],xhpa[3],xhpa[4],xhpa[5]-xhpb[5],xhpa[6]+xhpb[6]];\nFOR xhpj FROM 1 TO size(xhpb[4]) DO xhpr[3]:=app"+
+    "end(xhpr[3],xhpb[4][xhpj]); END;\nFOR xhpj FROM 1 TO size(xhpb[3]) DO xhpr[4]:=append(xhpr[4],xhpb[3][xhpj]); END;\nRETURN"+
+    " xhpr;\nEND;\nIF xhpn<>""'*'"" AND xhpn<>""*"" THEN RETURN [1,1,[xhpe],mid([0],1,0),0,0]; END;\nxhpr:=[1,1,mid([0],1,0),mid([0]"+
+    ",1,0),0,0];\nFOR xhpk FROM 1 TO size(xhpl) DO\nxhpv:=xshypmono(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;\nxhp"+
+    "r[2]:=xhpr[2]*xhpv[2]; xhpr[5]:=xhpr[5]+xhpv[5]; xhpr[6]:=xhpr[6]+xhpv[6];\nFOR xhpj FROM 1 TO size(xhpv[3]) DO xhpr[3]:="+
+    "append(xhpr[3],xhpv[3][xhpj]); END;\nFOR xhpj FROM 1 TO size(xhpv[4]) DO xhpr[4]:=append(xhpr[4],xhpv[4][xhpj]); END;\nIF "+
+    "xhpr[6]>8 OR size(xhpr[3])+size(xhpr[4])>32 THEN RETURN [0]; END;\nEND;\nRETURN xhpr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypmono";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypmono"; END;
+  xsis:="(type((xshypcoeftext(xhpm):=BEGIN\nLOCAL xhps,xhpt,xhpk;\nxhps:="""";\nIF string(xhpm[2])<>""1"" OR size(xhpm[3])==0 THEN xhps:"+
+    "=xspnative(xhpm[2]); END;\nFOR xhpk FROM 1 TO size(xhpm[3]) DO\nIF xhps<>"""" THEN xhps:=xhps+""*""; END;\nxhps:=xhps+""(""+xspna"+
+    "tive(xhpm[3][xhpk])+"")"";\nEND;\nIF size(xhpm[4])>0 THEN\nxhpt:=""""; FOR xhpk FROM 1 TO size(xhpm[4]) DO\nIF xhpt<>"""" THEN xhp"+
+    "t:=xhpt+""*""; END;\nxhpt:=xhpt+""(""+xspnative(xhpm[4][xhpk])+"")"";\nEND;\nxhps:=""(""+xhps+"")/(""+xhpt+"")"";\nEND;\nRETURN xhps;\nEND"+
+    "))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypcoeftext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypcoeftext"; END;
+  xsis:="(type((xshyphold(xhps):=BEGIN RETURN xsphold(xhps); END))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshyphold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshyphold"; END;
+  xsis:="(type((xshyprebuild(xhph,xhpl):=BEGIN\nLOCAL xhpn,xhps,xhpk;\nxhpn:=xspunaryname(xhph);\nIF xhpn<>"""" AND size(xhpl)==1 THEN"+
+    " RETURN xshyphold(xhpn+""(""+xspnative(xhpl[1])+"")""); END;\nxhpn:=string(xhph); IF mid(xhpn,1,1)==""'"" THEN xhpn:=mid(xhpn,2"+
+    ",size(xhpn)-2); END;\nIF xhpn==""inv"" AND size(xhpl)==1 THEN RETURN xshyphold(""1/(""+xspnative(xhpl[1])+"")""); END;\nIF xhpn="+
+    "=""-"" AND size(xhpl)==1 THEN RETURN xshyphold(""-(""+xspnative(xhpl[1])+"")""); END;\nIF NOT member(xhpn,[""+"",""-"",""*"",""/"",""^""]"+
+    ") OR size(xhpl)==0 THEN RETURN undef; END;\nxhps:=""(""+xspnative(xhpl[1])+"")"";\nFOR xhpk FROM 2 TO size(xhpl) DO xhps:=xhps"+
+    "+xhpn+""(""+xspnative(xhpl[xhpk])+"")""; END;\nRETURN xshyphold(xhps);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshyprebuild";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshyprebuild"; END;
+  xsis:="(type((xshyproots(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpr,xhpv,xhpk,xhpj;\nIF xhpd>=24 THEN RETURN [0]; END;\nIF type("+
+    "xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN [1]; END;\nIF type("+
+    "xhpe)<>DOM_SYMBOLIC THEN RETURN [0]; END;\nxhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];\nIF xhph==sqrt OR ((x"+
+    "hpn==""'^'"" OR xhpn==""^"") AND size(xhpl)==2 AND string(xhpl[2])==""1/2"") THEN RETURN [1,xhpe]; END;\nIF xhph==exp OR xhph=="+
+    "sinh OR xhph==cosh OR xhph==sin OR xhph==cos THEN RETURN xshyproots(op(xhpe),xhpd+1); END;\nIF NOT member(xhpn,[""'+'"",""+"""+
+    ",""'-'"",""-"",""'*'"",""*"",""'/'"",""/"",""'inv'"",""inv"",""'^'"",""^""]) THEN RETURN [0]; END;\nIF xhpn==""'^'"" OR xhpn==""^"" THEN\nIF size("+
+    "xhpl)<>2 OR type(xhpl[2])<>DOM_INT OR abs(xhpl[2])>8 THEN RETURN [0]; END;\nEND;\nxhpr:=[1];\nFOR xhpk FROM 1 TO size(xhpl)"+
+    " DO\nxhpv:=xshyproots(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;\nFOR xhpj FROM 2 TO size(xhpv) DO\nIF NOT mem"+
+    "ber(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;\nIF size(xhpr)>2 THEN RETURN [0]; END;\nEND;\nEND;\nRETURN xhp"+
+    "r;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshyproots";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshyproots"; END;
+  xsis:="(type((xshypangle(xhpe):=BEGIN\nLOCAL xhpr,xhpv,xhpz,xhpinfo,xhproot,xhparg,xhpq,xhptext,xhpname,xhpk;\nIF size(string(xhp"+
+    "e))>1000 THEN RETURN xhpe; END;\nxhpr:=xshyproots(xhpe,0); IF xhpr[1]==0 THEN RETURN xhpe; END;\nIFERR\nxhpz:=expr(""quote(x"+
+    "shypangleaux)""); xhpinfo:=about(xhpz);\nIF type(xhpinfo)<>DOM_IDENT OR string(xhpinfo)<>""xshypangleaux"" OR inString(strin"+
+    "g(xhpe),""xshypangleaux"")>0 THEN RETURN xhpe; END;\nxhpv:=xhpe;\nIF size(xhpr)==2 THEN\nxhproot:=xhpr[2]; xhparg:=[op(xhproo"+
+    "t)]; xhparg:=xhparg[1];\n\n\nIF size(string(xhparg))<=512 AND xshyppoly(xhparg,0) THEN\nIF size(lname(xhparg))>0 AND size([o"+
+    "p(xhparg)])>1 THEN\nxhpq:=factor(xhparg);\nIF xshyppoly(xhpq,0) AND NOT xsnewapprox(xhparg,xhpq) THEN\nIF string(ratnormal("+
+    "xhpq-xhparg))==""0"" THEN\nxhpq:=xshyphold(""sqrt(""+xspnative(xhpq)+"")"");\nIF NOT xsnewapprox(xhproot,xhpq) AND size(string(x"+
+    "hpq))<size(string(xhproot)) THEN xhproot:=xhpq; END;\nEND;\nEND;\nEND;\nEND;\nxhpv:=subst(xhpv,xhpr[2],xhpz);\nEND;\nxhpv:=fact"+
+    "or(xhpv);\nIF size(xhpr)==2 THEN\n\n\n\nxhptext:=xspnative(xhpv); xhpname:=string(xhpz); xhpq:=""""; xhpk:=1;\nWHILE xhpk<=size("+
+    "xhptext) DO\nIF mid(xhptext,xhpk,size(xhpname))==xhpname THEN\nxhpq:=xhpq+""(""+xspnative(xhproot)+"")""; xhpk:=xhpk+size(xhpn"+
+    "ame);\nELSE xhpq:=xhpq+mid(xhptext,xhpk,1); xhpk:=xhpk+1; END;\nEND;\nxhpv:=xshyphold(xhpq);\nEND;\nIF NOT xsnewapprox(xhpe,x"+
+    "hpv) AND size(string(xhpv))<size(string(xhpe)) THEN RETURN xhpv; END;\nTHEN RETURN xhpe;\nEND;\nRETURN xhpe;\nEND))==DOM_FUN"+
+    "C)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypangle";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypangle"; END;
+  xsis:="(type((xshypwalk(xhpe,xhpd):=BEGIN\nLOCAL xhph,xhpn,xhpl,xhpr,xhpk,xhpq,xhpv,xhpa,xhpb,xhpc1,xhpc2,xhpu,xhpcenter,xhpdelt"+
+    "a,xhps,xhpkind,xhptmp,xhpchanged,xhpbest,xhporigroots;\nIF xhpd>=24 OR type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpe; END;\n\n\n"+
+    "IF xshyppoly(xhpe,0) THEN RETURN xhpe; END;\nxhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)]; xhpr:=mid([0],1,0)"+
+    ";\nxhporigroots:=mid([0],1,0);\nIF member(xhpn,[""'+'"",""+"",""'-'"",""-""]) AND size(xhpl)==2 THEN xhporigroots:=xshyproots(xhpe"+
+    ",0); END;\nFOR xhpk FROM 1 TO size(xhpl) DO\nxhpv:=xshypwalk(xhpl[xhpk],xhpd+1); xhpr:=append(xhpr,xhpv);\nEND;\nxhpq:=xhpe;"+
+    " xhpchanged:=string(xhpr)<>string(xhpl);\nIF xhpchanged THEN\nxhpq:=xshyprebuild(xhph,xhpr);\nIF xsnewapprox(xhpe,xhpq) THE"+
+    "N RETURN xhpe; END;\nEND;\n\n\nIF has(xhpq,undef) OR has(xhpq,infinity) THEN RETURN xhpe; END;\n\nIF (xhph==sqrt AND size(xhpr"+
+    ")==1) OR ((xhpn==""'^'"" OR xhpn==""^"") AND size(xhpr)==2 AND string(xhpr[2])==""1/2"") THEN\nxhpu:=xhpr[1];\nIF size(string(xh"+
+    "pu))<=512 AND xshyppoly(xhpu,0) THEN\nxhpv:=ratnormal(xhpu); xhptmp:=xshyphold(""sqrt(""+xspnative(xhpv)+"")"");\nIF NOT xsnew"+
+    "approx(xhpe,xhptmp) THEN RETURN xhptmp; END;\nEND;\nEND;\n\nIF xhpn==""'*'"" OR xhpn==""*"" OR xhpn==""'inv'"" OR xhpn==""inv"" OR x"+
+    "hpn==""'/'"" OR xhpn==""/"" THEN\n\n\nxhpkind:=xhpchanged;\nIF NOT xhpkind THEN\nxhpc1:=string(xhpq);\nxhpkind:=inString(xhpc1,""ex"+
+    "p("")>0 OR inString(xhpc1,""EXP("")>0 OR inString(xhpc1,""e^"")>0;\nEND;\nIF xhpkind THEN\nxhpa:=xshypmono(xhpq,0);\nIF xhpa[1]=="+
+    "1 AND xhpa[2]<>0 THEN\nxhpu:=normal(xhpa[5]);\nxhps:=xshypcoeftext(xhpa);\nIF string(xhpu)<>""0"" THEN\nIF xhps==""1"" THEN xhps"+
+    ":=""exp(""+xspnative(xhpu)+"")"";\nELSE xhps:=""(""+xhps+"")*exp(""+xspnative(xhpu)+"")""; END;\nEND;\nxhptmp:=xshyphold(xhps);\nIF NO"+
+    "T xsnewapprox(xhpe,xhptmp) AND size(string(xhptmp))<size(string(xhpq)) THEN xhpq:=xhptmp; END;\nEND;\nEND;\nEND;\nxhph:=xshe"+
+    "ad(xhpq); xhpn:=string(xhph); xhpl:=[op(xhpq)];\nIF NOT member(xhpn,[""'+'"",""+"",""'-'"",""-""]) OR size(xhpl)<>2 THEN RETURN x"+
+    "hpq; END;\nxhpa:=xshypmono(xhpl[1],0); xhpb:=xshypmono(xhpl[2],0);\nIF xhpa[1]<>1 OR xhpb[1]<>1 OR xhpa[6]<1 OR xhpb[6]<1 "+
+    "THEN RETURN xhpq; END;\nIF xhpn==""'-'"" OR xhpn==""-"" THEN xhpb[2]:=-xhpb[2]; END;\nxhpc1:=mid([0],1,0); xhpc2:=mid([0],1,0)"+
+    ";\nFOR xhpk FROM 1 TO size(xhpa[3]) DO xhpc1:=append(xhpc1,xspnative(xhpa[3][xhpk])); END;\nFOR xhpk FROM 1 TO size(xhpb[3"+
+    "]) DO xhpc2:=append(xhpc2,xspnative(xhpb[3][xhpk])); END;\nxhpchanged:=string(sort(xhpc1))==string(sort(xhpc2));\nxhpc1:=m"+
+    "id([0],1,0); xhpc2:=mid([0],1,0);\nFOR xhpk FROM 1 TO size(xhpa[4]) DO xhpc1:=append(xhpc1,xspnative(xhpa[4][xhpk])); END"+
+    ";\nFOR xhpk FROM 1 TO size(xhpb[4]) DO xhpc2:=append(xhpc2,xspnative(xhpb[4][xhpk])); END;\nxhpchanged:=xhpchanged AND str"+
+    "ing(sort(xhpc1))==string(sort(xhpc2));\nxhpkind:=0;\nIF xhpchanged THEN\nIF xhpa[2]==xhpb[2] THEN xhpkind:=1; END;\nIF xhpa["+
+    "2]==-xhpb[2] THEN xhpkind:=2; END;\nEND;\nIF xhpkind==2 AND xhpa[2]<0 AND xhpb[2]>0 THEN xhptmp:=xhpa; xhpa:=xhpb; xhpb:=x"+
+    "hptmp; END;\nxhpcenter:=normal((xhpa[5]+xhpb[5])/2);\nIF xhpkind==0 THEN\nxhpdelta:=ratnormal((xhpa[5]-xhpb[5])/2);\n\n\nIF si"+
+    "ze(xhporigroots)==0 OR xhporigroots[1]==0 THEN RETURN xhpe; END;\nxhpu:=string(xhpcenter)+"",""+string(xhpdelta);\nFOR xhpk "+
+    "FROM 2 TO size(xhporigroots) DO\nxhpc1:=[op(xhporigroots[xhpk])];\nxhpc1:=xshyphold(""sqrt(""+xspnative(ratnormal(xhpc1[1]))"+
+    "+"")"");\nIF inString(xhpu,string(xhpc1))==0 THEN RETURN xhpe; END;\nEND;\nxhpdelta:=xshypangle(xhpdelta);\nELSE xhpdelta:=xsh"+
+    "ypangle(normal((xhpa[5]-xhpb[5])/2)); END;\nIF string(xhpdelta)==""0"" THEN RETURN xhpq; END;\nIF xhpkind==0 THEN\n\n\n\nxhpc1:="+
+    "xshypcoeftext(xhpa); xhpc2:=xshypcoeftext(xhpb);\nxhpu:=xspnative(xhpdelta); xhps:="""";\nIF string(xhpcenter)<>""0"" THEN xhp"+
+    "s:=""exp(""+xspnative(xhpcenter)+"")*""; END;\nxhpbest:=xhpq;\nxhptmp:=xshyphold(xhps+""((""+xhpc1+"")*exp(""+xhpu+"")+(""+xhpc2+"")*"+
+    "exp(-(""+xhpu+"")))"");\nxhptmp:=xspresent(xhptmp);\nIF type(xhptmp)<>DOM_STRING AND NOT has(xhptmp,undef) AND NOT has(xhptmp"+
+    ",infinity) AND NOT xsnewapprox(xhpe,xhptmp) THEN\nIF size(string(xhptmp))<size(string(xhpbest)) THEN xhpbest:=xhptmp; END"+
+    ";\nEND;\nxhptmp:=xshyphold(xhps+""(((""+xhpc1+"")+(""+xhpc2+""))*cosh(""+xhpu+"")+((""+xhpc1+"")-(""+xhpc2+""))*sinh(""+xhpu+""))"");\nxh"+
+    "ptmp:=xspresent(xhptmp);\nIF type(xhptmp)<>DOM_STRING AND NOT has(xhptmp,undef) AND NOT has(xhptmp,infinity) AND NOT xsne"+
+    "wapprox(xhpe,xhptmp) THEN\nIF size(string(xhptmp))<size(string(xhpbest)) THEN xhpbest:=xhptmp; END;\nEND;\nRETURN xhpbest;\n"+
+    "END;\nxhpa[2]:=2*xhpa[2];\nIF xhpkind==1 THEN xhps:=""cosh""; ELSE xhps:=""sinh""; END;\nxhptmp:=xhps+""(""+xspnative(xhpdelta)+"""+
+    ")"";\nIF string(xhpcenter)<>""0"" THEN xhptmp:=""exp(""+xspnative(xhpcenter)+"")*""+xhptmp; END;\nxhpu:=xshypcoeftext(xhpa);\nIF x"+
+    "hpu<>""1"" THEN xhptmp:=""(""+xhpu+"")*""+xhptmp; END;\nxhptmp:=xshyphold(xhptmp);\nIF NOT xsnewapprox(xhpe,xhptmp) AND size(str"+
+    "ing(xhptmp))<size(string(xhpq)) THEN RETURN xhptmp; END;\nRETURN xhpq;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypwalk"; END;
+  xsis:="(type((xshypcompact(xhpe):=BEGIN\nLOCAL xhpoldholes,xhpnewholes,xhpprod,xhpk,xhpv,xhpr,xhptext,xhpden;\nIF type(xhpe)<>DOM"+
+    "_SYMBOLIC OR size(string(xhpe))>1600 THEN RETURN xhpe; END;\nxhptext:=string(xhpe);\nIF inString(xhptext,""exp("")==0 AND in"+
+    "String(xhptext,""EXP("")==0 AND inString(xhptext,""e^"")==0 THEN RETURN xhpe; END;\nIF xsapproxstate(xhpe,0)<>0 OR xshypguard"+
+    "(xhpe,0,768)<0 THEN RETURN xhpe; END;\nIFERR\nxhpoldholes:=xshypholes(xhpe,0,0,1);\nIF member(0,xhpoldholes) THEN RETURN xh"+
+    "pe; END;\nxhpr:=xshypwalk(xhpe,0);\nIF xsnewapprox(xhpe,xhpr) OR has(xhpr,undef) OR has(xhpr,infinity) OR size(string(xhpr"+
+    "))>=size(string(xhpe)) THEN RETURN xhpe; END;\nxhpnewholes:=xshypholes(xhpr,0,0,0);\nIF member(0,xhpnewholes) THEN RETURN "+
+    "xhpe; END;\nxhpprod:=1; FOR xhpk FROM 1 TO size(xhpnewholes) DO xhpprod:=xhpprod*xhpnewholes[xhpk]; IF size(string(xhppro"+
+    "d))>1600 THEN RETURN xhpe; END; END;\nFOR xhpk FROM 1 TO size(xhpoldholes) DO\nxhpv:=ratnormal(xhpprod/xhpoldholes[xhpk]);"+
+    "\nxhpden:=denom(xhpv);\nIF type(xhpden)<>DOM_INT AND type(xhpden)<>DOM_RAT THEN RETURN xhpe; END;\nIF xhpden==0 THEN RETURN"+
+    " xhpe; END;\nEND;\nRETURN xhpr;\nTHEN RETURN xhpe;\nEND;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xshypcompact";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xshypcompact"; END;
+  xsis:="(type((xsidpoly(xsie,xsid,xsimode):=BEGIN\nLOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsii,xsim;\nIF xsid>=16 THEN RETURN 0;"+
+    " END;\nxsit:=type(xsie);\nIF xsit==DOM_INT OR xsit==DOM_RAT OR xsit==DOM_COMPLEX THEN\nIF xsapproxstate(xsie,0)<>0 THEN RET"+
+    "URN 0; END;\nIF xsimode==3 AND xsit==DOM_COMPLEX THEN\nIF string(re(xsie))<>""0"" OR (string(im(xsie))<>""1"" AND string(im(xs"+
+    "ie))<>""-1"") THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND;\nIF xsit==DOM_IDENT THEN\nxsii:=about(xsie);\nIF type(xsii)==DOM_IDENT "+
+    "AND string(xsii)==string(xsie) THEN RETURN 1; END;\nRETURN 0;\nEND;\nIF xsit<>DOM_SYMBOLIC THEN RETURN 0; END;\nxsih:=xshead"+
+    "(xsie); xsin:=string(xsih); xsil:=[op(xsie)];\nIF xsimode==1 AND (xsih==sin OR xsih==cos) THEN\nIF size(xsil)<>1 THEN RETU"+
+    "RN 0; END;\nIF xsidpoly(xsil[1],xsid+1,3)==0 THEN RETURN 0; END;\nxsim:=xsidmono(xsil[1],0);\nIF xsim[1]==0 OR abs(xsim[2])"+
+    ">8 OR size(xsim[3])+size(xsim[4])>6 THEN RETURN 0; END;\nRETURN 2;\nEND;\nIF xsin==""'^'"" OR xsin==""^"" THEN\nIF xsimode==3 TH"+
+    "EN RETURN 0; END;\nIF size(xsil)<>2 OR type(xsil[2])<>DOM_INT THEN RETURN 0; END;\nIF abs(xsil[2])>16 THEN RETURN 0; END;\n"+
+    "IF xsimode<>2 AND xsil[2]<0 THEN RETURN 0; END;\nRETURN xsidpoly(xsil[1],xsid+1,xsimode);\nEND;\nIF xsin==""'inv'"" OR xsin=="+
+    """inv"" THEN\nIF size(xsil)<>1 THEN RETURN 0; END;\nIF xsimode<>2 THEN\nIF (type(xsil[1])<>DOM_INT AND type(xsil[1])<>DOM_RAT"+
+    ") OR xsil[1]==0 THEN RETURN 0; END;\nEND;\nELSE\nIF xsin==""'/'"" OR xsin==""/"" THEN\nIF size(xsil)<>2 THEN RETURN 0; END;\nIF x"+
+    "simode<>2 THEN\nIF (type(xsil[2])<>DOM_INT AND type(xsil[2])<>DOM_RAT) OR xsil[2]==0 THEN RETURN 0; END;\nEND;\nELSE\nIF NOT"+
+    " member(xsin,[""'+'"",""+"",""'-'"",""-"",""'*'"",""*""]) OR size(xsil)==0 THEN RETURN 0; END;\nEND;\nEND;\nIF xsimode==3 THEN\nIF (xsin"+
+    "==""'+'"" OR xsin==""+"") OR ((xsin==""'-'"" OR xsin==""-"") AND size(xsil)<>1) THEN RETURN 0; END;\nIF size(xsil)>6 THEN RETURN "+
+    "0; END;\nEND;\nxsir:=1;\nFOR xsik FROM 1 TO size(xsil) DO\nxsiv:=xsidpoly(xsil[xsik],xsid+1,xsimode);\nIF xsiv==0 THEN RETURN"+
+    " 0; END;\nIF xsiv==2 THEN xsir:=2; END;\nEND;\nRETURN xsir;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsidpoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsidpoly"; END;
+  xsis:="(type((xsidroot(xsie):=BEGIN\nLOCAL xsic,xsil,xsik,xsif,xsicoef,xsinn,xsidd,xsisn,xsisd,xsis,xsir,xsia;\nIF size(string(xs"+
+    "ie))>256 OR xsidpoly(xsie,0,1)<>2 THEN RETURN xsphold(""sqrt(""+xspnative(xsie)+"")""); END;\nIFERR\nxsic:=factor(texpand(xsie"+
+    "));\nIF xsidpoly(xsic,0,1)==0 OR xsnewapprox(xsie,xsic) THEN RETURN xsphold(""sqrt(""+xspnative(xsie)+"")""); END;\nIF NOT xsu"+
+    "holegate(xsie,xsic) THEN RETURN xsphold(""sqrt(""+xspnative(xsie)+"")""); END;\nxsil:=xspflatproduct(xsic,0); xsicoef:=1; xsi"+
+    "s:="""";\nFOR xsik FROM 1 TO size(xsil) DO\nxsif:=xsil[xsik];\nIF type(xsif)==DOM_INT OR type(xsif)==DOM_RAT THEN xsicoef:=xs"+
+    "icoef*xsif;\nELSE\nIF xsis<>"""" THEN xsis:=xsis+""*""; END;\nxsis:=xsis+""(""+xspnative(xsif)+"")"";\nEND;\nEND;\nxsir:=xsphold(""sqrt"+
+    "(""+xspnative(xsic)+"")"");\nIF xsicoef>0 THEN\nxsinn:=numer(xsicoef); xsidd:=denom(xsicoef); xsisn:=sqrt(xsinn); xsisd:=sqrt"+
+    "(xsidd);\nIF type(xsisn)==DOM_INT AND type(xsisd)==DOM_INT THEN\nIF xsis=="""" THEN xsis:=""1""; END;\nxsia:=xsisn/xsisd;\nIF xs"+
+    "ia==1 THEN xsir:=xsphold(""sqrt(""+xsis+"")"");\nELSE xsir:=xsphold(""(""+xspnative(xsia)+"")*sqrt(""+xsis+"")""); END;\nEND;\nEND;\nI"+
+    "F NOT xsnewapprox(xsie,xsir) THEN RETURN xsir; END;\nTHEN\nRETURN xsphold(""sqrt(""+xspnative(xsie)+"")"");\nEND;\nRETURN xsphol"+
+    "d(""sqrt(""+xspnative(xsie)+"")"");\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsidroot";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsidroot"; END;
+  xsis:="(type((xsidmono(xsie,xsid):=BEGIN\nLOCAL xsih,xsin,xsil,xsik,xsij,xsia,xsib,xsir;\nIF xsid>=24 THEN RETURN [0]; END;\nIF ty"+
+    "pe(xsie)==DOM_INT OR type(xsie)==DOM_RAT THEN RETURN [1,xsie,mid([0],1,0),mid([0],1,0)]; END;\nIF type(xsie)<>DOM_SYMBOLI"+
+    "C THEN RETURN [1,1,[xsie],mid([0],1,0)]; END;\nxsih:=xshead(xsie); xsin:=string(xsih); xsil:=[op(xsie)];\nIF (xsin==""'-'"" "+
+    "OR xsin==""-"") AND size(xsil)==1 THEN\nxsir:=xsidmono(xsil[1],xsid+1); IF xsir[1]==1 THEN xsir[2]:=-xsir[2]; END; RETURN x"+
+    "sir;\nEND;\nIF (xsin==""'inv'"" OR xsin==""inv"") OR ((xsin==""'^'"" OR xsin==""^"") AND size(xsil)==2 AND string(xsil[2])==""-1"") "+
+    "THEN\nxsia:=xsidmono(xsil[1],xsid+1); IF xsia[1]==0 OR xsia[2]==0 THEN RETURN [0]; END;\nRETURN [1,1/xsia[2],xsia[4],xsia["+
+    "3]];\nEND;\nIF (xsin==""'/'"" OR xsin==""/"") AND size(xsil)==2 THEN\nxsia:=xsidmono(xsil[1],xsid+1); xsib:=xsidmono(xsil[2],xs"+
+    "id+1);\nIF xsia[1]==0 OR xsib[1]==0 OR xsib[2]==0 THEN RETURN [0]; END;\nxsir:=[1,xsia[2]/xsib[2],xsia[3],xsia[4]];\nFOR xs"+
+    "ij FROM 1 TO size(xsib[4]) DO xsir[3]:=append(xsir[3],xsib[4][xsij]); END;\nFOR xsij FROM 1 TO size(xsib[3]) DO xsir[4]:="+
+    "append(xsir[4],xsib[3][xsij]); END;\nRETURN xsir;\nEND;\nIF xsin<>""'*'"" AND xsin<>""*"" THEN RETURN [1,1,[xsie],mid([0],1,0)]"+
+    "; END;\nxsir:=[1,1,mid([0],1,0),mid([0],1,0)];\nFOR xsik FROM 1 TO size(xsil) DO\nxsia:=xsidmono(xsil[xsik],xsid+1); IF xsi"+
+    "a[1]==0 THEN RETURN [0]; END;\nxsir[2]:=xsir[2]*xsia[2];\nFOR xsij FROM 1 TO size(xsia[3]) DO xsir[3]:=append(xsir[3],xsia"+
+    "[3][xsij]); END;\nFOR xsij FROM 1 TO size(xsia[4]) DO xsir[4]:=append(xsir[4],xsia[4][xsij]); END;\nIF size(xsir[3])+size("+
+    "xsir[4])>64 THEN RETURN [0]; END;\nEND;\nRETURN xsir;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsidmono";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsidmono"; END;
+  xsis:="(type((xsidwalk(xsie,xsid):=BEGIN\nLOCAL xsit,xsih,xsin,xsil,xsik,xsiv,xsir,xsiflag,xsiarg,xsic,xsim,xsinn,xsidd,xsis,xsi"+
+    "a,xsichanged;\nxsit:=type(xsie); xsiflag:=0;\nIF xsid>=24 OR size(string(xsie))>1600 THEN RETURN [xsie,0]; END;\nIF xsit==D"+
+    "OM_LIST THEN\nxsir:=xsie;\nFOR xsik FROM 1 TO size(xsie) DO\nxsiv:=xsidwalk(xsie[xsik],xsid+1); xsir[xsik]:=xsiv[1];\nIF xsi"+
+    "v[2] THEN xsiflag:=1; END;\nEND;\nRETURN [xsir,xsiflag];\nEND;\nIF xsit<>DOM_SYMBOLIC THEN RETURN [xsie,0]; END;\nxsih:=xshea"+
+    "d(xsie); xsin:=string(xsih); xsil:=[op(xsie)];\nIF xsin==""of"" OR xsin==""'of'"" THEN RETURN [xsie,0]; END;\n\n\n\nFOR xsik FROM"+
+    " 1 TO size(xsil) DO IF type(xsil[xsik])==DOM_LIST THEN RETURN [xsie,0]; END; END;\n\n\nIF (xsin==""'^'"" OR xsin==""^"") AND si"+
+    "ze(xsil)==2 THEN\nIF type(xsil[2])<>DOM_INT AND xshypnatural(xsil[1]) THEN RETURN [xsie,1]; END;\nEND;\nIF xsih==sqrt OR (("+
+    "xsin==""'^'"" OR xsin==""^"") AND size(xsil)==2 AND string(xsil[2])==""1/2"") THEN\nxsiarg:=xsil[1]; xsis:=string(xsiarg);\nIF x"+
+    "shypnatural(xsiarg) THEN RETURN [xsie,1]; END;\nIF size(lname(xsiarg))>0 AND (inString(xsis,""sin"")>0 OR inString(xsis,""co"+
+    "s"")>0 OR inString(xsis,""SIN"")>0 OR inString(xsis,""COS"")>0) THEN\nxsiflag:=1; xsir:=xsidroot(xsiarg);\nIF size(string(xsir)"+
+    ")<size(string(xsie)) AND NOT xsnewapprox(xsie,xsir) AND xsuholegate(xsie,xsir) THEN RETURN [xsir,1]; END;\nRETURN [xsie,1"+
+    "];\nEND;\nEND;\nxsir:=xsie; xsichanged:=0;\nFOR xsik FROM 1 TO size(xsil) DO\nIF string(xsil[xsik])==string(xsie) THEN RETURN"+
+    " [xsie,xsiflag]; END;\nxsiv:=xsidwalk(xsil[xsik],xsid+1);\nIF xsiv[2] THEN xsiflag:=1; END;\nIF string(xsiv[1])<>string(xsi"+
+    "l[xsik]) THEN xsir[xsik+1]:=xsiv[1]; xsichanged:=1; END;\nEND;\nxsil:=[op(xsir)];\nIF (xsin==""'^'"" OR xsin==""^"") AND size(x"+
+    "sil)==2 AND type(xsil[2])==DOM_INT THEN\nIF xshypnatural(xsil[1]) THEN\nxsiarg:=xshyparg(xsil[1]);\nIF xsidpoly(xsiarg,0,2)"+
+    ">0 THEN\nxsic:=xsphold(""(""+xspnative(xsil[2])+"")*(""+xspnative(xsiarg)+"")"");\nxsia:=ratnormal(eval(xsic));\nIF NOT xsnewappr"+
+    "ox(xsic,xsia) AND xsuholegate(xsic,xsia) THEN xsic:=xsia; END;\nxsia:=xsphold(""exp(""+xspnative(xsic)+"")"");\nIF NOT xsnewap"+
+    "prox(xsir,xsia) AND xsuholegate(xsir,xsia) THEN RETURN [xsia,xsiflag]; END;\nEND;\nEND;\nEND;\nIF xsiflag OR xsichanged THEN"+
+    "\nIF member(xsin,[""'*'"",""*"",""'/'"",""/"",""'inv'"",""inv""]) THEN\nxsim:=xsidmono(xsir,0);\nIF xsim[1] THEN\nxsinn:=""""; xsidd:="""";\n"+
+    "IF numer(xsim[2])<>1 OR size(xsim[3])==0 THEN xsinn:=xspnative(numer(xsim[2])); END;\nIF denom(xsim[2])<>1 THEN xsidd:=xs"+
+    "pnative(denom(xsim[2])); END;\nFOR xsik FROM 1 TO size(xsim[3]) DO\nIF xsinn<>"""" THEN xsinn:=xsinn+""*""; END;\nxsinn:=xsinn+"+
+    """(""+xspnative(xsim[3][xsik])+"")"";\nEND;\nFOR xsik FROM 1 TO size(xsim[4]) DO\nIF xsidd<>"""" THEN xsidd:=xsidd+""*""; END;\nxsid"+
+    "d:=xsidd+""(""+xspnative(xsim[4][xsik])+"")"";\nEND;\nIF xsidd=="""" THEN xsia:=xsphold(xsinn);\nELSE xsia:=xsphold(""(""+xsinn+"")/"+
+    "(""+xsidd+"")""); END;\nIF NOT xsnewapprox(xsir,xsia) AND xsuholegate(xsir,xsia) AND size(string(xsia))<size(string(xsir)) T"+
+    "HEN xsir:=xsia; END;\nEND;\nEND;\nEND;\nRETURN [xsir,xsiflag];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsidwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsidwalk"; END;
+  xsis:="(type((xsidauto(xsie):=BEGIN\nLOCAL xsis;\nIF type(xsie)<>DOM_SYMBOLIC THEN RETURN [xsie,0]; END;\nxsis:=string(xsie);\nIF i"+
+    "nString(xsis,""sin"")==0 AND inString(xsis,""cos"")==0 AND\ninString(xsis,""SIN"")==0 AND inString(xsis,""COS"")==0 AND\ninString("+
+    "xsis,""(e^"")==0 AND inString(xsis,""(exp("")==0 AND\ninString(xsis,""(EXP("")==0 THEN RETURN [xsie,0]; END;\nIF size(xsis)>1600"+
+    " OR xshypguard(xsie,0,768)<0 THEN RETURN [xsie,0]; END;\nIFERR RETURN xsidwalk(xsie,0); THEN RETURN [xsie,0]; END;\nEND))="+
+    "=DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsidauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsidauto"; END;
+  xsis:="(type((xspfcheck(xspfe,xspfc):=BEGIN\nIF type(xspfc)==DOM_STRING OR NOT xsidpoly(xspfc,0,0) THEN RETURN 0; END;\nIF xsnewa"+
+    "pprox(xspfe,xspfc) THEN RETURN 0; END;\nIFERR RETURN string(ratnormal(xspfc-xspfe))==""0""; THEN RETURN 0; END;\nEND))==DOM_"+
+    "FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspfcheck";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspfcheck"; END;
+  xsis:="(type((xspfpoly(xspfe,xspfd):=BEGIN\nLOCAL xspfbest,xspff,xspfh,xspfn,xspfl,xspfnew,xspfv,xspfvars,xspfdeg,xspfk,xspfj,xs"+
+    "pfcoef,xspfs,xspft,xspfchanged,xspfcount;\nIF xspfd>2 OR size(string(xspfe))>512 OR type(xspfe)<>DOM_SYMBOLIC THEN RETURN"+
+    " xspfe; END;\nIF xsidpoly(xspfe,0,0)<>1 THEN RETURN xspfe; END;\nxspfvars:=lname(xspfe);\nIF size(xspfvars)>5 THEN RETURN x"+
+    "spfe; END;\nxspfbest:=xspfe;\nIFERR\nxspff:=factor(xspfe);\nIF size(string(xspff))<size(string(xspfbest)) AND xspfcheck(xspf"+
+    "e,xspff) THEN xspfbest:=xspff; END;\n\n\nxspfh:=xshead(xspff); xspfn:=string(xspfh); xspfl:=[op(xspff)];\nIF (xspfn==""'*'"" O"+
+    "R xspfn==""*"") AND xspfd<2 AND size(xspfl)<=8 THEN\nxspfchanged:=0;\nFOR xspfk FROM 1 TO size(xspfl) DO\nIF type(xspfl[xspfk"+
+    "])==DOM_SYMBOLIC THEN\nxspfn:=string(xshead(xspfl[xspfk]));\nIF (xspfn==""'+'"" OR xspfn==""+"" OR xspfn==""'-'"" OR xspfn==""-"")"+
+    " AND size([op(xspfl[xspfk])])>=3 THEN\nxspfnew:=xspfpoly(xspfl[xspfk],xspfd+1);\nIF string(xspfnew)<>string(xspfl[xspfk]) "+
+    "THEN xspfl[xspfk]:=xspfnew; xspfchanged:=1; END;\nEND;\nEND;\nEND;\nIF xspfchanged THEN\nxspfnew:=xshyprebuild(xspfh,xspfl);\n"+
+    "IF size(string(xspfnew))<size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;\nEND;\nEND;\n\n\n\nx"+
+    "spfn:=string(xshead(xspfe));\nIF xspfn<>""'+'"" AND xspfn<>""+"" AND xspfn<>""'-'"" AND xspfn<>""-"" THEN RETURN xspfbest; END;\nI"+
+    "F size([op(xspfe)])<3 THEN RETURN xspfbest; END;\nFOR xspfj FROM 1 TO size(xspfvars) DO\nxspfv:=xspfvars[xspfj]; xspfdeg:="+
+    "degree(xspfe,xspfv);\nIF type(xspfdeg)==DOM_INT AND xspfdeg>=1 AND xspfdeg<=4 THEN\nxspfs:=""""; xspfcount:=0;\nFOR xspfk FRO"+
+    "M 0 TO xspfdeg DO\nxspfcoef:=coeff(xspfe,xspfv,xspfk);\nIF string(xspfcoef)<>""0"" THEN\nIF type(xspfcoef)==DOM_SYMBOLIC THEN"+
+    " xspfcoef:=factor(xspfcoef); END;\nIF xsidpoly(xspfcoef,0,0)<>1 THEN RETURN xspfbest; END;\nxspft:=""(""+xspnative(xspfcoef)"+
+    "+"")"";\nIF xspfk>0 THEN\nIF string(xspfcoef)==""1"" THEN xspft:=""(""+xspnative(xspfv)+"")"";\nELSE xspft:=xspft+""*(""+xspnative(xs"+
+    "pfv)+"")""; END;\nIF xspfk>1 THEN xspft:=xspft+""^""+string(xspfk); END;\nEND;\nIF xspfs<>"""" THEN xspfs:=xspfs+""+""; END;\nxspfs:"+
+    "=xspfs+xspft; xspfcount:=xspfcount+1;\nEND;\nEND;\nIF xspfcount>0 THEN\nxspfnew:=xshyphold(xspfs);\nIF size(string(xspfnew))<"+
+    "size(string(xspfbest)) AND xspfcheck(xspfe,xspfnew) THEN xspfbest:=xspfnew; END;\nEND;\nEND;\nEND;\nTHEN RETURN xspfbest;\nEN"+
+    "D;\nRETURN xspfbest;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspfpoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspfpoly"; END;
+  xsis:="(type((xspfwalk(xsfe,xsfd,xsfcache):=BEGIN\nLOCAL xsfh,xsfn,xsfl,xsfr,xsfk,xsfv,xsfq,xsfkey,xsfchanged,xsfterms,xsfpolys,"+
+    "xsfothers,xsftext,xsfsgn,xsft;\nIF xsfd>=24 THEN RETURN [xsfe,xsfcache]; END;\nIF type(xsfe)==DOM_LIST THEN\nxsfr:=mid([0],"+
+    "1,0);\nFOR xsfk FROM 1 TO size(xsfe) DO\nxsfv:=xspfwalk(xsfe[xsfk],xsfd+1,xsfcache); xsfcache:=xsfv[2]; xsfr:=append(xsfr,"+
+    "xsfv[1]);\nEND;\nRETURN [xsfr,xsfcache];\nEND;\nIF type(xsfe)<>DOM_SYMBOLIC THEN RETURN [xsfe,xsfcache]; END;\nxsfkey:=string"+
+    "(xsfe);\nIF size(xsfkey)>1600 THEN RETURN [xsfe,xsfcache]; END;\nIF xsidpoly(xsfe,0,0)==1 THEN\nFOR xsfk FROM 1 TO size(xsf"+
+    "cache) DO\nIF xsfcache[xsfk][1]==xsfkey THEN RETURN [xsfcache[xsfk][2],xsfcache]; END;\nEND;\nxsfv:=xspfpoly(xsfe,0);\nIF si"+
+    "ze(xsfcache)<24 AND size(xsfkey)>12 THEN xsfcache:=append(xsfcache,[xsfkey,xsfv]); END;\nRETURN [xsfv,xsfcache];\nEND;\nxsf"+
+    "h:=xshead(xsfe); xsfn:=string(xsfh); xsfl:=[op(xsfe)];\nIF xspunaryname(xsfh)=="""" AND NOT member(xsfn,[""'+'"",""+"",""'-'"",""-"+
+    """,""'*'"",""*"",""'/'"",""/"",""'inv'"",""inv"",""'^'"",""^""]) THEN RETURN [xsfe,xsfcache]; END;\nxsfr:=mid([0],1,0); xsfchanged:=0;\nFOR"+
+    " xsfk FROM 1 TO size(xsfl) DO\nIF string(xsfl[xsfk])==xsfkey THEN RETURN [xsfe,xsfcache]; END;\nxsfv:=xspfwalk(xsfl[xsfk],"+
+    "xsfd+1,xsfcache); xsfcache:=xsfv[2];\nxsfr:=append(xsfr,xsfv[1]);\nIF string(xsfv[1])<>string(xsfl[xsfk]) THEN xsfchanged:"+
+    "=1; END;\nEND;\nxsfq:=xsfe;\nIF xsfchanged THEN xsfq:=xshyprebuild(xsfh,xsfr); END;\n\n\nIF member(xsfn,[""'+'"",""+"",""'-'"",""-""])"+
+    " THEN\nxsfterms:=xspfterms(xsfq,0,1); xsfpolys:=mid([0],1,0); xsfothers:=mid([0],1,0);\nIF size(xsfterms)>32 THEN RETURN ["+
+    "xsfq,xsfcache]; END;\nFOR xsfk FROM 1 TO size(xsfterms) DO\nxsft:=xsfterms[xsfk];\nIF xsidpoly(xsft[2],0,0)==1 THEN xsfpoly"+
+    "s:=append(xsfpolys,xsft);\nELSE xsfothers:=append(xsfothers,xsft); END;\nEND;\nIF size(xsfpolys)>1 AND size(xsfothers)>0 TH"+
+    "EN\nxsftext:="""";\nFOR xsfk FROM 1 TO size(xsfpolys) DO\nxsft:=xsfpolys[xsfk];\nIF xsftext<>"""" THEN xsftext:=xsftext+""+""; END"+
+    ";\nIF xsft[1]<0 THEN xsftext:=xsftext+""-(""+xspnative(xsft[2])+"")"";\nELSE xsftext:=xsftext+""(""+xspnative(xsft[2])+"")""; END;"+
+    "\nEND;\nxsfv:=xspfpoly(xshyphold(xsftext),0); xsftext:=""(""+xspnative(xsfv)+"")"";\nFOR xsfk FROM 1 TO size(xsfothers) DO\nxsft"+
+    ":=xsfothers[xsfk];\nIF xsft[1]<0 THEN xsftext:=xsftext+""-(""+xspnative(xsft[2])+"")"";\nELSE xsftext:=xsftext+""+(""+xspnative("+
+    "xsft[2])+"")""; END;\nEND;\nxsfv:=xshyphold(xsftext);\nIF NOT xsnewapprox(xsfq,xsfv) AND size(string(xsfv))<size(string(xsfq)"+
+    ") THEN xsfq:=xsfv; END;\nEND;\nEND;\nIF has(xsfq,undef) OR has(xsfq,infinity) OR xsnewapprox(xsfe,xsfq) THEN RETURN [xsfe,x"+
+    "sfcache]; END;\nRETURN [xsfq,xsfcache];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspfwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspfwalk"; END;
+  xsis:="(type((xspfterms(xsfe,xsfd,xsfsgn):=BEGIN\nLOCAL xsfn,xsfl,xsfr,xsfv,xsfk,xsfj,xsfs;\nIF xsfd>=16 OR type(xsfe)<>DOM_SYMBO"+
+    "LIC THEN RETURN [[xsfsgn,xsfe]]; END;\nxsfn:=string(xshead(xsfe)); xsfl:=[op(xsfe)];\nIF NOT member(xsfn,[""'+'"",""+"",""'-'"","+
+    """-""]) THEN RETURN [[xsfsgn,xsfe]]; END;\nxsfr:=mid([0],1,0);\nFOR xsfk FROM 1 TO size(xsfl) DO\nxsfs:=xsfsgn;\nIF (xsfn==""'-"+
+    "'"" OR xsfn==""-"") AND (size(xsfl)==1 OR xsfk>1) THEN xsfs:=-xsfs; END;\nxsfv:=xspfterms(xsfl[xsfk],xsfd+1,xsfs);\nFOR xsfj "+
+    "FROM 1 TO size(xsfv) DO xsfr:=append(xsfr,xsfv[xsfj]); END;\nIF size(xsfr)>32 THEN RETURN [[xsfsgn,xsfe]]; END;\nEND;\nRETU"+
+    "RN xsfr;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspfterms";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspfterms"; END;
+  xsis:="(type((xspfauto(xsfe):=BEGIN\nLOCAL xsfr,xsfv;\nIF type(xsfe)<>DOM_SYMBOLIC AND type(xsfe)<>DOM_LIST THEN RETURN xsfe; END"+
+    ";\nIF size(string(xsfe))>1600 OR xsapproxstate(xsfe,0)<>0 THEN RETURN xsfe; END;\nIF type(xsfe)==DOM_SYMBOLIC THEN IF xshy"+
+    "pguard(xsfe,0,768)<0 THEN RETURN xsfe; END; END;\nIFERR\nxsfr:=xspfwalk(xsfe,0,mid([0],1,0)); xsfv:=xsfr[1];\nIF size(strin"+
+    "g(xsfv))>=size(string(xsfe)) OR xsnewapprox(xsfe,xsfv) OR has(xsfv,undef) OR has(xsfv,infinity) THEN RETURN xsfe; END;\nI"+
+    "F NOT xsuholegate(xsfe,xsfv) OR NOT xsuholegate(xsfv,xsfe) THEN RETURN xsfe; END;\nRETURN xsfv;\nTHEN RETURN xsfe;\nEND;\nEN"+
+    "D))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xspfauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xspfauto"; END;
+  xsis:="(type((xsumatrix(xsuinput):=BEGIN\nLOCAL xsuj,xsun;\nIF type(xsuinput)!=DOM_LIST THEN RETURN 0; END;\nIF size(xsuinput)==0 "+
+    "THEN RETURN 0; END;\nIF type(xsuinput[1])!=DOM_LIST THEN RETURN 0; END;\nxsun:=size(xsuinput[1]);\nIF xsun==0 THEN RETURN 0"+
+    "; END;\nFOR xsuj FROM 1 TO size(xsuinput) DO\nIF type(xsuinput[xsuj])!=DOM_LIST THEN RETURN 0; END;\nIF size(xsuinput[xsuj]"+
+    ")!=xsun THEN RETURN 0; END;\nEND;\nRETURN 1;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsumatrix";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsumatrix"; END;
+  xsis:="(type((xsutree0(xsuinput,xsulevel):=BEGIN\nLOCAL xsuhead,xsulist,xsures,xsuj,xsuarg,xsupow,xsucoef,xsumat,xsufound,xsufac"+
+    "t,xsuscalar,xsusafe;\nIF xsulevel>24 THEN RETURN ""XSIMP: expression depth exceeds 24""; END;\nIF size(string(xsuinput))>160"+
+    "0 THEN RETURN ""XSIMP: expression exceeds 1600 characters""; END;\nIF type(xsuinput)==DOM_STRING THEN RETURN xsuinput; END;"+
+    "\nxsusafe:=xsidauto(xsuinput);\nIF xsusafe[2] OR (string(xsusafe[1])<>string(xsuinput) AND xshypnatural(xsusafe[1])) THEN "+
+    "RETURN xsusafe[1]; END;\nxsuinput:=xsusafe[1];\nIF type(xsuinput)==DOM_LIST THEN\nxsures:=mid([0],1,0);\nFOR xsuj FROM 1 TO "+
+    "size(xsuinput) DO\n\n\nxsuarg:=xsuinput[xsuj]; xsupow:=xsuarg;\nIF type(xsuarg)!=DOM_LIST THEN xsupow:=xsppostscalar(xsuarg)"+
+    "; END;\nIF string(xsupow)!=string(xsuarg) THEN\nxsuarg:=xsupow;\nELSE\nxsuarg:=xsutree0(xsuarg,xsulevel+1);\nIF type(xsuarg)="+
+    "=DOM_STRING THEN RETURN xsuarg; END;\nIF type(xsuarg)!=DOM_LIST THEN\nxsuarg:=xsscalar(xsuarg);\n\nxsuarg:=xsppostscalar(xsu"+
+    "arg);\nEND;\nEND;\nxsures:=append(xsures,xsuarg);\nEND;\nRETURN xsures;\nEND;\nIF type(xsuinput)==DOM_IDENT THEN\nxsuarg:=eval(x"+
+    "suinput);\nIF xsumatrix(xsuarg) THEN RETURN xsutree0(xsuarg,xsulevel+1); END;\nRETURN xsuarg;\nEND;\nIF type(xsuinput)!=DOM_"+
+    "SYMBOLIC THEN RETURN xsuinput; END;\nxsuhead:=xsuinput[1];\nIF type(xsuhead)!=DOM_FUNC THEN RETURN ""XSIMP: unsupported exp"+
+    "ression operator""; END;\nIF string(xsuhead)==""of"" OR string(xsuhead)==""'of'"" THEN RETURN ""XSIMP: user function calls are "+
+    "not supported in quoted input""; END;\n\nIF xsuhead==exp THEN\nxsuarg:=op(xsuinput);\nIF type(xsuarg)==DOM_SYMBOLIC THEN\nIF s"+
+    "tring(xsuarg[1])==""'*'"" OR string(xsuarg[1])==""*"" THEN\nxsufact:=[op(xsuarg)]; xsucoef:=1; xsufound:=0; xsuscalar:=1;\nFOR"+
+    " xsuj FROM 1 TO size(xsufact) DO\n\n\n\nxsupow:=xsutree0(xsufact[xsuj],xsulevel+2);\nIF type(xsupow)==DOM_STRING THEN\nxsuscal"+
+    "ar:=0; xsupow:=xsutree0(xsufact[xsuj],xsulevel+1);\nEND;\nIF type(xsupow)==DOM_STRING THEN RETURN xsupow; END;\nxsufact[xsu"+
+    "j]:=xsupow;\nIF type(xsupow)==DOM_LIST THEN xsuscalar:=0; END;\nIF xsumatrix(xsupow) THEN\nIF xsufound==0 THEN xsumat:=xsup"+
+    "ow; xsufound:=1;\nELSE xsumat:=xsumat*xsupow; END;\nELSE xsucoef:=xsucoef*xsupow; END;\nEND;\nIF xsufound==1 THEN RETURN XEX"+
+    "PT(xsumat,xsucoef); END;\nIF xsuscalar THEN\n\n\nxsupow:=xshead(xsuarg); xsupow:=xsupow(op(xsufact));\nIF xsnewapprox(xsuarg,"+
+    "xsupow) THEN xsupow:=xsuarg; END;\nIF xsumatrix(xsupow) THEN RETURN XEXP(xsupow); END;\nxsupow:=xsuhead(xsupow);\nIF xsnewa"+
+    "pprox(xsuinput,xsupow) THEN RETURN xsuinput; END;\nRETURN xsupow;\nEND;\nEND;\nEND;\nEND;\n\nIF xsuhead==exp OR xsuhead==sin OR"+
+    " xsuhead==cos OR xsuhead==sinh OR xsuhead==cosh OR xsuhead==sqrt THEN\nIF string(op(xsuinput))==string(xsuinput) THEN RET"+
+    "URN ""XSIMP: expression traversal did not progress""; END;\nxsuarg:=op(xsuinput);\nIF type(xsuarg)==DOM_LIST THEN xsuarg:=[x"+
+    "suarg]; END;\nxsuarg:=xsutree0(xsuarg,xsulevel+1);\nIF type(xsuarg)==DOM_STRING THEN RETURN xsuarg; END;\nIF xsumatrix(xsua"+
+    "rg) THEN\nIF xsuhead==exp THEN RETURN XEXP(xsuarg); END;\nIF xsuhead==sin THEN RETURN XSIN(xsuarg); END;\nIF xsuhead==cos T"+
+    "HEN RETURN XCOS(xsuarg); END;\nIF xsuhead==sinh THEN RETURN (XEXP(xsuarg)-XEXP(-xsuarg))/2; END;\nIF xsuhead==cosh THEN RE"+
+    "TURN (XEXP(xsuarg)+XEXP(-xsuarg))/2; END;\nEND;\nIF xsuhead==sqrt AND type(xsuarg)!=DOM_LIST THEN RETURN xsmroot(xsuarg); "+
+    "END;\nxsupow:=xsuhead(xsuarg);\nIF xsnewapprox(xsuinput,xsupow) THEN RETURN xsuinput; END;\nRETURN xsupow;\nEND;\nxsulist:=[o"+
+    "p(xsuinput)]; xsures:=mid([0],1,0);\nFOR xsuj FROM 1 TO size(xsulist) DO\nIF string(xsulist[xsuj])==string(xsuinput) THEN "+
+    "RETURN ""XSIMP: expression traversal did not progress""; END;\nxsuarg:=xsutree0(xsulist[xsuj],xsulevel+1);\nIF type(xsuarg)="+
+    "=DOM_STRING THEN RETURN xsuarg; END;\nxsures:=append(xsures,xsuarg);\nEND;\nIF string(xsuhead)==""'^'"" OR string(xsuhead)=="""+
+    "^"" THEN\nIF size(xsures)==2 THEN\nxsuarg:=xsures[1]; xsupow:=xsures[2];\nIF xsumatrix(xsupow) THEN\nIF NOT xsumatrix(xsuarg)"+
+    " THEN RETURN XPOW(xsuarg,xsupow); END;\nEND;\nIF type(xsupow)==DOM_RAT AND xsupow==1/2 AND type(xsuarg)!=DOM_LIST THEN RET"+
+    "URN xsmroot(xsuarg); END;\nEND;\nEND;\nxsuarg:=xsuhead(op(xsures));\nIF xsnewapprox(xsuinput,xsuarg) THEN RETURN xsuinput; E"+
+    "ND;\nRETURN xsuarg;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsutree0";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsutree0"; END;
+  xsis:="(type((xsuindexok(xsuunused):=BEGIN\n\nRETURN expr(""([17,23])[1]==17"");\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuindexok";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuindexok"; END;
+  xsis:="(type((xsucorecheck(xsuunused):=BEGIN\nLOCAL xsut,xsuh,xsua;\nIF NOT xsuindexok(0) THEN RETURN ""XSIMP 1.8.7: CAS index sta"+
+    "rts at 0; run of:=1""; END;\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to"+
+    " refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refre"+
+    "sh CAS functions""; END;\nxsut:=expr(""quote(sin(xsprobevar))"");\nIF type(xsut)!=DOM_SYMBOLIC THEN RETURN ""XSIMP: quoted exp"+
+    "ression parsing failed""; END;\nxsuh:=xsut[1];\nIF type(xsuh)!=DOM_FUNC THEN RETURN ""XSIMP: root operator extraction failed"+
+    """; END;\nIF xsuh!=sin THEN RETURN ""XSIMP: root operator is not sin""; END;\nxsua:=[op(xsut)];\nIF size(xsua)!=1 THEN RETURN "+
+    """XSIMP: operand extraction failed""; END;\nIF string(xsua[1])!=""xsprobevar"" THEN RETURN ""XSIMP: operand indexing failed""; "+
+    "END;\nRETURN ""XSIMP 1.8.7 CHECK OK"";\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsucorecheck";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsucorecheck"; END;
+  xsis:="(type((xsutree(xsuinput):=BEGIN\nIF type(xsuinput)==DOM_STRING THEN\nRETURN xsutree0(expr(""quote(""+xsuinput+"")""),0);\nEND;\n"+
+    "RETURN xsutree0(xsuinput,0);\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsutree";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsutree"; END;
+  xsis:="(type((xsufold(xsue,xsud):=BEGIN\nLOCAL xsur,xsuk,xsuc,xsusafe;\nIF xsud>=24 THEN RETURN xsue; END;\nxsusafe:=xsidauto(xsue"+
+    ");\nIF xsusafe[2] THEN RETURN xsusafe[1]; END;\nxsue:=xsusafe[1];\nIF type(xsue)==DOM_LIST THEN\nxsur:=xsue;\nFOR xsuk FROM 1"+
+    " TO size(xsue) DO\nxsur[xsuk]:=xsufold(xsue[xsuk],xsud+1);\nEND;\nRETURN xsur;\nEND;\nIF type(xsue)!=DOM_SYMBOLIC OR size(str"+
+    "ing(xsue))>1600 THEN RETURN xsue; END;\nIFERR\n\n\nxsuc:=regroup(regroup(xsue));\nIF type(xsuc)!=DOM_STRING AND NOT has(xsuc,"+
+    "undef) AND NOT has(xsuc,infinity) AND NOT xsnewapprox(xsue,xsuc) THEN\n\nIF size(string(xsuc))<size(string(xsue)) THEN RET"+
+    "URN xsuc; END;\nEND;\nTHEN RETURN xsue;\nEND;\nRETURN xsue;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsufold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsufold"; END;
+  xsis:="(type((xsuhypcandidate(xsue,xsud):=BEGIN\nLOCAL xsur,xsuk;\nIF xsud>=24 THEN RETURN xsue; END;\nIF type(xsue)<>DOM_LIST THE"+
+    "N RETURN xshypcompact(xsue); END;\nxsur:=mid([0],1,0);\nFOR xsuk FROM 1 TO size(xsue) DO\nxsur:=append(xsur,xsuhypcandidate"+
+    "(xsue[xsuk],xsud+1));\nEND;\nRETURN xsur;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuhypcandidate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuhypcandidate"; END;
+  xsis:="(type((xsuholefactor(xsue,xsud,xsub):=BEGIN\nLOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuc,xsunew;\nIF xsud>=24 OR xsub<1 "+
+    "THEN RETURN [0]; END;\nIF type(xsue)==DOM_INT OR type(xsue)==DOM_RAT OR type(xsue)==DOM_COMPLEX THEN\nIF xsue==0 THEN RETU"+
+    "RN [0]; END; RETURN [1,1,mid([0],1,0)];\nEND;\nIF xshypnatural(xsue) THEN RETURN [1,1,mid([0],1,0)]; END;\nIF type(xsue)==D"+
+    "OM_SYMBOLIC THEN\nxsuh:=xshead(xsue); xsun:=string(xsuh); xsul:=[op(xsue)];\nIF (xsun==""'-'"" OR xsun==""-"") AND size(xsul)="+
+    "=1 THEN RETURN xsuholefactor(xsul[1],xsud+1,xsub-1); END;\nIF xsun==""'inv'"" OR xsun==""inv"" THEN RETURN [1,1,mid([0],1,0)]"+
+    "; END;\nIF (xsun==""'/'"" OR xsun==""/"") AND size(xsul)==2 THEN RETURN xsuholefactor(xsul[1],xsud+1,xsub-1); END;\nIF (xsun=="+
+    """'^'"" OR xsun==""^"") AND size(xsul)==2 AND type(xsul[2])==DOM_INT THEN\nIF xsul[2]<=0 THEN RETURN [1,1,mid([0],1,0)]; END;"+
+    "\nRETURN xsuholefactor(xsul[1],xsud+1,xsub-1);\nEND;\nIF xsun==""'*'"" OR xsun==""*"" THEN\nxsur:=[1,1,mid([0],1,0)];\nFOR xsuk F"+
+    "ROM 1 TO size(xsul) DO\nxsuv:=xsuholefactor(xsul[xsuk],xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;\nxsur[2]:"+
+    "=xsur[2]+xsuv[2];\nFOR xsuj FROM 1 TO size(xsuv[3]) DO IF NOT member(xsuv[3][xsuj],xsur[3]) THEN xsur[3]:=append(xsur[3],"+
+    "xsuv[3][xsuj]); END; END;\nIF size(xsur[3])>64 THEN RETURN [0]; END;\nEND;\nRETURN xsur;\nEND;\nIF NOT xshyppoly(xsue,0) THEN"+
+    "\n\n\nxsunew:=xspimagwalk(xsue,0);\nIF xsnewapprox(xsue,xsunew) OR has(xsunew,undef) OR has(xsunew,infinity) THEN RETURN [0]"+
+    "; END;\nIF string(xsunew)<>string(xsue) THEN RETURN xsuholefactor(xsunew,xsud+1,xsub-1); END;\nEND;\nEND;\nRETURN [1,1,[xsue"+
+    "]];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuholefactor";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuholefactor"; END;
+  xsis:="(type((xsuholewalk(xsue,xsud,xsub):=BEGIN\nLOCAL xsuh,xsun,xsul,xsur,xsuv,xsuk,xsuj,xsuden;\nIF xsud>=24 OR xsub<1 THEN RE"+
+    "TURN [0]; END;\nxsur:=[1,1,mid([0],1,0)];\nIF type(xsue)==DOM_LIST THEN xsul:=xsue;\nELSE\nIF type(xsue)<>DOM_SYMBOLIC THEN "+
+    "RETURN xsur; END;\nxsuh:=xshead(xsue); xsun:=string(xsuh); xsul:=[op(xsue)]; xsuden:=1;\nIF xsun==""'inv'"" OR xsun==""inv"" T"+
+    "HEN IF size(xsul)<>1 THEN RETURN [0]; END; xsuden:=xsul[1]; END;\nIF xsun==""'/'"" OR xsun==""/"" THEN IF size(xsul)<>2 THEN "+
+    "RETURN [0]; END; xsuden:=xsul[2]; END;\nIF xsun==""'^'"" OR xsun==""^"" THEN\nIF size(xsul)==2 AND (type(xsul[2])==DOM_INT OR "+
+    "type(xsul[2])==DOM_RAT) THEN\nIF xsul[2]<0 THEN xsuden:=xsul[1]; END;\nEND;\nEND;\nIF string(xsuden)<>""1"" THEN\nxsuv:=xsuhole"+
+    "factor(xsuden,xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;\nxsur[2]:=xsur[2]+xsuv[2]; xsur[3]:=xsuv[3];\nEND;"+
+    "\nEND;\nFOR xsuk FROM 1 TO size(xsul) DO\nIF string(xsul[xsuk])==string(xsue) THEN RETURN [0]; END;\nxsuv:=xsuholewalk(xsul["+
+    "xsuk],xsud+1,xsub-xsur[2]); IF xsuv[1]==0 THEN RETURN [0]; END;\nxsur[2]:=xsur[2]+xsuv[2];\nFOR xsuj FROM 1 TO size(xsuv[3"+
+    "]) DO IF NOT member(xsuv[3][xsuj],xsur[3]) THEN xsur[3]:=append(xsur[3],xsuv[3][xsuj]); END; END;\nIF size(xsur[3])>64 TH"+
+    "EN RETURN [0]; END;\nEND;\nRETURN xsur;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuholewalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuholewalk"; END;
+  xsis:="(type((xsuholegate(xsuprior,xsunext):=BEGIN\nLOCAL xsuold,xsunew,xsuprod,xsuk,xsuj,xsuv,xsumatch,xsukey,xsuallmatch,xsude"+
+    "n;\nIFERR\nxsuold:=xsuholewalk(xsuprior,0,2048); IF xsuold[1]==0 THEN RETURN 0; END;\nIF size(xsuold[3])==0 THEN RETURN 1; "+
+    "END;\nxsunew:=xsuholewalk(xsunext,0,2048); IF xsunew[1]==0 THEN RETURN 0; END;\n\nxsuallmatch:=1;\nFOR xsuk FROM 1 TO size(x"+
+    "suold[3]) DO\nxsumatch:=0;\nFOR xsuj FROM 1 TO size(xsunew[3]) DO\nIF string(xsuold[3][xsuk])==string(xsunew[3][xsuj]) THEN"+
+    " xsumatch:=1; END;\nEND;\nIF NOT xsumatch THEN xsuallmatch:=0; END;\nEND;\nIF xsuallmatch THEN RETURN 1; END;\nxsuprod:=1;\nFO"+
+    "R xsuk FROM 1 TO size(xsunew[3]) DO\nIF xshyppoly(xsunew[3][xsuk],0) THEN\nIF NOT xsmpunbound(xsunew[3][xsuk],0) THEN RETU"+
+    "RN 0; END;\nxsuprod:=xsuprod*xsunew[3][xsuk];\nIF size(string(xsuprod))>1600 THEN RETURN 0; END;\nEND;\nEND;\nFOR xsuk FROM 1"+
+    " TO size(xsuold[3]) DO\nxsuv:=xsuold[3][xsuk];\nIF xshyppoly(xsuv,0) THEN\nIF NOT xsmpunbound(xsuv,0) THEN RETURN 0; END;\n\n"+
+    "\n\nxsuden:=denom(ratnormal(xsuprod/xsuv));\nIF (type(xsuden)<>DOM_INT AND type(xsuden)<>DOM_RAT) OR xsuden==0 THEN RETURN "+
+    "0; END;\nELSE\nxsukey:=xsptext(xsuv,0); xsumatch:=0;\nFOR xsuj FROM 1 TO size(xsunew[3]) DO\nIF string(xsunew[3][xsuj])==str"+
+    "ing(xsuv) OR xsptext(xsunew[3][xsuj],0)==xsukey THEN xsumatch:=1; END;\nEND;\nIF NOT xsumatch THEN RETURN 0; END;\nEND;\nEND"+
+    ";\nRETURN 1;\nTHEN RETURN 0;\nEND;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuholegate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuholegate"; END;
+  xsis:="(type((xsuend(xsue):=BEGIN\nLOCAL xsuc,xsuo,xsuraw,xsusafe;\nxsusafe:=xsidauto(xsue);\nIF xsusafe[2] THEN RETURN xsusafe[1]"+
+    "; END;\nxsue:=xsusafe[1];\nxsuc:=xsuhypcandidate(xsue,0);\nIF string(xsuc)==string(xsue) THEN RETURN xspresent(xsue); END;\n"+
+    "\n\nIF NOT xsmpisradian(0) THEN RETURN xspresent(xsue); END;\nxsuo:=xspresent(xsue);\nxsuraw:=xsuc;\nxsuc:=xspresent(xsuc);\nI"+
+    "F type(xsuc)<>DOM_STRING AND NOT has(xsuc,undef) AND NOT has(xsuc,infinity) AND NOT xsnewapprox(xsue,xsuc) THEN\nIF size("+
+    "string(xsuc))<size(string(xsuo)) AND xsuholegate(xsuraw,xsuc) THEN RETURN xsuc; END;\nEND;\nRETURN xsuo;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuend";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuend"; END;
+  xsis:="(type((xsuorigselect(xsuprior,xsunext,xsud):=BEGIN\nLOCAL xsur,xsuk;\nIF xsud>=24 OR type(xsunext)==DOM_STRING THEN RETURN"+
+    " xsunext; END;\nIF type(xsuprior)==DOM_LIST AND type(xsunext)==DOM_LIST THEN\nIF size(xsuprior)<>size(xsunext) THEN RETURN"+
+    " xsunext; END;\nxsur:=xsunext;\nFOR xsuk FROM 1 TO size(xsunext) DO\nxsur[xsuk]:=xsuorigselect(xsuprior[xsuk],xsunext[xsuk]"+
+    ",xsud+1);\nEND;\nRETURN xsur;\nEND;\nIF type(xsunext)==DOM_LIST OR size(string(xsuprior))>=size(string(xsunext)) THEN RETURN"+
+    " xsunext; END;\nIF xscomplexrad(xsuprior) THEN RETURN xsunext; END;\nIF xshypguard(xsuprior,0,768)<0 THEN RETURN xsunext; "+
+    "END;\nIF NOT xsmpunbound(xsuprior,0) THEN RETURN xsunext; END;\nRETURN xsuprior;\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:xsuorigselect";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:xsuorigselect"; END;
+  xsis:="(type((XSIMP(xsuinput):=BEGIN\nLOCAL xsures,xsuoriginal,xsuoldroots,xsunewroots,xsuoldarg,xsunewarg,xsucheckroot,xsurooto"+
+    "k,xsusafe,xsuwork;\nIF NOT xsuindexok(0) THEN RETURN ""XSIMP 1.8.7: CAS index starts at 0; run of:=1""; END;\nIF type(xsinit"+
+    "ok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions""; END;\nIF NOT xsin"+
+    "itok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to refresh CAS functions""; END;\nIF size(string(xs"+
+    "uinput))>1600 THEN RETURN ""XSIMP: input exceeds 1600 characters""; END;\nxsuoriginal:=xsuinput;\nIF type(xsuinput)==DOM_STR"+
+    "ING THEN xsuoriginal:=expr(""quote(""+xsuinput+"")""); END;\nxsusafe:=xsidauto(xsuoriginal); xsuwork:=xsusafe[1];\n\n\nIF xsusaf"+
+    "e[2] OR (string(xsuwork)<>string(xsuoriginal) AND xshypnatural(xsuwork)) THEN RETURN xspfauto(xsuwork); END;\nxsucheckroo"+
+    "t:=0;\n\n\n\nIF type(xsuoriginal)==DOM_SYMBOLIC THEN\nIF size(xsppa(xsuoriginal,0))==2 THEN\nxsuoldroots:=xshyproots(xsuorigin"+
+    "al,0);\nIF size(xsuoldroots)==2 AND xsuoldroots[1]==1 THEN\nxsuoldarg:=[op(xsuoldroots[2])]; xsuoldarg:=xsuoldarg[1];\nIF x"+
+    "shyppoly(xsuoldarg,0) AND size(lname(xsuoldarg))>0 THEN xsucheckroot:=1; END;\nEND;\nEND;\nEND;\nxsures:=xsutree(xsuwork);\nI"+
+    "F type(xsures)==DOM_STRING THEN RETURN xsures; END;\n\n\nIF type(xsures)==DOM_LIST THEN RETURN xspfauto(xsuorigselect(xsuor"+
+    "iginal,xsuend(xsufold(xsures,0)),0)); END;\nxsures:=xsuend(xsufold(xsscalar(xsures),0));\nIF xsucheckroot THEN\nxsurootok:="+
+    "0; xsunewroots:=xshyproots(xsures,0);\nIF size(xsunewroots)==2 AND xsunewroots[1]==1 THEN\nxsunewarg:=[op(xsunewroots[2])]"+
+    "; xsunewarg:=xsunewarg[1];\nIF xshyppoly(xsunewarg,0) THEN\nIF string(ratnormal(xsuoldarg-xsunewarg))==""0"" THEN xsurootok:"+
+    "=1; END;\nEND;\nEND;\nIF NOT xsurootok THEN RETURN xspfauto(xspresent(xsuoriginal)); END;\nEND;\nRETURN xspfauto(xsuorigselec"+
+    "t(xsuoriginal,xsuorigselect(xsuwork,xsures,0),0));\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XSIMP";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XSIMP"; END;
+  xsis:="(type((XSDIAG(xsuunused):=BEGIN\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catal"+
+    "og to refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Program Catalog to "+
+    "refresh CAS functions""; END;\nRETURN [""1.8.7"",xsucorecheck(0),xsptext(exp((2-sqrt(3))*ln(2)),0),string(xspresent(exp((2-s"+
+    "qrt(3))*ln(2))))];\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XSDIAG";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XSDIAG"; END;
+  xsis:="(type((XSCHECK(xsuunused):=BEGIN\nLOCAL xsucheck;\nIF type(xsinitok)<>DOM_FUNC THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 f"+
+    "rom Program Catalog to refresh CAS functions""; END;\nIF NOT xsinitok(0) THEN RETURN ""XSIMP 1.8.7: run XSIMPKIT187 from Pr"+
+    "ogram Catalog to refresh CAS functions""; END;\nxsucheck:=xsucorecheck(0);\nIF xsucheck<>""XSIMP 1.8.7 CHECK OK"" THEN RETURN"+
+    " xsucheck; END;\nIF NOT xsmpisradian(0) THEN RETURN ""XSIMP 1.8: mixed identities require CAS radians""; END;\nIF NOT xsmpun"+
+    "bound(expr(""quote(xsmpchecku+xsmpcheckv)""),0) THEN\nRETURN ""XSIMP 1.8: check symbols bound; no state changed"";\nEND;\nIF st"+
+    "ring(XSIMP(""sinh(xsmpchecku)+i*sin(i*xsmpchecku)""))<>""0"" THEN RETURN ""XSIMP 1.8: mixed identity failed""; END;\nIF string("+
+    "XSIMP(""cosh(xsmpchecku)^2+sin(i*xsmpchecku)^2""))<>""1"" THEN RETURN ""XSIMP 1.8: square identity failed""; END;\nIF string(XS"+
+    "IMP(""cosh(xsmpchecku+xsmpcheckv)-cos(i*xsmpchecku)*cosh(xsmpcheckv)+i*sin(i*xsmpchecku)*sinh(xsmpcheckv)""))<>""0"" THEN RE"+
+    "TURN ""XSIMP 1.8: addition identity failed""; END;\nIF inString(string(XSIMP(""exp(xsmpchecku)-exp(-xsmpchecku)"")),""sinh("")="+
+    "=0 THEN RETURN ""XSIMP 1.8: exponential pairing failed""; END;\nIF type(xsphold(""@@XSIMP_I@@""))<>DOM_COMPLEX THEN RETURN ""X"+
+    "SIMP: exact complex literal parsing failed""; END;\nIF string(normal(-i*xsphold(""@@XSIMP_I@@*xsmpcheckv"")))<>""xsmpcheckv"" "+
+    "THEN RETURN ""XSIMP: imaginary constant arithmetic failed""; END;\nxsucheck:=string(XSIMP(""exp(xsmpchecku+i*xsmpcheckv)-exp"+
+    "(xsmpchecku-i*xsmpcheckv)""));\nIF inString(xsucheck,""sinh("")>0 OR inString(xsucheck,""SINH("")>0 OR\n(inString(xsucheck,""sin"+
+    "("")==0 AND inString(xsucheck,""SIN("")==0) THEN RETURN ""XSIMP 1.8.7: imaginary exponential presentation failed""; END;\nxsuc"+
+    "heck:=string(xspresent(xsphold(""2*exp(xsmpchecku)*SINH(@@XSIMP_I@@*xsmpcheckv)"")));\nIF inString(xsucheck,""sinh("")>0 OR i"+
+    "nString(xsucheck,""SINH("")>0 OR\n(inString(xsucheck,""sin("")==0 AND inString(xsucheck,""SIN("")==0) THEN RETURN ""XSIMP 1.8.7:"+
+    " uppercase hyperbolic presentation failed""; END;\nRETURN ""XSIMP 1.8.7 CHECK OK"";\nEND))==DOM_FUNC)";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:define:XSCHECK";
+  END;
+  IF xsik<>1 THEN RETURN "stage:define:XSCHECK"; END;
+  xsis:="type(xshead)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshead";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshead"; END;
+  xsis:="type(xsinitok)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsinitok";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsinitok"; END;
+  xsis:="type(xsapproxstate)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsapproxstate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsapproxstate"; END;
+  xsis:="type(xsisapprox)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsisapprox";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsisapprox"; END;
+  xsis:="type(xsnewapprox)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsnewapprox";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsnewapprox"; END;
+  xsis:="type(xscomplexradwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xscomplexradwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xscomplexradwalk"; END;
+  xsis:="type(xscomplexrad)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xscomplexrad";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xscomplexrad"; END;
+  xsis:="type(xsradtrigsquare)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsradtrigsquare";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsradtrigsquare"; END;
+  xsis:="type(xsradtrigunit)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsradtrigunit";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsradtrigunit"; END;
+  xsis:="type(xspos)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspos";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspos"; END;
+  xsis:="type(xslogswalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xslogswalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xslogswalk"; END;
+  xsis:="type(xslogs)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xslogs";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xslogs"; END;
+  xsis:="type(xshyppoly)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshyppoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshyppoly"; END;
+  xsis:="type(xsrwwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsrwwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsrwwalk"; END;
+  xsis:="type(xsrewrite)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsrewrite";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsrewrite"; END;
+  xsis:="type(xsweightwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsweightwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsweightwalk"; END;
+  xsis:="type(xsweight)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsweight";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsweight"; END;
+  xsis:="type(xsscore)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsscore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsscore"; END;
+  xsis:="type(xstrans)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xstrans";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xstrans"; END;
+  xsis:="type(xsbounded)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsbounded";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsbounded"; END;
+  xsis:="type(xsscalar)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsscalar";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsscalar"; END;
+  xsis:="type(XFAST)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XFAST";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XFAST"; END;
+  xsis:="type(XREWRITE)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XREWRITE";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XREWRITE"; END;
+  xsis:="type(xsclean)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsclean";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsclean"; END;
+  xsis:="type(xsrectwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsrectwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsrectwalk"; END;
+  xsis:="type(XRECT)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XRECT";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XRECT"; END;
+  xsis:="type(xsmpisradian)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpisradian";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpisradian"; END;
+  xsis:="type(xsmpunbound)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpunbound";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpunbound"; END;
+  xsis:="type(xsmpnonzero)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpnonzero";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpnonzero"; END;
+  xsis:="type(xsmpwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpwalk"; END;
+  xsis:="type(xsmptry)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmptry";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmptry"; END;
+  xsis:="type(xsmpauto)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpauto"; END;
+  xsis:="type(xsmz)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmz";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmz"; END;
+  xsis:="type(xsmsign)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmsign";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmsign"; END;
+  xsis:="type(xsmroot)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmroot";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmroot"; END;
+  xsis:="type(xsmzero)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmzero";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmzero"; END;
+  xsis:="type(xsmclean)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmclean";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmclean"; END;
+  xsis:="type(xsmrewrite)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmrewrite";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmrewrite"; END;
+  xsis:="type(xsmid)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmid";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmid"; END;
+  xsis:="type(xsmdiagonal)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmdiagonal";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmdiagonal"; END;
+  xsis:="type(xsmhyperexp)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmhyperexp";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmhyperexp"; END;
+  xsis:="type(xsmhyperpower)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmhyperpower";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmhyperpower"; END;
+  xsis:="type(xsmpospower)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpospower";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpospower"; END;
+  xsis:="type(xsmcore)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmcore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmcore"; END;
+  xsis:="type(XEXP)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XEXP";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XEXP"; END;
+  xsis:="type(XEXPT)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XEXPT";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XEXPT"; END;
+  xsis:="type(XPOW)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XPOW";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XPOW"; END;
+  xsis:="type(xsmtrigcore)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmtrigcore";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmtrigcore"; END;
+  xsis:="type(XSIN)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XSIN";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XSIN"; END;
+  xsis:="type(XCOS)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XCOS";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XCOS"; END;
+  xsis:="type(xspnative)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspnative";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspnative"; END;
+  xsis:="type(xspunaryname)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspunaryname";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspunaryname"; END;
+  xsis:="type(xsptrigarg)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsptrigarg";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsptrigarg"; END;
+  xsis:="type(xspimagwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspimagwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspimagwalk"; END;
+  xsis:="type(xspflatproduct)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspflatproduct";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspflatproduct"; END;
+  xsis:="type(xspproducttext)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspproducttext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspproducttext"; END;
+  xsis:="type(xsptext)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsptext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsptext"; END;
+  xsis:="type(xspatomwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspatomwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspatomwalk"; END;
+  xsis:="type(xsphold)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsphold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsphold"; END;
+  xsis:="type(xspresent)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspresent";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspresent"; END;
+  xsis:="type(xsppa)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsppa";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsppa"; END;
+  xsis:="type(xspppowers)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspppowers";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspppowers"; END;
+  xsis:="type(xsppnz)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsppnz";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsppnz"; END;
+  xsis:="type(xsppsafe)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsppsafe";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsppsafe"; END;
+  xsis:="type(xspppowhint)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspppowhint";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspppowhint"; END;
+  xsis:="type(xspprecover)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspprecover";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspprecover"; END;
+  xsis:="type(xsppostscalar)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsppostscalar";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsppostscalar"; END;
+  xsis:="type(xsmpost)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsmpost";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsmpost"; END;
+  xsis:="type(xshypnatural)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypnatural";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypnatural"; END;
+  xsis:="type(xshyparg)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshyparg";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshyparg"; END;
+  xsis:="type(xshypguard)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypguard";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypguard"; END;
+  xsis:="type(xshypholes)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypholes";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypholes"; END;
+  xsis:="type(xshypmono)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypmono";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypmono"; END;
+  xsis:="type(xshypcoeftext)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypcoeftext";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypcoeftext"; END;
+  xsis:="type(xshyphold)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshyphold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshyphold"; END;
+  xsis:="type(xshyprebuild)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshyprebuild";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshyprebuild"; END;
+  xsis:="type(xshyproots)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshyproots";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshyproots"; END;
+  xsis:="type(xshypangle)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypangle";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypangle"; END;
+  xsis:="type(xshypwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypwalk"; END;
+  xsis:="type(xshypcompact)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xshypcompact";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xshypcompact"; END;
+  xsis:="type(xsidpoly)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsidpoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsidpoly"; END;
+  xsis:="type(xsidroot)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsidroot";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsidroot"; END;
+  xsis:="type(xsidmono)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsidmono";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsidmono"; END;
+  xsis:="type(xsidwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsidwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsidwalk"; END;
+  xsis:="type(xsidauto)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsidauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsidauto"; END;
+  xsis:="type(xspfcheck)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspfcheck";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspfcheck"; END;
+  xsis:="type(xspfpoly)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspfpoly";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspfpoly"; END;
+  xsis:="type(xspfwalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspfwalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspfwalk"; END;
+  xsis:="type(xspfterms)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspfterms";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspfterms"; END;
+  xsis:="type(xspfauto)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xspfauto";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xspfauto"; END;
+  xsis:="type(xsumatrix)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsumatrix";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsumatrix"; END;
+  xsis:="type(xsutree0)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsutree0";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsutree0"; END;
+  xsis:="type(xsuindexok)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuindexok";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuindexok"; END;
+  xsis:="type(xsucorecheck)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsucorecheck";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsucorecheck"; END;
+  xsis:="type(xsutree)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsutree";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsutree"; END;
+  xsis:="type(xsufold)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsufold";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsufold"; END;
+  xsis:="type(xsuhypcandidate)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuhypcandidate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuhypcandidate"; END;
+  xsis:="type(xsuholefactor)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuholefactor";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuholefactor"; END;
+  xsis:="type(xsuholewalk)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuholewalk";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuholewalk"; END;
+  xsis:="type(xsuholegate)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuholegate";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuholegate"; END;
+  xsis:="type(xsuend)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuend";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuend"; END;
+  xsis:="type(xsuorigselect)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:xsuorigselect";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:xsuorigselect"; END;
+  xsis:="type(XSIMP)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XSIMP";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XSIMP"; END;
+  xsis:="type(XSDIAG)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XSDIAG";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XSDIAG"; END;
+  xsis:="type(XSCHECK)==DOM_FUNC";
+  IFERR
+    xsik:=CAS.expr(xsis);
+  THEN
+    RETURN "stage:verify:XSCHECK";
+  END;
+  IF xsik<>1 THEN RETURN "stage:verify:XSCHECK"; END;
+  xsis:="XSCHECK(0)";
+  RETURN CAS.expr(xsis);
+END;

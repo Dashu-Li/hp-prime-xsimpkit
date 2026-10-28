@@ -1,0 +1,389 @@
+WARNING: using emscripten GL emulation. This is a collection of limited workarounds, do not expect it to work.
+Warning: 'of' is a reserved word
+Warning: 'of' is a reserved word
+// Parsing xshead
+// Success
+// compiling xshead
+// Parsing xsinitok
+// Success
+// compiling xsinitok
+// Parsing xsapproxstate
+// Warning: xsapproxstate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsapproxstate
+xsapproxstate: recursive definition
+// Parsing xsisapprox
+// Success
+// compiling xsisapprox
+// Parsing xsnewapprox
+// Success
+// compiling xsnewapprox
+// Parsing xscomplexradwalk
+// Warning: xscomplexradwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xscomplexradwalk
+xscomplexradwalk: recursive definition
+// Parsing xscomplexrad
+// Success
+// compiling xscomplexrad
+// Parsing xsradtrigsquare
+// Success
+// compiling xsradtrigsquare
+// Parsing xsradtrigunit
+// Success
+// compiling xsradtrigunit
+// Parsing xspos
+// Success
+// compiling xspos
+// Parsing xslogswalk
+// Warning: xslogswalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xslogswalk
+xslogswalk: recursive definition
+// Parsing xslogs
+// Success
+// compiling xslogs
+// Parsing xshyppoly
+// Warning: xshyppoly, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshyppoly
+xshyppoly: recursive definition
+// Parsing xsrwwalk
+// Warning: xsrwwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrwwalk
+xsrwwalk: recursive definition
+// Parsing xsrewrite
+// Success
+// compiling xsrewrite
+// Parsing xsweightwalk
+// Warning: xsweightwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsweightwalk
+xsweightwalk: recursive definition
+// Parsing xsweight
+// Success
+// compiling xsweight
+// Parsing xsscore
+// Success
+// compiling xsscore
+// Parsing xstrans
+// Success
+// compiling xstrans
+// Parsing xsbounded
+// Warning: xsidauto,xshypnatural,xsbounded,xsmpauto, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsbounded
+xsbounded: recursive definition
+// Parsing xsscalar
+// Success
+// compiling xsscalar
+// Parsing XFAST
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XFAST
+// Parsing XREWRITE
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XREWRITE
+// Parsing xsclean
+// Success
+// compiling xsclean
+// Parsing xsrectwalk
+// Warning: xsrectwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrectwalk
+// Parsing xsrectwalk
+// Warning: xsrectwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsrectwalk
+xsrectwalk: recursive definition
+// Parsing XRECT
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XRECT
+// Parsing xsmpisradian
+// Success
+// compiling xsmpisradian
+// Parsing xsmpunbound
+// Warning: xsmpunbound, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpunbound
+xsmpunbound: recursive definition
+// Parsing xsmpnonzero
+// Warning: xsmpnonzero, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpnonzero
+xsmpnonzero: recursive definition
+// Parsing xsmpwalk
+// Warning: xsmpwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpwalk
+xsmpwalk: recursive definition
+// Parsing xsmptry
+// Success
+// compiling xsmptry
+// Parsing xsmpauto
+// Success
+// compiling xsmpauto
+// Parsing xsmz
+// Success
+// compiling xsmz
+// Parsing xsmsign
+// Success
+// compiling xsmsign
+// Parsing xsmroot
+// Warning: xsphold,xspnative, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmroot
+// Parsing xsmroot
+// Warning: xsphold,xspnative, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmroot
+// Parsing xsmzero
+// Success
+// compiling xsmzero
+// Parsing xsmclean
+// Success
+// compiling xsmclean
+// Parsing xsmrewrite
+// Success
+// compiling xsmrewrite
+// Parsing xsmid
+// Success
+// compiling xsmid
+// Parsing xsmdiagonal
+// Success
+// compiling xsmdiagonal
+// Parsing xsmhyperexp
+// Success
+// compiling xsmhyperexp
+// Parsing xsmhyperpower
+// Success
+// compiling xsmhyperpower
+// Parsing xsmpospower
+// Warning: xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpospower
+// Parsing xsmcore
+// Success
+// compiling xsmcore
+// Parsing xsmcore
+// Success
+// compiling xsmcore
+// Parsing XEXP
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XEXP
+// Parsing XEXPT
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XEXPT
+// Parsing XPOW
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XPOW
+// Parsing xsmtrigcore
+// Success
+// compiling xsmtrigcore
+// Parsing xsmtrigcore
+// Success
+// compiling xsmtrigcore
+// Parsing XSIN
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSIN
+// Parsing XCOS
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XCOS
+// Parsing xspnative
+// Success
+// compiling xspnative
+// Parsing xspnative
+// Success
+// compiling xspnative
+// Parsing xspunaryname
+// Success
+// compiling xspunaryname
+// Parsing xsptrigarg
+// Success
+// compiling xsptrigarg
+// Parsing xsptrigarg
+// Success
+// compiling xsptrigarg
+// Parsing xspimagwalk
+// Warning: xsidauto,xspimagwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspimagwalk
+// Parsing xspimagwalk
+// Warning: xsidauto,xspimagwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspimagwalk
+xspimagwalk: recursive definition
+// Parsing xspflatproduct
+// Warning: xspflatproduct, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspflatproduct
+xspflatproduct: recursive definition
+// Parsing xspproducttext
+// Warning: xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspproducttext
+// Parsing xsptext
+// Warning: xsidauto,xsptext, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsptext
+xsptext: recursive definition
+// Parsing xspatomwalk
+// Warning: xspatomwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspatomwalk
+// Parsing xspatomwalk
+// Warning: xspatomwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspatomwalk
+xspatomwalk: recursive definition
+// Parsing xsphold
+// Success
+// compiling xsphold
+// Parsing xspresent
+// Warning: xsidauto,xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspresent
+// Parsing xsppa
+// Warning: xsppa, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppa
+xsppa: recursive definition
+// Parsing xspppowers
+// Warning: xspppowers, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspppowers
+xspppowers: recursive definition
+// Parsing xsppnz
+// Warning: xsppnz, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppnz
+xsppnz: recursive definition
+// Parsing xsppsafe
+// Warning: xsppsafe, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppsafe
+xsppsafe: recursive definition
+// Parsing xspppowhint
+// Warning: xspppowhint, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspppowhint
+xspppowhint: recursive definition
+// Parsing xspprecover
+// Success
+// compiling xspprecover
+// Parsing xspprecover
+// Success
+// compiling xspprecover
+// Parsing xsppostscalar
+// Success
+// compiling xsppostscalar
+// Parsing xsmpost
+// Warning: xsumatrix, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsmpost
+// Parsing xshypnatural
+// Success
+// compiling xshypnatural
+// Parsing xshyparg
+// Success
+// compiling xshyparg
+// Parsing xshypguard
+// Warning: xshypguard, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypguard
+xshypguard: recursive definition
+// Parsing xshypholes
+// Warning: xshypholes, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypholes
+xshypholes: recursive definition
+// Parsing xshypmono
+// Warning: xshypmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypmono
+xshypmono: recursive definition
+// Parsing xshypcoeftext
+// Success
+// compiling xshypcoeftext
+// Parsing xshyphold
+// Success
+// compiling xshyphold
+// Parsing xshyprebuild
+// Success
+// compiling xshyprebuild
+// Parsing xshyproots
+// Warning: xshyproots, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshyproots
+xshyproots: recursive definition
+// Parsing xshypangle
+// Success
+// compiling xshypangle
+// Parsing xshypwalk
+// Warning: xshypwalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xshypwalk
+xshypwalk: recursive definition
+// Parsing xshypcompact
+// Success
+// compiling xshypcompact
+// Parsing xsidpoly
+// Warning: xsidpoly,xsidmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidpoly
+xsidpoly: recursive definition
+// Parsing xsidroot
+// Warning: xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidroot
+// Parsing xsidmono
+// Warning: xsidmono, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidmono
+xsidmono: recursive definition
+// Parsing xsidwalk
+// Warning: xsidwalk,xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsidwalk
+xsidwalk: recursive definition
+// Parsing xsidauto
+// Success
+// compiling xsidauto
+// Parsing xspfcheck
+// Success
+// compiling xspfcheck
+// Parsing xspfpoly
+// Warning: xspfpoly, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfpoly
+xspfpoly: recursive definition
+// Parsing xspfwalk
+// Warning: xspfwalk,xspfterms, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfwalk
+xspfwalk: recursive definition
+// Parsing xspfterms
+// Warning: xspfterms, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfterms
+xspfterms: recursive definition
+// Parsing xspfauto
+// Warning: xsuholegate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xspfauto
+// Parsing xsumatrix
+// Success
+// compiling xsumatrix
+// Parsing xsutree0
+// Warning: xsutree0, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsutree0
+xsutree0: recursive definition
+// Parsing xsuindexok
+// Success
+// compiling xsuindexok
+// Parsing xsucorecheck
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsucorecheck
+// Parsing xsutree
+// Success
+// compiling xsutree
+// Parsing xsufold
+// Warning: xsufold, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsufold
+xsufold: recursive definition
+// Parsing xsuhypcandidate
+// Warning: xsuhypcandidate, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuhypcandidate
+xsuhypcandidate: recursive definition
+// Parsing xsuholefactor
+// Warning: xsuholefactor, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuholefactor
+xsuholefactor: recursive definition
+// Parsing xsuholewalk
+// Warning: xsuholewalk, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuholewalk
+xsuholewalk: recursive definition
+// Parsing xsuholegate
+// Success
+// compiling xsuholegate
+// Parsing xsuend
+// Success
+// compiling xsuend
+// Parsing xsuorigselect
+// Warning: xsuorigselect, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsuorigselect
+xsuorigselect: recursive definition
+// Parsing XSIMP
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSIMP
+// Parsing XSDIAG
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSDIAG
+// Parsing XSCHECK
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSCHECK
+// Parsing XSCHECK
+// Warning: xsinitok, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling XSCHECK
+// Parsing xsppimagatom
+// Warning: zzhmarkcalls, declared as global variable(s). If symbolic variables are required, declare them as local and run purge
+// compiling xsppimagatom
+HELD_MARKER {"total":40,"passed":40,"failed":0}

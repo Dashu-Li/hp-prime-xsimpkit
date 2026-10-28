@@ -1,0 +1,63 @@
+{
+  "scope": "Four fresh upstream Giac HP runtime processes, actual installer CAS commands; no native/G2 claim.",
+  "results": [
+    {
+      "cm": 0,
+      "cv": 0,
+      "status": 0,
+      "signal": null,
+      "ms": 6633,
+      "summary": {
+        "total": 22,
+        "passed": 22,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 0,
+      "cv": 1,
+      "status": 0,
+      "signal": null,
+      "ms": 9383,
+      "summary": {
+        "total": 22,
+        "passed": 22,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 1,
+      "cv": 0,
+      "status": 0,
+      "signal": null,
+      "ms": 6989,
+      "summary": {
+        "total": 22,
+        "passed": 22,
+        "failed": 0
+      },
+      "pass": true
+    },
+    {
+      "cm": 1,
+      "cv": 1,
+      "status": 0,
+      "signal": null,
+      "ms": 9108,
+      "summary": {
+        "total": 22,
+        "passed": 22,
+        "failed": 0
+      },
+      "pass": true
+    }
+  ],
+  "totals": {
+    "total": 88,
+    "passed": 88,
+    "failed": 0
+  },
+  "pass": true
+}

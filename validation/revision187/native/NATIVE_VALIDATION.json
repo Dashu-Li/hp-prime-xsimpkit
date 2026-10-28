@@ -1,0 +1,92 @@
+{
+  "version": "1.8.7",
+  "scope": "Official Linux 2019 HP Prime Virtual Calculator 2.1.14290; current complete native installer, actual UI Check and Run. Physical G2 not tested.",
+  "source_sha256": "242ee393f5f3ec5fcd9a69a2805ba4b7b5f33374bcc1ecca88281484d95699be",
+  "hpprgm_sha256": "799134ff1b20cb9ff1d8be422ad007a2fdc9162ea7a8823a6d0152bae80f7208",
+  "bytes": 277760,
+  "installer_functions": 105,
+  "preinstall_types": {
+    "XSIMP": "DOM_IDENT",
+    "xspfpoly": "DOM_IDENT",
+    "xspfauto": "DOM_IDENT"
+  },
+  "preparation": "UI calc.hpsettings and settings sidecar copied; cas.hpsettings removed before final launch. Current installer was the only standalone program. Earlier welcome/setup attempts excluded.",
+  "cas_settings": {
+    "angle": "Radians",
+    "exact": true,
+    "principal": true,
+    "simplify": "None"
+  },
+  "check": "No errors in the program",
+  "run": "XSIMP 1.8.7 CHECK OK",
+  "new_rules": {
+    "sqrt_polynomial": {
+      "input": "XSIMP(\"sqrt(a^2*c^2+2*a*b*c^2+4*a*b*c*d+4*a*b*d^2+b^2*c^2+4*b^2*c*d+4*b^2*d^2)\")",
+      "result": "sqrt((a+b)*((c+2*d)^2*b+c^2*a))",
+      "pass": true
+    },
+    "ode": {
+      "input": "XSIMP(desolve((a+b)*y''-c*(a+b)*y'-b*d*(c+d)*y=0))",
+      "result_structure": "exp(c*x/2)*(G_0*exp(root*x/(2*(a+b)))+G_1*exp(-root*x/(2*(a+b)))), root=sqrt((a+b)*((c+2*d)^2*b+c^2*a))",
+      "pass": true
+    },
+    "negative_discriminant_direct": {
+      "bindings": {
+        "a": -2,
+        "b": 1,
+        "c": 1,
+        "d": 1
+      },
+      "result": "2.6457513106*i",
+      "reference": "i*sqrt(7)",
+      "pass": true
+    },
+    "negative_square_root_base_direct": {
+      "input": "evalf(subst(XSIMP(\"sqrt(a^2+2*a+1)\"),a,-3))",
+      "result": 2,
+      "pass": true
+    }
+  },
+  "retained_rules": {
+    "integer_exp": "exp(i*a)",
+    "direct_trig_root_at_pi": "-i",
+    "direct_noninteger_exp_at_2pi": "1.",
+    "pass": true
+  },
+  "native_flags": {
+    "symbolic_partial_root_and_desolve": {
+      "Complex": false,
+      "Use_i": false
+    },
+    "direct_numeric_and_legacy_branches": {
+      "Complex": true,
+      "Use_i": true
+    },
+    "scope": "Four complex_mode/complex_variables combinations were HOST-only; not claimed as all four native UI combinations."
+  },
+  "external_state": {
+    "sentinel_before": 1729,
+    "after_install": 1729,
+    "final": 1729
+  },
+  "limitations": [
+    "G2 execution and performance not tested",
+    "Saved-variable reevaluation defect was observed on 1.8.6; not repaired or recharacterized here",
+    "Native ODE result is wider than the screen; HOST report separately records complete output and independent numeric checks",
+    "Earlier startup attempts excluded; only final Check, Run and listed observations count"
+  ],
+  "screenshots": [
+    "verified-start.png",
+    "verified-check.png",
+    "verified-pretypes.png",
+    "verified-settings-none.png",
+    "verified-run.png",
+    "verified-self-sentinel.png",
+    "verified-partial-root.png",
+    "verified-ode.png",
+    "verified-flags-on.png",
+    "verified-negative-root.png",
+    "verified-legacy-branch.png",
+    "verified-ode-length-sentinel.png"
+  ]
+}

@@ -1,92 +1,150 @@
-# XSIMPKIT for HP Prime
+# XSIMPKIT：HP Prime 化简与矩阵函数
 
-XSIMPKIT is a set of CAS functions for the HP Prime. It simplifies scalar expressions and computes matrix exponentials, powers, sine and cosine. Use `XSIMP` for general simplification or call a matrix function directly.
+XSIMPKIT 为 HP Prime CAS 提供统一的表达式化简和矩阵函数。日常使用 **`XSIMP(表达式)`**，可整理分式、根式、复数、指数、三角与双曲函数，也可处理列表、矩阵及矩阵指数。
 
-[中文说明](docs/README.zh-CN.md) · [Download](https://github.com/Dashu-Li/hp-prime-xsimpkit/releases/tag/v1.7.0) · [Function reference](docs/API.md)
+[GitHub 仓库](https://github.com/Dashu-Li/hp-prime-xsimpkit) · [下载安装程序](dist/v1.8.7-installer/XSIMPKIT187.hpprgm) · [安装说明](docs/INSTALL.zh-CN.md) · [验证范围](docs/VALIDATION.md)
 
-## Functions
+## 主要功能
 
-| Function | What it does |
-|---|---|
-| `XSIMP(e)` | Simplifies fractions, radicals, complex expressions, exponentials and trigonometric expressions; also accepts quoted matrix expressions. |
-| `XEXP(A)` | Computes the matrix exponential `exp(A)`. |
-| `XEXPT(A,t)` | Computes `exp(t*A)` for a scalar `t`. |
-| `XPOW(b,A)` | Computes the matrix function `exp(ln(b)*A)` for a positive real constant `b`. |
-| `XSIN(A)`, `XCOS(A)` | Compute matrix sine and cosine. |
+- 对精确多项式尝试局部因式分解：按变量分组、分解系数，并继续整理已有乘积中的多项式因子。只采纳显示更短且整式恒等验证通过的候选；根号整体保留，不拆分主值根。
+- 合并自然指数的整数幂，例如 `(exp(i*a/2))^2 → exp(i*a)`，适用于复数参数。非整数幂保留自己的主值分支。
+- 在受限的无分支三角多项式中整理根号内部，例如 `sqrt(cos(3*a)+3*cos(a))/(2*cos(a)) → sqrt(cos(a)^3)/cos(a)`；保留 `cos(a)!=0` 与完整主值根，不继续错误约成 `sqrt(cos(a))`。
+- 纯标量原式参与最终长度比较；矩阵计算仍保留求值结果。闭精确复根继续使用原有精确构造。
 
-Matrix inputs must be square. Results may use trigonometric or hyperbolic functions when these give a more compact form. See the [function reference](docs/API.md) for all 12 public CAS functions.
+- 通过同一个 `XSIMP` 入口处理普通输入、`quote(...)` 和字符串输入。
+- 合并受支持的混合三角、双曲恒等式，并保留精确输入的精确结果。
+- 对带系数指数项保留其系数与任意常量，比较原式、提取中心指数因子的形式和加权双曲形式；最终显示更短且分母检查通过时才改写。
+- 在同一次整体引用保护下整理受支持的主值根式并配对指数项，处理含嵌套根式、多个指数项与符号系数的解表达式。
+- 计算矩阵指数、矩阵正弦和余弦，以及正实常量底数的矩阵幂。
+- 完成数字乘法、分式系数与重复项的整理。
+- 复用指数参数的遍历结果，跳过不含改写目标的子树，减少大表达式中的重复计算。
+- 在弧度模式下，将适合的纯虚双曲函数参数整理为更短的三角形式，例如 `sinh(i*x)` 可整理为 `i*sin(x)`；兼容原生 `SINH`、`COSH` 等大小写表示。
+- 在结果重新解析时保留虚数常量的精确类型，避免将其当成普通字母变量；检查最终展示改写是否保留分母限制。
 
-`XFAST` and `XDEEP` use the same scalar strategy in 1.7; `XDEEP` does not perform a deeper search.
 
-## Examples
+## 安装与日常使用
+
+`XSIMPKIT187.hpprgm` 是**普通 PPL 安装程序，程序的 CAS 复选框应关闭**。
+
+1. 用 HP Connectivity Kit 导入 `XSIMPKIT187.hpprgm`。
+2. 在程序目录运行一次 `XSIMPKIT187`，注册 CAS 函数。
+3. 在 CAS 中运行 `XSCHECK(0)`，弧度制下应返回 `XSIMP 1.8.7 CHECK OK`。
+4. 在当前已初始化的会话中，日常直接使用 `XSIMP(...)`。官方 2019 Linux 模拟器完整退出后重新打开，需要再从程序目录运行一次安装器。
+
+1.8.7 在 1.8.6 的完整安装器中加入局部因式分解，保留虚数常量处理、指数与根式保护。已有旧版的用户直接导入并运行新版即可；后续刷新也只运行 `XSIMPKIT187`。日常化简入口仍为 `XSIMP`。
+
+程序编辑器的 **Check 只检查 PPL 安装器，不会安装 CAS 函数**。安装步骤需要运行程序。具体设置、旧程序处理和重新安装方法见[安装说明](docs/INSTALL.zh-CN.md)。
+
+## 化简示例
 
 ```text
-XSIMP((x^2-1)/(x-1))
-XSIMP(sqrt(8)-2*sqrt(2))
+XSIMP((x^2-1)/(x-1))                         → x+1
+XSIMP(sqrt(8)-2*sqrt(2))                     → 0
+XSIMP((1+i)/(1-i))                          → i
+XSIMP("sinh(u)+i*sin(i*u)")                 → 0
+XSIMP("cosh(u)^2+sin(i*u)^2")                → 1
+XSIMP("exp(q*x)-exp(-q*x)")                 → 2*sinh(q*x)
+XSIMP("(exp(q*x)-exp(-q*x))/(exp(q*t)-exp(-q*t))")
+                                            → sinh(q*x)/sinh(q*t)
+```
+
+局部因式分解可以缩短微分方程解中的判别式，例如：
+
+```text
+a^2*c^2+2*a*b*c^2+4*a*b*c*d+4*a*b*d^2+b^2*c^2+4*b^2*c*d+4*b^2*d^2
+→ (a+b)*(a*c^2+b*(c+2*d)^2)
+```
+
+此变换对复参数也成立；外层 `sqrt(...)` 保留完整主值。截图通解在 HOST 的规范显示长度由 1.8.6 的 134 字符缩至 118 字符，两个积分常量保留。这是该测例的显示长度比较，不代表任意输入均会缩短或 G2 会提速。
+
+局部搜索限于每块 512 字符、5 个变量、分组时该变量的次数不超过 4、递归深度 2；每次调用缓存最多 24 个多项式块，重复块复用该缓存；这是缓存容量，不是遍历或分析总块数上限。超过预算时保留既有结果。内部 CAS 调用没有硬超时。
+
+带不同系数的指数项也会比较提取公因子的形式，例如：
+
+```text
+XSIMP("G0*exp((a^2+b^2+c^2+d^2)*x+q*x)+G1*exp((a^2+b^2+c^2+d^2)*x-q*x)")
+→ exp(a^2*x+b^2*x+c^2*x+d^2*x)*(G0*exp(q*x)+G1*exp(-q*x))
+```
+
+这里保留 `G0`、`G1`，较短的候选仍采用指数。相同系数或相反系数的对应输入可分别选择 `cosh` 或 `sinh`。
+
+短小的 `exp(u)-exp(v)` 可保留指数形式。对于 `A*exp(u)+B*exp(v)`，程序也可构造以 `(u+v)/2` 为中心的提取公因子形式和加权双曲形式，保留 `A`、`B` 中的符号系数与任意常量。候选按实际参数下完整结果的最终显示长度比较，不会统一改成双曲函数；列表和矩阵中的标量元素也使用这一步。分母为零的情形不会自动改成极限值。
+
+分式消约沿用 CAS 的通常约定，例如第一例不保留原式的 `x!=1` 排除点。新增表示规则的分母保护不代表完整 CAS 管线追踪所有原定义域。
+
+## 三种输入方式
+
+```text
+XSIMP(exp(q*x)-exp(-q*x))
+XSIMP(quote(exp(q*x)-exp(-q*x)))
+XSIMP("exp(q*x)-exp(-q*x)")
+```
+
+三种方式进入同一化简器。普通参数会先由原生 CAS 求值；引用和字符串让程序看到原始结构。如果原生求值已产生小数或改变运算含义，程序无法还原丢失的输入信息。等价输入的输出不要求逐字符一致。
+
+使用精确模式与弧度制。需要保留紧凑形式时，将 CAS 的 Simplify 设为 **None（无）**；`XSIMP` 内部显式执行的化简仍会运行。
+
+纯虚双曲到三角的转换要求弧度制。Degree、Grad 下部分复双曲公共输入仍有已知数值错误，见[验证范围](docs/VALIDATION.md)。
+
+## 主值根式的再次求值限制
+
+此前在 1.8.6 的官方 2019 Linux 原生 CAS 验证中，即使 Simplify 为 None，把受保护的符号结果保存到变量后再读取，仍可能触发上游的错误分支改写。本版继续保护首次输出中的完整根式；后续任意原生 CAS 运算仍可能重算分支。
+
+已验证的直接代值方式是把 `XSIMP` 调用放在 `subst` 内，例如：
+
+```text
+evalf(subst(XSIMP("sqrt(cos(3*a)+3*cos(a))/(2*cos(a))"),a,pi))
+```
+
+1.8.6 的原生模拟器验证中，此式返回 `-i`。`evalf(subst(XSIMP("(exp(i*a))^(1/2)"),a,2*pi))` 返回 `1`。先保存符号结果再代值可能分别变成 `+i`、`-1`；这是已确认限制，G2 行为尚待验证。普通输入在进入 `XSIMP` 前也可能已重算，建议分支敏感输入使用字符串。
+
+`cholesky`、`ismith` 等原生分解的适用条件并未由本版改变；化简结果不能修复原本不适用的分解。
+
+## 矩阵函数
+
+```text
+XSIMP("exp(t*[[0,-1],[1,0]])")
+XSIMP("exp(i*t*[[0,1],[1,0]])")
 XSIMP("2^[[1,1],[2,3]]")
 XPOW(2,[[1,1],[2,3]])
-XEXPT([[0,-1],[1,0]],t)
-XEXP(i*([[1,0],[1,1]]+2*[[0,-i],[i,0]]))
-XSIMP("exp(i*([[1,0],[1,1]]+2*[[0,-i],[i,0]]))")
-XSIN([[0,-1],[1,0]])
-XSIMP("cosh([[0,-1],[1,0]])")
+XEXPT([[1,-2*i],[1+2*i,1]],i)
 ```
 
-The first two examples return `x+1` and `0`. Rational cancellation follows the native CAS convention and does not retain excluded points from the original denominator.
+前两项分别得到旋转矩阵和含 `cos(t)`、`i*sin(t)` 的矩阵。矩阵函数要求输入方阵。
 
-For the complex matrix example, let `A=[[1,-2*i],[1+2*i,1]]` and `s=sqrt(2+sqrt(5))-i*sqrt(sqrt(5)-2)`. Since `(A-I)^2=(4-2*i)*I` and `s^2=4-2*i`, the result is equivalent to:
+HP Prime 的普通 `2^矩阵` 会在进入自定义函数前按元素计算。要计算矩阵函数 `exp(ln(2)*A)`，使用字符串、引用或 `XPOW(2,A)`。精确复数矩阵指数也适合使用字符串或直接矩阵函数，避免原生预求值提前产生小数。
 
-```text
-exp(i)*[[cos(s),2*sin(s)/s],[(-2+i)*sin(s)/s,cos(s)]]
-```
+| 函数 | 用途 |
+|---|---|
+| `XSIMP(e)` | 统一化简，接受普通表达式、引用与字符串。 |
+| `XEXP(A)` | 矩阵指数 `exp(A)`。 |
+| `XEXPT(A,t)` | 矩阵指数 `exp(t*A)`。 |
+| `XPOW(b,A)` | 矩阵函数 `exp(ln(b)*A)`，底数须为可确认的正实常量。 |
+| `XSIN(A)`、`XCOS(A)` | 矩阵正弦和余弦。 |
+| `XFAST(e)` | 较轻量的标量整理，不含矩阵函数分派和最终表示选择。 |
+| `XRECT(e)` | 尝试整理为实部加 `i` 乘虚部的形式。 |
+| `XREWRITE(e)` | 有界的定向结构改写。 |
+| `XSCHECK(0)` | 检查索引、表达式结构及代表性化简结果。 |
+| `XSDIAG(0)` | 版本及诊断信息。 |
 
-Actual output may use equivalent coefficients or arguments.
+旧纯转发入口已移除：`XMSIMP` 改用 `XSIMP`，`XMSCHECK` 改用 `XSCHECK`，`XDEEP` 改用 `XFAST`。小写 `xs...` 名称为内部函数。
 
-## Installation
+## 安装结构与限制
 
-1. Download **XSIMPKIT.hpprgm** from the v1.7.0 Release assets.
-2. Open the HP Connectivity Kit and drag the file into your connected calculator's **Programs** area.
-3. In CAS settings, select **Simplify: None**, **Exact: ON**, **Complex: ON**, and **Radians**.
-4. Run `XSCHECK(0)`. The expected reply is `XSIMP 1.7 CHECK OK`.
+当前 1.8.7 安装命令通过 365 项 HOST 检查（保留回归 277 项、局部因式分解新增 88 项）及 12 项安装器单元检查。当前完整安装器已在官方 Linux 2019 Virtual Calculator 2.1.14290 中独立通过 Check、Run 及代表性数学验证；G2 实机未测试。具体范围见[验证记录](docs/VALIDATION.md)。
 
-The native program is also stored at [native/XSIMPKIT.hpprgm](native/XSIMPKIT.hpprgm). The `.ppl` and `.cas` files in `src/` are development sources.
+安装器采用普通 PPL：运行时逐个登记 CAS 函数，Check 只检查安装器语法。验证环境、结果与文件摘要见[验证记录](docs/VALIDATION.md)。本版新增有界局部因式分解，并保留整数指数合并、根号内三倍角整理及非整数指数主值保护；先前虚数常量修复的实机确认只适用于该部分；完整 1.8.7 数学实现与安装器仍待 G2 实机验证。
 
-Use the CAS functions in this guide for calculations. `XSIMPKIT()` itself is only the installation container.
+安装时将 CAS 索引设为 1 基（`of:=1`），不更改角度、精确模式或其他变量。日常 `XSIMP` 如果检测到 0 基索引，会返回提示，不自行更改设置。
 
-## Input evaluation matters
+公开入口还会检查已加载函数的运行能力。官方 2019 Linux 模拟器完整退出后重新打开，函数名可能仍存在，但保存的函数状态不可靠；此时会提示从 **Program Catalog（程序目录）运行 `XSIMPKIT187`** 刷新，然后再计算。只执行 Check 不能刷新。G2 的保存行为尚未实测，不能据此保证其他固件的跨重启行为。详见[验证记录](docs/VALIDATION.md)。
 
-Unquoted arguments are evaluated by the native CAS before a custom function receives them. If `exp(i*A)` has already become a floating-point matrix, `XSIMP(exp(i*A))` cannot recover the exact original expression. Use `XEXP(i*A)`, `XEXPT(A,i)`, or quoted input to preserve the required information.
+输入上限为 1600 字符，遍历深度上限为 24 层，局部改写另有预算。这些预算不是内置 CAS 调用的硬超时，程序也不承诺任意表达式的全局最简形式。
 
-Native `2^A` can mean elementwise powers. `XPOW(2,A)` computes the matrix function `exp(ln(2)*A)` explicitly. The program does not reinterpret a matrix of already-computed elementwise powers.
+## 源码
 
-## Validation and limits
+可读数学源码位于 `src/scalar.cas`、`matrix.cas`、`presentation.cas`、`posthoc.cas`、`unified.cas`。`tools/build_installer.py` 只去除注释和冗余空白、编码安装命令；`tools/build_native.py` 封装原生程序文件。重建方法见[安装说明](docs/INSTALL.zh-CN.md#源码构建)，测试依赖与基准方法见[开发说明](docs/DEVELOPMENT.md)。
 
-The frozen 1.7 source was installed and checked in the official HP Prime Linux Virtual Calculator **2.1.14290 (2019)**. The quoted complex example, direct `XEXP`, and direct `XEXPT` all completed with no floating-point leaves. Hyperbolic, rotation, and Pauli matrix examples also passed.
+## Expression Trees 库
 
-Upstream Giac regression records contain 125 existing primary cases, 97 additional primary cases, and 33 quoted/unquoted pairs. Representation checks, numerical agreement, symbolic equality, and native execution are recorded separately; they are not interchangeable proofs. See [TESTING.md](docs/TESTING.md).
-
-The native file was also reloaded in a separate simulator work directory; version, scalar simplification and exact complex-matrix checks passed. This was not a physical G2 transfer test. Report the hardware, firmware, CAS settings, exact input, and actual result when filing an issue.
-
-The input limit is 1600 characters, and traversal depth is bounded at 24. Individual native CAS operations have no hard timeout. This is not a global shortest-expression search. Unknown logarithm branches and denominators are handled conservatively. Constant complex-radical expressions use structural rewriting and rational normalization to avoid the observed slow native simplification path.
-
-The combined PPL source SHA-256 is:
-
-```text
-3d07486133bb9fb22cbe829db7ccc64abd2baf6a7eb91a07ad10c0e4c6214930
-```
-
-## Development
-
-The five modules and test scripts are in `src/`. Build the combined PPL source with:
-
-```sh
-python3 src/build_and_test.py
-```
-
-For upstream tests, place the author's Giac JavaScript runtime at `test_runtime/giac.js` in this repository, then run the scripts listed in [TESTING.md](docs/TESTING.md), using `node src/<script>.cjs`. The external runtime is not distributed here. Existing test records accompany the source; rebuilding after edits does not automatically revalidate them.
-
-The full ZIP attached to the GitHub Release contains the program, source, documentation and validation evidence. Its manifest lists the files and checksums in that ZIP. The calculator code is the same as the validated 1.7 source.
-
-## Version history
-
-Current version: 1.7. Changes are listed in [CHANGELOG.md](CHANGELOG.md). Native-file reload checks are recorded in [NATIVE_FORMAT.json](docs/NATIVE_FORMAT.json).
+XSIMP 已直接遍历 CAS 的带类型表达式树，不需要额外安装 Expression Trees 库。该库可用于组织自定义改写规则，但其重建会重新求值；本项目保持受保护的精确重建。源码检查、兼容性用例和测量边界见[评估说明](docs/EXPRESSION_TREES.zh-CN.md)。

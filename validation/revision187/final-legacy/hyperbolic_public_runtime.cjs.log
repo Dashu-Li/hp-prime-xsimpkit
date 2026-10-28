@@ -1,0 +1,16 @@
+user_returned_native: PASS
+user_returned_string: PASS
+user_returned_quote: PASS
+ratio_native: PASS
+ratio_string: PASS
+ratio_quote: PASS
+short_sum: PASS
+short_difference: PASS
+short_ratio: PASS
+imaginary_final_cos: PASS
+list_elements: PASS
+matrix_elements: PASS
+old_mixed_0: PASS
+old_mixed_1: PASS
+old_mixed_2: PASS
+{"total":15,"passed":15,"failed":0}

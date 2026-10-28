@@ -1,0 +1,517 @@
+// Recover compact hyperbolic or trigonometric forms in evaluated matrices.
+// Only a Laurent polynomial a/z+b+c*z, z=exp(u), is accepted.
+// No matrix logarithm, floating recognition, or recovery of input intent.
+xsppa(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvr,xsvk,xsvj,xsvpart;
+  xsvr:=mid([0],1,0);
+  IF xsvdepth>=24 THEN RETURN [0,0,0]; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsvr; END;
+  xsvh:=xsve[1];
+  IF xsvh==exp THEN RETURN [xsve]; END;
+  IF type(xsvh)!=DOM_FUNC THEN RETURN [0,0,0]; END;
+  IF string(xsvh)=="of" OR string(xsvh)=="'of'" THEN RETURN [0,0,0]; END;
+  xsvl:=[op(xsve)];
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN [0,0,0]; END;
+    xsvpart:=xsppa(xsvl[xsvk],xsvdepth+1);
+    IF size(xsvpart)>2 THEN RETURN [0,0,0]; END;
+    FOR xsvj FROM 1 TO size(xsvpart) DO
+      IF NOT member(xsvpart[xsvj],xsvr) THEN xsvr:=append(xsvr,xsvpart[xsvj]); END;
+      IF size(xsvr)>2 THEN RETURN [0,0,0]; END;
+    END;
+  END;
+  RETURN xsvr;
+END;
+
+// pow2exp may introduce ln(base). For non-rational exponents, admit only
+// positive real constant bases; do not add branches for an unknown base.
+xspppowers(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;
+  xsvh:=string(xsve[1]); xsvl:=[op(xsve)];
+  IF xsvh=="'^'" OR xsvh=="^" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF type(xsvl[2])!=DOM_INT AND type(xsvl[2])!=DOM_RAT THEN
+      IF NOT xspos(xsvl[1]) THEN RETURN 0; END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF NOT xspppowers(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+// Denominators may only contain products/powers of nonzero constants and
+// exponentials. A difference of exponentials might secretly be zero: decline.
+xsppnz(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk,xsvs;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF size(xsppa(xsve,0))==0 THEN
+    IF size(lname(xsve))!=0 THEN RETURN 0; END;
+    xsvs:=string(normal(sign(xsve)));
+    RETURN xsvs=="1" OR xsvs=="-1";
+  END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;
+  xsvh:=xsve[1];
+  IF xsvh==exp THEN RETURN 1; END;
+  xsvl:=[op(xsve)];
+  IF string(xsvh)=="'^'" OR string(xsvh)=="^" THEN
+    IF size(xsvl)==2 AND type(xsvl[2])==DOM_INT THEN RETURN xsppnz(xsvl[1],xsvdepth+1); END;
+  END;
+  IF string(xsvh)!="'*'" AND string(xsvh)!="*" THEN RETURN 0; END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF NOT xsppnz(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+xsppsafe(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN 1; END;
+  xsvh:=string(xsve[1]); xsvl:=[op(xsve)];
+  IF xsvh=="'inv'" OR xsvh=="inv" THEN
+    IF NOT xsppnz(xsvl[1],0) THEN RETURN 0; END;
+  END;
+  IF xsvh=="'/'" OR xsvh=="/" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF NOT xsppnz(xsvl[2],0) THEN RETURN 0; END;
+  END;
+  IF xsvh=="'^'" OR xsvh=="^" THEN
+    IF size(xsvl)!=2 THEN RETURN 0; END;
+    IF type(xsvl[2])==DOM_INT OR type(xsvl[2])==DOM_RAT THEN
+      IF xsvl[2]<0 THEN
+        IF NOT xsppnz(xsvl[1],0) THEN RETURN 0; END;
+      END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF NOT xsppsafe(xsvl[xsvk],xsvdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+// A cheap structural hint for the optional pow2exp fallback. Integer and
+// rational powers alone do not justify another CAS transformation pass.
+xspppowhint(xsve,xsvdepth):=BEGIN
+  LOCAL xsvh,xsvl,xsvk;
+  IF xsvdepth>=24 OR type(xsve)!=DOM_SYMBOLIC THEN RETURN 0; END;
+  xsvh:=xsve[1];
+  IF type(xsvh)!=DOM_FUNC THEN RETURN 0; END;
+  IF string(xsvh)=="of" OR string(xsvh)=="'of'" THEN RETURN 0; END;
+  xsvl:=[op(xsve)];
+  IF string(xsvh)=="'^'" OR string(xsvh)=="^" THEN
+    IF size(xsvl)==2 THEN
+      IF type(xsvl[2])!=DOM_INT AND type(xsvl[2])!=DOM_RAT THEN RETURN 1; END;
+    END;
+  END;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==string(xsve) THEN RETURN 0; END;
+    IF xspppowhint(xsvl[xsvk],xsvdepth+1) THEN RETURN 1; END;
+  END;
+  RETURN 0;
+END;
+
+// Recover from the supplied exponential atoms without changing logarithms.
+// The identities exp(m+u)=exp(m)*exp(u) and cosh/sinh definitions hold for
+// finite complex arguments, including arguments containing an existing ln(a).
+xspprecover(xsve,xsvf,xsva,xsvlen):=BEGIN
+  LOCAL xsvu,xsvv,xsvm,xsvp,xsvz,xsvpoly,xsvden,xsv0,xsv1,xsv2,xsvc,xsvs,xsvr,xsvk,xsvtrig,xsvangle,xsvrlen,xsvtlen;
+  IF size(xsva)<1 OR size(xsva)>2 THEN RETURN xsve; END;
+  IFERR
+    // Do not assign or purge a global. Decline if the scratch identifier is
+    // already assigned or occurs in the input expression.
+    xsvz:=expr("quote(xsppostauxv)");
+    IF type(eval(xsvz))!=DOM_IDENT OR string(eval(xsvz))!="xsppostauxv" THEN RETURN xsve; END;
+    IF has(xsve,xsvz) THEN RETURN xsve; END;
+    IF NOT xsppsafe(xsvf,0) THEN RETURN xsve; END;
+    xsvu:=op(xsva[1]);
+    IF size(xsva)==1 THEN
+      xsvf:=subst(xsvf,xsva[1],xsvz);
+    ELSE
+      xsvv:=op(xsva[2]);
+      xsvm:=normal((xsvu+xsvv)/2);
+      xsvu:=normal((xsvu-xsvv)/2);
+      xsvp:=xsclean(exp(xsvm));
+      xsvf:=subst(xsvf,xsva,[xsvp*xsvz,xsvp/xsvz]);
+    END;
+    IF size(xsppa(xsvf,0))>0 THEN
+      // A nonconstant center exp(m) is allowed, but substitution must remove
+      // both original atoms. The polynomial proof below rejects residual z.
+      FOR xsvk FROM 1 TO size(xsva) DO
+        IF has(xsvf,xsva[xsvk]) THEN RETURN xsve; END;
+      END;
+    END;
+    xsvpoly:=ratnormal(xsvf*xsvz);
+    IF size(string(xsvpoly))>3000 THEN RETURN xsve; END;
+    xsvden:=denom(xsvpoly);
+    IF has(xsvden,xsvz) THEN RETURN xsve; END;
+    xsv0:=coeff(xsvpoly,xsvz,0);
+    xsv1:=coeff(xsvpoly,xsvz,1);
+    xsv2:=coeff(xsvpoly,xsvz,2);
+    IF has(xsv0,xsvz) OR has(xsv1,xsvz) OR has(xsv2,xsvz) THEN RETURN xsve; END;
+    IF string(ratnormal(xsvpoly-xsv0-xsv1*xsvz-xsv2*xsvz^2))!="0" THEN RETURN xsve; END;
+    xsvc:=normal(xsv0+xsv2); xsvs:=normal(xsv2-xsv0);
+    xsvr:=normal(xsv1)+xsvc*cosh(xsvu)+xsvs*sinh(xsvu);
+    // cosh(u)=cos(-i*u), sinh(u)=i*sin(-i*u), for every complex u.
+    // Clean only the angle and coefficients, never the completed candidate.
+    xsvangle:=normal(-i*xsvu);
+    xsvtrig:=normal(xsv1)+xsvc*cos(xsvangle)+normal(i*xsvs)*sin(xsvangle);
+    xsvrlen:=size(string(xsvr)); xsvtlen:=size(string(xsvtrig));
+    // A short decimal is not a successful simplification of an exact input.
+    IF xsnewapprox(xsve,xsvr) THEN xsvr:=xsve; xsvrlen:=xsvlen; END;
+    IF xsnewapprox(xsve,xsvtrig) THEN xsvtrig:=xsve; xsvtlen:=xsvlen; END;
+    IF xsvtlen<xsvrlen THEN xsvr:=xsvtrig; xsvrlen:=xsvtlen; END;
+    IF has(xsvr,undef) OR has(xsvr,infinity) THEN RETURN xsve; END;
+    IF xsvrlen<xsvlen THEN RETURN xsvr; END;
+  THEN RETURN xsve;
+  END;
+  RETURN xsve;
+END;
+
+xsppostscalar(xsve):=BEGIN
+  LOCAL xsvf,xsva,xsvr,xsvoldlogs,xsvnewlogs,xsvk,xsvtext,xsvlen;
+  IF type(xsve)!=DOM_SYMBOLIC THEN RETURN xsve; END;
+  xsvtext:=string(xsve); xsvlen:=size(xsvtext);
+  IF xsvlen>1000 THEN RETURN xsve; END;
+  IF has(xsve,undef) OR has(xsve,infinity) THEN RETURN xsve; END;
+  IFERR
+    // First use the original expression. An already present logarithm is
+    // part of its domain; it does not require a positive constant argument.
+    xsva:=xsppa(xsve,0);
+    IF size(xsva)>=1 AND size(xsva)<=2 THEN
+      xsvr:=xspprecover(xsve,xsve,xsva,xsvlen);
+      IF string(xsvr)!=xsvtext THEN RETURN xsvr; END;
+    END;
+    IF NOT xspppowhint(xsve,0) THEN RETURN xsve; END;
+    IF NOT xspppowers(xsve,0) THEN RETURN xsve; END;
+    xsvoldlogs:=xslogs(xsve);
+    xsvf:=pow2exp(xsve);
+    IF xsnewapprox(xsve,xsvf) THEN RETURN xsve; END;
+    IF string(xsvf)==xsvtext OR size(string(xsvf))>2000 THEN RETURN xsve; END;
+    xsvnewlogs:=xslogs(xsvf);
+    IF size(xsvnewlogs)>8 THEN RETURN xsve; END;
+    FOR xsvk FROM 1 TO size(xsvnewlogs) DO
+      IF NOT member(xsvnewlogs[xsvk],xsvoldlogs) THEN
+        IF NOT xspos(op(xsvnewlogs[xsvk])) THEN RETURN xsve; END;
+      END;
+    END;
+    xsva:=xsppa(xsvf,0);
+    RETURN xspprecover(xsve,xsvf,xsva,xsvlen);
+  THEN RETURN xsve;
+  END;
+END;
+
+xsmpost(xsmv):=BEGIN
+  LOCAL xsmvr,xsmvi,xsmvj;
+  IF NOT xsumatrix(xsmv) THEN RETURN xsmv; END;
+  IF size(string(xsmv))>1600 THEN RETURN xsmv; END;
+  xsmvr:=xsmv;
+  FOR xsmvi FROM 1 TO rowDim(xsmv) DO
+    FOR xsmvj FROM 1 TO colDim(xsmv) DO
+      xsmvr[xsmvi,xsmvj]:=xsppostscalar(xsmv[xsmvi,xsmvj]);
+    END;
+  END;
+  RETURN xsmvr;
+END;
+
+// Private, bounded final-form exponential pairing. Never an ODE recognizer.
+// Arithmetic rebuilding is held; no symbolic numerator/denominator factors
+// are canceled. exp arguments are combined only after domain-hole checks.
+xshyppoly(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpl,xhpk;
+  IF xhpd>=20 THEN RETURN 0; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN 0; END;
+  xhph:=string(xshead(xhpe)); xhpl:=[op(xhpe)];
+  IF xhph=="'^'" OR xhph=="^" THEN
+    IF size(xhpl)<>2 OR type(xhpl[2])<>DOM_INT OR xhpl[2]<0 OR xhpl[2]>8 THEN RETURN 0; END;
+    RETURN xshyppoly(xhpl[1],xhpd+1);
+  END;
+  IF NOT member(xhph,["'+'","+","'-'","-","'*'","*"]) THEN RETURN 0; END;
+  FOR xhpk FROM 1 TO size(xhpl) DO IF NOT xshyppoly(xhpl[xhpk],xhpd+1) THEN RETURN 0; END; END;
+  RETURN 1;
+END;
+
+xshypnatural(xhpe):=BEGIN
+  LOCAL xhpl;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN 0; END;
+  IF xshead(xhpe)==exp THEN RETURN 1; END;
+  xhpl:=[op(xhpe)];
+  IF string(xshead(xhpe))=="'^'" OR string(xshead(xhpe))=="^" THEN
+    IF size(xhpl)==2 THEN RETURN string(xhpl[1])==string(exp(1)); END;
+  END;
+  RETURN 0;
+END;
+
+xshyparg(xhpe):=BEGIN
+  LOCAL xhpl;
+  IF xshead(xhpe)==exp THEN RETURN op(xhpe); END;
+  xhpl:=[op(xhpe)]; RETURN xhpl[2];
+END;
+
+// Guard the whole scalar tree, including quoted unknown calls.
+xshypguard(xhpe,xhpd,xhpb):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpc,xhpv;
+  IF xhpd>=24 OR xhpb<1 THEN RETURN -1; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN 1; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN -1; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xspunaryname(xhph)=="" AND NOT member(xhpn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN -1; END;
+  xhpc:=1;
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypguard(xhpl[xhpk],xhpd+1,xhpb-xhpc); IF xhpv<0 THEN RETURN -1; END; xhpc:=xhpc+xhpv;
+  END;
+  RETURN xhpc;
+END;
+
+// Collect polynomial pole factors. On the input inspect only exponential
+// arguments; on output collect all remaining polynomial denominator factors.
+// Branch/singular functions xhpinside an input exponential argument are declined.
+xshypholes(xhpe,xhpd,xhpinside,xhpstrict):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpr,xhpv,xhpj,xhpden;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  xhpr:=mid([0],1,0); IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpr; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xshypnatural(xhpe) THEN RETURN xshypholes(xshyparg(xhpe),xhpd+1,1,xhpstrict); END;
+  IF xhph==sinh OR xhph==cosh THEN xhpinside:=1; END;
+  IF xhpstrict AND xhpinside THEN
+    IF xspunaryname(xhph)<>"" AND xhph<>sqrt THEN RETURN [0]; END;
+  END;
+  xhpden:=1;
+  IF xhpn=="'inv'" OR xhpn=="inv" THEN xhpden:=xhpl[1]; END;
+  IF xhpn=="'/'" OR xhpn=="/" THEN IF size(xhpl)==2 THEN xhpden:=xhpl[2]; END; END;
+  IF xhpn=="'^'" OR xhpn=="^" THEN
+    IF size(xhpl)==2 AND (type(xhpl[2])==DOM_INT OR type(xhpl[2])==DOM_RAT) THEN IF xhpl[2]<0 THEN xhpden:=xhpl[1]; END; END;
+  END;
+  IF string(xhpden)<>"1" AND (xhpinside OR NOT xhpstrict) THEN
+    IF xshyppoly(xhpden,0) THEN
+      IF size(lname(xhpden))>0 THEN xhpr:=append(xhpr,xhpden); END;
+    ELSE IF xhpstrict AND xhpinside THEN RETURN [0]; END; END;
+  END;
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypholes(xhpl[xhpk],xhpd+1,xhpinside,xhpstrict);
+    FOR xhpj FROM 1 TO size(xhpv) DO
+      IF string(xhpv[xhpj])=="0" THEN RETURN [0]; END;
+      IF NOT member(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;
+      IF size(xhpr)>16 THEN RETURN [0]; END;
+    END;
+  END;
+  RETURN xhpr;
+END;
+
+// [ok, rational numeric factor, numerator atoms, denominator atoms,
+//  summed exponent, number of exponential factors]. No symbolic cancellation.
+xshypmono(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpk,xhpv,xhpr,xhpj,xhpsgn,xhpa,xhpb;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT THEN RETURN [1,xhpe,mid([0],1,0),mid([0],1,0),0,0]; END;
+  IF xshypnatural(xhpe) THEN RETURN [1,1,mid([0],1,0),mid([0],1,0),xshyparg(xhpe),1]; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN [1,1,[xhpe],mid([0],1,0),0,0]; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xhpn=="'-'" OR xhpn=="-" THEN
+    IF size(xhpl)==1 THEN
+      xhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 THEN RETURN xhpr; END; xhpr[2]:=-xhpr[2]; RETURN xhpr;
+    END;
+  END;
+  IF xhpn=="'inv'" OR xhpn=="inv" OR (xhpn=="'^'" OR xhpn=="^") AND size(xhpl)==2 AND string(xhpl[2])=="-1" THEN
+    xhpr:=xshypmono(xhpl[1],xhpd+1); IF xhpr[1]==0 OR xhpr[2]==0 THEN RETURN [0]; END;
+    RETURN [1,1/xhpr[2],xhpr[4],xhpr[3],-xhpr[5],xhpr[6]];
+  END;
+  IF xhpn=="'/'" OR xhpn=="/" THEN
+    IF size(xhpl)<>2 THEN RETURN [0]; END;
+    xhpa:=xshypmono(xhpl[1],xhpd+1); xhpb:=xshypmono(xhpl[2],xhpd+1);
+    IF xhpa[1]==0 OR xhpb[1]==0 OR xhpb[2]==0 THEN RETURN [0]; END;
+    xhpr:=[1,xhpa[2]/xhpb[2],xhpa[3],xhpa[4],xhpa[5]-xhpb[5],xhpa[6]+xhpb[6]];
+    FOR xhpj FROM 1 TO size(xhpb[4]) DO xhpr[3]:=append(xhpr[3],xhpb[4][xhpj]); END;
+    FOR xhpj FROM 1 TO size(xhpb[3]) DO xhpr[4]:=append(xhpr[4],xhpb[3][xhpj]); END;
+    RETURN xhpr;
+  END;
+  IF xhpn<>"'*'" AND xhpn<>"*" THEN RETURN [1,1,[xhpe],mid([0],1,0),0,0]; END;
+  xhpr:=[1,1,mid([0],1,0),mid([0],1,0),0,0];
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypmono(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;
+    xhpr[2]:=xhpr[2]*xhpv[2]; xhpr[5]:=xhpr[5]+xhpv[5]; xhpr[6]:=xhpr[6]+xhpv[6];
+    FOR xhpj FROM 1 TO size(xhpv[3]) DO xhpr[3]:=append(xhpr[3],xhpv[3][xhpj]); END;
+    FOR xhpj FROM 1 TO size(xhpv[4]) DO xhpr[4]:=append(xhpr[4],xhpv[4][xhpj]); END;
+    IF xhpr[6]>8 OR size(xhpr[3])+size(xhpr[4])>32 THEN RETURN [0]; END;
+  END;
+  RETURN xhpr;
+END;
+
+xshypcoeftext(xhpm):=BEGIN
+  LOCAL xhps,xhpt,xhpk;
+  xhps:="";
+  IF string(xhpm[2])<>"1" OR size(xhpm[3])==0 THEN xhps:=xspnative(xhpm[2]); END;
+  FOR xhpk FROM 1 TO size(xhpm[3]) DO
+    IF xhps<>"" THEN xhps:=xhps+"*"; END;
+    xhps:=xhps+"("+xspnative(xhpm[3][xhpk])+")";
+  END;
+  IF size(xhpm[4])>0 THEN
+    xhpt:=""; FOR xhpk FROM 1 TO size(xhpm[4]) DO
+      IF xhpt<>"" THEN xhpt:=xhpt+"*"; END;
+      xhpt:=xhpt+"("+xspnative(xhpm[4][xhpk])+")";
+    END;
+    xhps:="("+xhps+")/("+xhpt+")";
+  END;
+  RETURN xhps;
+END;
+
+xshyphold(xhps):=BEGIN RETURN expr("quote("+xhps+")"); END;
+
+xshyprebuild(xhph,xhpl):=BEGIN
+  LOCAL xhpn,xhps,xhpk;
+  xhpn:=xspunaryname(xhph);
+  IF xhpn<>"" AND size(xhpl)==1 THEN RETURN xshyphold(xhpn+"("+xspnative(xhpl[1])+")"); END;
+  xhpn:=string(xhph); IF mid(xhpn,1,1)=="'" THEN xhpn:=mid(xhpn,2,size(xhpn)-2); END;
+  IF xhpn=="inv" AND size(xhpl)==1 THEN RETURN xshyphold("1/("+xspnative(xhpl[1])+")"); END;
+  IF xhpn=="-" AND size(xhpl)==1 THEN RETURN xshyphold("-("+xspnative(xhpl[1])+")"); END;
+  IF NOT member(xhpn,["+","-","*","/","^"]) OR size(xhpl)==0 THEN RETURN undef; END;
+  xhps:="("+xspnative(xhpl[1])+")";
+  FOR xhpk FROM 2 TO size(xhpl) DO xhps:=xhps+xhpn+"("+xspnative(xhpl[xhpk])+")"; END;
+  RETURN xshyphold(xhps);
+END;
+
+// Factor an angle with each whole root treated as one indeterminate. This
+// shortens a common-root sum without exposing the root to factor's branch rules.
+xshyproots(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpr,xhpv,xhpk,xhpj;
+  IF xhpd>=24 THEN RETURN [0]; END;
+  IF type(xhpe)==DOM_INT OR type(xhpe)==DOM_RAT OR type(xhpe)==DOM_COMPLEX OR type(xhpe)==DOM_IDENT THEN RETURN [1]; END;
+  IF type(xhpe)<>DOM_SYMBOLIC THEN RETURN [0]; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)];
+  IF xhph==sqrt OR ((xhpn=="'^'" OR xhpn=="^") AND size(xhpl)==2 AND string(xhpl[2])=="1/2") THEN RETURN [1,xhpe]; END;
+  IF NOT member(xhpn,["'+'","+","'-'","-","'*'","*","'/'","/","'inv'","inv","'^'","^"]) THEN RETURN [0]; END;
+  IF xhpn=="'^'" OR xhpn=="^" THEN
+    IF size(xhpl)<>2 OR type(xhpl[2])<>DOM_INT OR abs(xhpl[2])>8 THEN RETURN [0]; END;
+  END;
+  xhpr:=[1];
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshyproots(xhpl[xhpk],xhpd+1); IF xhpv[1]==0 THEN RETURN [0]; END;
+    FOR xhpj FROM 2 TO size(xhpv) DO
+      IF NOT member(xhpv[xhpj],xhpr) THEN xhpr:=append(xhpr,xhpv[xhpj]); END;
+      IF size(xhpr)>2 THEN RETURN [0]; END;
+    END;
+  END;
+  RETURN xhpr;
+END;
+
+xshypangle(xhpe):=BEGIN
+  LOCAL xhpr,xhpv,xhpz,xhpinfo;
+  IF size(string(xhpe))>1000 THEN RETURN xhpe; END;
+  xhpr:=xshyproots(xhpe,0); IF xhpr[1]==0 THEN RETURN xhpe; END;
+  IFERR
+    xhpz:=expr("quote(xshypangleaux)"); xhpinfo:=about(xhpz);
+    IF type(xhpinfo)<>DOM_IDENT OR string(xhpinfo)<>"xshypangleaux" OR has(xhpe,xhpz) THEN RETURN xhpe; END;
+    xhpv:=xhpe;
+    IF size(xhpr)==2 THEN xhpv:=subst(xhpv,xhpr[2],xhpz); END;
+    xhpv:=factor(xhpv);
+    IF size(xhpr)==2 THEN xhpv:=subst(xhpv,xhpz,xhpr[2]); END;
+    IF NOT xsnewapprox(xhpe,xhpv) AND size(string(xhpv))<size(string(xhpe)) THEN RETURN xhpv; END;
+  THEN RETURN xhpe;
+  END;
+  RETURN xhpe;
+END;
+
+xshypwalk(xhpe,xhpd):=BEGIN
+  LOCAL xhph,xhpn,xhpl,xhpr,xhpk,xhpq,xhpv,xhpa,xhpb,xhpc1,xhpc2,xhpu,xhpcenter,xhpdelta,xhps,xhpkind,xhptmp,xhpchanged;
+  IF xhpd>=24 OR type(xhpe)<>DOM_SYMBOLIC THEN RETURN xhpe; END;
+  xhph:=xshead(xhpe); xhpn:=string(xhph); xhpl:=[op(xhpe)]; xhpr:=mid([0],1,0);
+  FOR xhpk FROM 1 TO size(xhpl) DO
+    xhpv:=xshypwalk(xhpl[xhpk],xhpd+1); xhpr:=append(xhpr,xhpv);
+  END;
+  xhpq:=xhpe; xhpchanged:=string(xhpr)<>string(xhpl);
+  IF xhpchanged THEN
+    xhpq:=xshyprebuild(xhph,xhpr);
+    IF xsnewapprox(xhpe,xhpq) THEN RETURN xhpe; END;
+  END;
+  // An unchanged node is the same exactness candidate, so rescanning it
+  // cannot discover a newly introduced approximation.
+  IF has(xhpq,undef) OR has(xhpq,infinity) THEN RETURN xhpe; END;
+  // Canonicalize only polynomial root arguments, never split xhpa root.
+  IF (xhph==sqrt AND size(xhpr)==1) OR ((xhpn=="'^'" OR xhpn=="^") AND size(xhpr)==2 AND string(xhpr[2])=="1/2") THEN
+    xhpu:=xhpr[1];
+    IF size(string(xhpu))<=512 AND xshyppoly(xhpu,0) THEN
+      xhpv:=ratnormal(xhpu); xhptmp:=xshyphold("sqrt("+xspnative(xhpv)+")");
+      IF NOT xsnewapprox(xhpe,xhptmp) THEN RETURN xhptmp; END;
+    END;
+  END;
+  // Combine only exp units, preserving every symbolic coefficient factor.
+  IF xhpn=="'*'" OR xhpn=="*" OR xhpn=="'inv'" OR xhpn=="inv" OR xhpn=="'/'" OR xhpn=="/" THEN
+    // Unchanged algebra inside roots and coefficients needs no exponential
+    // collection. Changed children still enter, so newly exposed 2/2 folds.
+    xhpkind:=xhpchanged;
+    IF NOT xhpkind THEN
+      xhpc1:=string(xhpq);
+      xhpkind:=inString(xhpc1,"exp(")>0 OR inString(xhpc1,"EXP(")>0 OR inString(xhpc1,"e^")>0;
+    END;
+    IF xhpkind THEN
+      xhpa:=xshypmono(xhpq,0);
+      IF xhpa[1]==1 AND xhpa[2]<>0 THEN
+        xhpu:=normal(xhpa[5]);
+        xhps:=xshypcoeftext(xhpa);
+        IF string(xhpu)<>"0" THEN
+          IF xhps=="1" THEN xhps:="exp("+xspnative(xhpu)+")";
+          ELSE xhps:="("+xhps+")*exp("+xspnative(xhpu)+")"; END;
+        END;
+        xhptmp:=xshyphold(xhps);
+        IF NOT xsnewapprox(xhpe,xhptmp) AND size(string(xhptmp))<size(string(xhpq)) THEN xhpq:=xhptmp; END;
+      END;
+    END;
+  END;
+  xhph:=xshead(xhpq); xhpn:=string(xhph); xhpl:=[op(xhpq)];
+  IF NOT member(xhpn,["'+'","+","'-'","-"]) OR size(xhpl)<>2 THEN RETURN xhpq; END;
+  xhpa:=xshypmono(xhpl[1],0); xhpb:=xshypmono(xhpl[2],0);
+  IF xhpa[1]<>1 OR xhpb[1]<>1 OR xhpa[6]<1 OR xhpb[6]<1 THEN RETURN xhpq; END;
+  IF xhpn=="'-'" OR xhpn=="-" THEN xhpb[2]:=-xhpb[2]; END;
+  xhpc1:=mid([0],1,0); xhpc2:=mid([0],1,0);
+  FOR xhpk FROM 1 TO size(xhpa[3]) DO xhpc1:=append(xhpc1,xspnative(xhpa[3][xhpk])); END;
+  FOR xhpk FROM 1 TO size(xhpb[3]) DO xhpc2:=append(xhpc2,xspnative(xhpb[3][xhpk])); END;
+  IF string(sort(xhpc1))<>string(sort(xhpc2)) THEN RETURN xhpq; END;
+  xhpc1:=mid([0],1,0); xhpc2:=mid([0],1,0);
+  FOR xhpk FROM 1 TO size(xhpa[4]) DO xhpc1:=append(xhpc1,xspnative(xhpa[4][xhpk])); END;
+  FOR xhpk FROM 1 TO size(xhpb[4]) DO xhpc2:=append(xhpc2,xspnative(xhpb[4][xhpk])); END;
+  IF string(sort(xhpc1))<>string(sort(xhpc2)) THEN RETURN xhpq; END;
+  xhpkind:=0;
+  IF xhpa[2]==xhpb[2] THEN xhpkind:=1; END;
+  IF xhpa[2]==-xhpb[2] THEN xhpkind:=2; END;
+  IF xhpkind==0 THEN RETURN xhpq; END;
+  IF xhpkind==2 AND xhpa[2]<0 AND xhpb[2]>0 THEN xhptmp:=xhpa; xhpa:=xhpb; xhpb:=xhptmp; END;
+  xhpcenter:=normal((xhpa[5]+xhpb[5])/2); xhpdelta:=xshypangle(normal((xhpa[5]-xhpb[5])/2));
+  IF string(xhpdelta)=="0" THEN RETURN xhpq; END;
+  xhpa[2]:=2*xhpa[2];
+  IF xhpkind==1 THEN xhps:="cosh"; ELSE xhps:="sinh"; END;
+  xhptmp:=xhps+"("+xspnative(xhpdelta)+")";
+  IF string(xhpcenter)<>"0" THEN xhptmp:="exp("+xspnative(xhpcenter)+")*"+xhptmp; END;
+  xhpu:=xshypcoeftext(xhpa);
+  IF xhpu<>"1" THEN xhptmp:="("+xhpu+")*"+xhptmp; END;
+  xhptmp:=xshyphold(xhptmp);
+  IF NOT xsnewapprox(xhpe,xhptmp) AND size(string(xhptmp))<size(string(xhpq)) THEN RETURN xhptmp; END;
+  RETURN xhpq;
+END;
+
+xshypcompact(xhpe):=BEGIN
+  LOCAL xhpoldholes,xhpnewholes,xhpprod,xhpk,xhpv,xhpr,xhptext;
+  IF type(xhpe)<>DOM_SYMBOLIC OR size(string(xhpe))>1600 THEN RETURN xhpe; END;
+  xhptext:=string(xhpe);
+  IF inString(xhptext,"exp(")==0 AND inString(xhptext,"EXP(")==0 AND inString(xhptext,"e^")==0 THEN RETURN xhpe; END;
+  IF xsapproxstate(xhpe,0)<>0 OR xshypguard(xhpe,0,768)<0 THEN RETURN xhpe; END;
+  IFERR
+    xhpoldholes:=xshypholes(xhpe,0,0,1);
+    IF member(0,xhpoldholes) THEN RETURN xhpe; END;
+    xhpr:=xshypwalk(xhpe,0);
+    IF xsnewapprox(xhpe,xhpr) OR has(xhpr,undef) OR has(xhpr,infinity) OR size(string(xhpr))>=size(string(xhpe)) THEN RETURN xhpe; END;
+    xhpnewholes:=xshypholes(xhpr,0,0,0);
+    IF member(0,xhpnewholes) THEN RETURN xhpe; END;
+    xhpprod:=1; FOR xhpk FROM 1 TO size(xhpnewholes) DO xhpprod:=xhpprod*xhpnewholes[xhpk]; IF size(string(xhpprod))>1600 THEN RETURN xhpe; END; END;
+    FOR xhpk FROM 1 TO size(xhpoldholes) DO
+      xhpv:=ratnormal(xhpprod/xhpoldholes[xhpk]);
+      IF string(denom(xhpv))<>"1" THEN RETURN xhpe; END;
+    END;
+    RETURN xhpr;
+  THEN RETURN xhpe;
+  END;
+END;

@@ -1,0 +1,572 @@
+// XSIMP 1.1 scalar module. HP Prime: expr[1] is the expression head.
+// One-based list indices. No dependence on the unavailable sommet command.
+// Traversal depth is bounded; individual built-in CAS calls have no time limit.
+xshead(xsve):=BEGIN RETURN xsve[1]; END;
+
+// Probe loaded CAS definition behavior without changing user state.
+// This sole literal empty list intentionally detects unreliable saved closures.
+xsinitok(xsinitunused):=BEGIN
+  LOCAL xsinitlist;
+  IFERR
+    IF NOT expr("([17,23])[1]==17") THEN RETURN 0; END;
+    xsinitlist:=[];
+    xsinitlist:=append(xsinitlist,17);
+    RETURN string(xsinitlist)=="[17]";
+  THEN RETURN 0;
+  END;
+END;
+
+// Inspect numeric leaves without evaluating function heads or identifiers.
+// State 0 = exact, 1 = a floating leaf, 2 = traversal limit/self operand.
+// The string check only skips trees with no possible printed float notation;
+// the actual decision is always made by type, not by matching decimal text.
+xsapproxstate(xsve,xsvdepth):=BEGIN
+  LOCAL xsvt,xsvl,xsvk,xsvs,xsvr,xsvtext;
+  xsvt:=type(xsve);
+  IF xsvt==DOM_FLOAT THEN RETURN 1; END;
+  IF xsvt==DOM_COMPLEX THEN
+    IF type(re(xsve))==DOM_FLOAT OR type(im(xsve))==DOM_FLOAT THEN RETURN 1; END;
+    RETURN 0;
+  END;
+  IF xsvt<>DOM_SYMBOLIC AND xsvt<>DOM_LIST THEN RETURN 0; END;
+  xsvtext:=string(xsve);
+  IF inString(xsvtext,".")==0 AND inString(xsvtext,"E")==0 AND
+     inString(xsvtext,"e")==0 AND inString(xsvtext,"inf")==0 AND
+     inString(xsvtext,"nan")==0 THEN RETURN 0; END;
+  IF xsvdepth>=24 THEN RETURN 2; END;
+  IF xsvt==DOM_LIST THEN xsvl:=xsve; ELSE xsvl:=[op(xsve)]; END;
+  xsvr:=0;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==xsvtext THEN xsvs:=2;
+    ELSE xsvs:=xsapproxstate(xsvl[xsvk],xsvdepth+1); END;
+    IF xsvs==1 THEN RETURN 1; END;
+    IF xsvs==2 THEN xsvr:=2; END;
+  END;
+  RETURN xsvr;
+END;
+
+xsisapprox(xsve):=BEGIN RETURN xsapproxstate(xsve,0)==1; END;
+
+// Reject newly approximate candidates. If a scan is incomplete, preserve the
+// original unless it already contains a confirmed floating input.
+xsnewapprox(xsve,xsvc):=BEGIN
+  IF xsapproxstate(xsvc,0)==0 THEN RETURN 0; END;
+  IF xsisapprox(xsve) THEN RETURN 0; END;
+  RETURN 1;
+END;
+
+// Bit-like states: 1 = a nonreal numeric atom, 2 = a radical, 3 = both.
+// Only inspect types/operands; never normalize a complex radical to classify it.
+xscomplexradwalk(xsve,xsvdepth):=BEGIN
+  LOCAL xsvt,xsvh,xsvl,xsvk,xsvs,xsvimag,xsvrad,xsvparent;
+  xsvt:=type(xsve);
+  IF xsvt==DOM_COMPLEX OR xsvt==DOM_RAT THEN
+    IF string(im(xsve))<>"0" THEN RETURN 1; END;
+    RETURN 0;
+  END;
+  IF xsvt<>DOM_SYMBOLIC AND xsvt<>DOM_LIST THEN RETURN 0; END;
+  IF xsvdepth>=24 THEN RETURN 0; END;
+  xsvimag:=0; xsvrad:=0;
+  IF xsvt==DOM_LIST THEN xsvl:=xsve;
+  ELSE
+    xsvh:=xshead(xsve); xsvl:=[op(xsve)];
+    IF xsvh==sqrt THEN xsvrad:=1; END;
+    IF string(xsvh)=="'^'" OR string(xsvh)=="^" THEN
+      IF size(xsvl)==2 THEN
+        IF type(xsvl[2])==DOM_RAT AND string(im(xsvl[2]))=="0" THEN xsvrad:=1; END;
+      END;
+    END;
+  END;
+  xsvparent:=string(xsve);
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])<>xsvparent THEN
+      xsvs:=xscomplexradwalk(xsvl[xsvk],xsvdepth+1);
+      IF xsvs==1 OR xsvs==3 THEN xsvimag:=1; END;
+      IF xsvs==2 OR xsvs==3 THEN xsvrad:=1; END;
+      IF xsvimag AND xsvrad THEN RETURN 3; END;
+    END;
+  END;
+  RETURN xsvimag+2*xsvrad;
+END;
+
+xscomplexrad(xsve):=BEGIN
+  IF type(xsve)<>DOM_SYMBOLIC AND type(xsve)<>DOM_LIST THEN RETURN 0; END;
+  IF size(lname(xsve))<>0 THEN RETURN 0; END;
+  IF xscomplexradwalk(xsve,0)<>3 THEN RETURN 0; END;
+  IF xsisapprox(xsve) THEN RETURN 0; END;
+  RETURN 1;
+END;
+
+// Preserve the elementary identity sin(u)^2+cos(u)^2=1 on the guarded
+// path, without asking simplify to enter a complex algebraic extension.
+// This bounded pass pairs only literal squares with the same argument.
+xsradtrigsquare(xsve):=BEGIN
+  LOCAL xsvh,xsvl,xsvb;
+  IF type(xsve)<>DOM_SYMBOLIC THEN RETURN mid([0],1,0); END;
+  xsvh:=string(xshead(xsve));
+  IF xsvh<>"'^'" AND xsvh<>"^" THEN RETURN mid([0],1,0); END;
+  xsvl:=[op(xsve)];
+  IF size(xsvl)<>2 THEN RETURN mid([0],1,0); END;
+  IF type(xsvl[2])<>DOM_INT OR xsvl[2]<>2 THEN RETURN mid([0],1,0); END;
+  xsvb:=xsvl[1];
+  IF type(xsvb)<>DOM_SYMBOLIC THEN RETURN mid([0],1,0); END;
+  xsvh:=xshead(xsvb);
+  IF xsvh==sin THEN RETURN [1,op(xsvb)]; END;
+  IF xsvh==cos THEN RETURN [2,op(xsvb)]; END;
+  RETURN mid([0],1,0);
+END;
+
+xsradtrigunit(xsve):=BEGIN
+  LOCAL xsvh,xsvl,xsvk,xsvj,xsva,xsvb,xsvhit,xsvchanged,xsvr;
+  IF type(xsve)<>DOM_SYMBOLIC THEN RETURN xsve; END;
+  xsvh:=string(xshead(xsve));
+  IF xsvh<>"'+'" AND xsvh<>"+" THEN RETURN xsve; END;
+  xsvl:=[op(xsve)];
+  IF size(xsvl)>32 THEN RETURN xsve; END;
+  xsvchanged:=0;
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    xsva:=xsradtrigsquare(xsvl[xsvk]);
+    IF size(xsva)==2 THEN
+      xsvhit:=0;
+      FOR xsvj FROM xsvk+1 TO size(xsvl) DO
+        IF NOT xsvhit THEN
+          xsvb:=xsradtrigsquare(xsvl[xsvj]);
+          IF size(xsvb)==2 THEN
+            IF xsva[1]<>xsvb[1] AND string(xsva[2])==string(xsvb[2]) THEN
+              xsvl[xsvk]:=1; xsvl[xsvj]:=0; xsvhit:=1; xsvchanged:=1;
+            END;
+          END;
+        END;
+      END;
+    END;
+  END;
+  IF NOT xsvchanged THEN RETURN xsve; END;
+  xsvr:=0;
+  FOR xsvk FROM 1 TO size(xsvl) DO xsvr:=xsvr+xsvl[xsvk]; END;
+  IF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;
+  RETURN xsvr;
+END;
+
+xspos(xsve):=BEGIN
+  IF type(xsve)==DOM_INT OR type(xsve)==DOM_RAT THEN RETURN xsve>0; END;
+  IF size(lname(xsve))!=0 THEN RETURN 0; END;
+  IF string(simplify(im(xsve)))!="0" THEN RETURN 0; END;
+  RETURN string(simplify(sign(xsve)))=="1";
+END;
+
+xslogswalk(xsve,xsvdepth):=BEGIN
+  LOCAL xsvl,xsvr,xsvk,xsvj,xsva,xsvparent,xsvh;
+  xsvr:=mid([0],1,0);
+  IF xsvdepth>=24 THEN RETURN xsvr; END;
+  IF type(xsve)==DOM_LIST THEN xsvl:=xsve;
+  ELSE
+    IF type(xsve)<>DOM_SYMBOLIC THEN RETURN xsvr; END;
+    xsvh:=xshead(xsve);
+    IF type(xsvh)<>DOM_FUNC THEN RETURN xsvr; END;
+    IF string(xsvh)=="'of'" OR string(xsvh)=="of" THEN RETURN xsvr; END;
+    IF xsvh==ln THEN RETURN [xsve]; END;
+    xsvl:=[op(xsve)];
+  END;
+  xsvparent:=string(xsve);
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])<>xsvparent THEN
+      xsva:=xslogswalk(xsvl[xsvk],xsvdepth+1);
+      FOR xsvj FROM 1 TO size(xsva) DO
+        IF NOT member(xsva[xsvj],xsvr) THEN
+          xsvr:=append(xsvr,xsva[xsvj]);
+        END;
+      END;
+    END;
+  END;
+  RETURN xsvr;
+END;
+
+xslogs(xsve):=BEGIN RETURN xslogswalk(xsve,0); END;
+
+xsrwwalk(xsve,xsvdepth):=BEGIN
+  LOCAL xsvl,xsvr,xsvk,xsvu,xsvb,xsvc,xsvq,xsvparent,xsvh,xsvt,xsvheadtext;
+  IF xsvdepth>=24 THEN RETURN xsve; END;
+  // Atoms have no operands to rewrite. Avoid serializing each numeric/identifier
+  // leaf; all state stays local to this traversal call.
+  xsvt:=type(xsve);
+  IF xsvt<>DOM_LIST AND xsvt<>DOM_SYMBOLIC THEN RETURN xsve; END;
+  xsvparent:=string(xsve);
+  IF xsvt==DOM_LIST THEN
+    xsvr:=mid([0],1,0);
+    FOR xsvk FROM 1 TO size(xsve) DO
+      IF string(xsve[xsvk])==xsvparent THEN
+        xsvr:=append(xsvr,xsve[xsvk]);
+      ELSE
+        xsvr:=append(xsvr,xsrwwalk(xsve[xsvk],xsvdepth+1));
+      END;
+    END;
+    RETURN xsvr;
+  END;
+  xsvh:=xshead(xsve);
+  IF type(xsvh)<>DOM_FUNC THEN RETURN xsve; END;
+  // Undefined functions use the internal of head and special argument packing.
+  // Leave them intact instead of invoking an internal head with a flat list.
+  xsvheadtext:=string(xsvh);
+  IF xsvheadtext=="'of'" OR xsvheadtext=="of" THEN RETURN xsve; END;
+  xsvl:=[op(xsve)]; xsvr:=mid([0],1,0);
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==xsvparent THEN
+      xsvr:=append(xsvr,xsvl[xsvk]);
+    ELSE
+      xsvr:=append(xsvr,xsrwwalk(xsvl[xsvk],xsvdepth+1));
+    END;
+  END;
+  // Re-applying even an unchanged sqrt head can force an exact complex root
+  // to decimals in HP mode. Keep unchanged nodes and guard changed nodes.
+  IF string(xsvr)==string(xsvl) THEN xsvq:=xsve;
+  ELSE
+    xsvq:=xsvh(op(xsvr));
+    IF xsnewapprox(xsve,xsvq) THEN RETURN xsve; END;
+  END;
+  IF type(xsvq)<>DOM_SYMBOLIC THEN RETURN xsvq; END;
+  xsvh:=xshead(xsvq);
+  xsvheadtext:=string(xsvh);
+  IF xsvheadtext=="'^'" OR xsvheadtext=="^" THEN
+    xsvl:=[op(xsvq)];
+    IF size(xsvl)==2 THEN
+      xsvb:=xsvl[1]; xsvc:=xsvl[2];
+      IF type(xsvb)<>DOM_LIST AND type(xsvc)<>DOM_LIST THEN
+        IF xspos(xsvb) THEN
+          IF string(simplify(im(xsvc)))!="0" THEN
+            xsvr:=exp(ln(xsvb)*xsvc);
+            IF xsnewapprox(xsvq,xsvr) THEN RETURN xsvq; END;
+            RETURN xsvr;
+          END;
+        END;
+      END;
+    END;
+  END;
+  IF xsvh<>exp THEN RETURN xsvq; END;
+  xsvu:=op(xsvq); xsvl:=xslogs(xsvu);
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    xsvb:=op(xsvl[xsvk]);
+    IF xspos(xsvb) AND xsvb<>1 THEN
+      xsvc:=normal(xsvu/xsvl[xsvk]);
+      IF NOT xsnewapprox(xsvu,xsvc) AND size(xslogs(xsvc))==0 THEN
+        IF string(simplify(im(xsvc)))=="0" THEN
+          xsvr:=xsvb^xsvc;
+          IF xsnewapprox(xsvq,xsvr) THEN RETURN xsvq; END;
+          RETURN xsvr;
+        END;
+      END;
+    END;
+  END;
+  RETURN xsvq;
+END;
+
+xsrewrite(xsve):=BEGIN RETURN xsrwwalk(xsve,0); END;
+
+xsweightwalk(xsve,xsvdepth):=BEGIN
+  LOCAL xsvl,xsvk,xsvw,xsvh,xsvparent,xsvt,xsvheadtext;
+  IF xsvdepth>=24 THEN RETURN 1000; END;
+  xsvw:=1;
+  xsvt:=type(xsve);
+  IF xsvt==DOM_LIST THEN xsvl:=xsve;
+  ELSE
+    IF xsvt<>DOM_SYMBOLIC THEN RETURN 1; END;
+    xsvh:=xshead(xsve);
+    IF type(xsvh)<>DOM_FUNC THEN RETURN size(string(xsve)); END;
+    xsvheadtext:=string(xsvh);
+    IF xsvheadtext=="'of'" OR xsvheadtext=="of" THEN RETURN size(string(xsve)); END;
+    IF xsvh==re OR xsvh==im OR xsvh==arg THEN xsvw:=12; END;
+    IF xsvh==sin OR xsvh==cos THEN xsvw:=3; END;
+    xsvl:=[op(xsve)];
+  END;
+  xsvparent:=string(xsve);
+  FOR xsvk FROM 1 TO size(xsvl) DO
+    IF string(xsvl[xsvk])==xsvparent THEN
+      xsvw:=xsvw+1000;
+    ELSE
+      xsvw:=xsvw+xsweightwalk(xsvl[xsvk],xsvdepth+1);
+    END;
+  END;
+  RETURN xsvw;
+END;
+
+xsweight(xsve):=BEGIN RETURN xsweightwalk(xsve,0); END;
+xsscore(xsve):=BEGIN RETURN 20*xsweight(xsve)+size(string(xsve)); END;
+
+// Retain legacy strategy numbering. An empty string means this internal
+// candidate repeats step 1 or is inapplicable; xsbounded skips it.
+xstrans(xsve,xsvk):=BEGIN
+  LOCAL xsvr;
+  xsvr:=xsve;
+  IFERR
+    IF xsvk==1 THEN xsvr:=simplify(xsve); END;
+    IF xsvk==2 THEN xsvr:=normal(xsve); END;
+    IF xsvk==5 THEN
+      xsvr:=trig2exp(xsve);
+      IF string(xsvr)==string(xsve) THEN RETURN ""; END;
+      xsvr:=simplify(xsvr);
+    END;
+    IF xsvk==6 THEN
+      IF size(lname(xsve))!=0 THEN RETURN ""; END;
+      xsvr:=exp2trig(xsve);
+      IF string(xsvr)==string(xsve) THEN RETURN ""; END;
+      xsvr:=simplify(xsvr);
+    END;
+    IF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;
+    xsvr:=xsrewrite(xsvr);
+    IF type(xsvr)==DOM_STRING THEN RETURN xsve; END;
+    IF has(xsvr,undef) OR has(xsvr,infinity) THEN RETURN xsve; END;
+  THEN
+    RETURN xsve;
+  END;
+  RETURN xsvr;
+END;
+
+// One pass over the same original expression, never a branching search.
+xsbounded(xsve,xsvdepth,xsvmatrix):=BEGIN
+  LOCAL xsvb,xsvc,xsvk,xsvr,xsvsteps,xsvbest,xsvscore,xsvparent,xsvseen,xsvtext;
+  IF xsvdepth>=24 THEN RETURN xsve; END;
+  IF type(xsve)==DOM_STRING THEN RETURN xsve; END;
+  IF type(xsve)==DOM_LIST THEN
+    xsvr:=mid([0],1,0); xsvparent:=string(xsve);
+    FOR xsvk FROM 1 TO size(xsve) DO
+      IF string(xsve[xsvk])==xsvparent THEN
+        xsvr:=append(xsvr,xsve[xsvk]);
+      ELSE
+        xsvr:=append(xsvr,xsbounded(xsve[xsvk],xsvdepth+1,xsvmatrix));
+      END;
+    END;
+    RETURN xsvr;
+  END;
+  xsvb:=xsrewrite(xsmpauto(xsve));
+  IF type(xsvb)<>DOM_SYMBOLIC THEN RETURN xsvb; END;
+  // Native normal/simplify can spend seconds in an algebraic extension for
+  // sin(s)/s with a closed exact complex radical s, then return decimals.
+  // ratnormal treats these function/radical nodes as algebraic atoms.
+  // Classify once, before any of the expensive native strategy calls.
+  IF xscomplexrad(xsvb) THEN
+    xsvb:=xsradtrigunit(xsvb);
+    IFERR
+      xsvc:=ratnormal(xsvb);
+      IF type(xsvc)<>DOM_STRING AND NOT has(xsvc,undef) AND NOT has(xsvc,infinity) AND NOT xsnewapprox(xsvb,xsvc) THEN
+        xsvb:=xsradtrigunit(xsvc);
+      END;
+    THEN RETURN xsvb;
+    END;
+    RETURN xsvb;
+  END;
+  xsvtext:=string(xsvb); xsvseen:=[xsvtext];
+  IF xsvmatrix THEN
+    xsvbest:=size(xsvtext); xsvsteps:=[1,2];
+  ELSE
+    xsvbest:=20*xsweight(xsvb)+size(xsvtext); xsvsteps:=[1,2,5];
+  END;
+  IF size(lname(xsve))==0 THEN xsvsteps:=append(xsvsteps,6); END;
+  FOR xsvk FROM 1 TO size(xsvsteps) DO
+    xsvc:=xstrans(xsve,xsvsteps[xsvk]);
+    IF type(xsvc)<>DOM_STRING THEN
+      IF type(xsvc)<>DOM_SYMBOLIC AND type(xsvc)<>DOM_LIST THEN RETURN xsvc; END;
+      xsvtext:=string(xsvc);
+      IF NOT member(xsvtext,xsvseen) THEN
+        xsvseen:=append(xsvseen,xsvtext);
+        IF xsvmatrix THEN xsvscore:=size(xsvtext);
+        ELSE xsvscore:=20*xsweight(xsvc)+size(xsvtext); END;
+        IF xsvscore<xsvbest THEN xsvb:=xsvc; xsvbest:=xsvscore; END;
+      END;
+    END;
+  END;
+  RETURN xsvb;
+END;
+
+xsscalar(xsve):=BEGIN RETURN xsbounded(xsve,0,0); END;
+XFAST(xsve):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsscalar(xsve);
+END;
+XREWRITE(xsve):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsrewrite(xsve);
+END;
+xsclean(xsve):=BEGIN RETURN xsbounded(xsve,0,1); END;
+
+xsrectwalk(xsve,xsvdepth):=BEGIN
+  LOCAL xsvk,xsvr,xsvparent;
+  IF xsvdepth>=24 THEN RETURN xsve; END;
+  IF type(xsve)==DOM_LIST THEN
+    xsvr:=mid([0],1,0); xsvparent:=string(xsve);
+    FOR xsvk FROM 1 TO size(xsve) DO
+      IF string(xsve[xsvk])==xsvparent THEN xsvr:=append(xsvr,xsve[xsvk]);
+      ELSE xsvr:=append(xsvr,xsrectwalk(xsve[xsvk],xsvdepth+1)); END;
+    END;
+    RETURN xsvr;
+  END;
+  xsvr:=simplify(re(xsve))+i*simplify(im(xsve));
+  IF xsnewapprox(xsve,xsvr) THEN RETURN xsve; END;
+  RETURN xsvr;
+END;
+
+XRECT(xsve):=BEGIN
+  IF type(xsinitok)<>DOM_FUNC THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  IF NOT xsinitok(0) THEN RETURN "XSIMP 1.8.1: run XSIMPKIT181 from Program Catalog to refresh CAS functions"; END;
+  RETURN xsrectwalk(xsve,0);
+END;
+
+// Bounded mixed-function candidates, shared by the normal scalar pipeline.
+xsmpisradian(xsmpdummy):=BEGIN
+  LOCAL xsmpflag;
+  xsmpflag:=simplify(acos(-1))==pi;
+  RETURN type(xsmpflag)==DOM_INT AND xsmpflag==1;
+END;
+
+// Called only after the route walk accepts the entire tree. Read one identifier
+// binding with about; do not recursively evaluate it. Bound identifiers and
+// assumptions in held input skip this route; ordinary arguments already evaluated.
+xsmpunbound(xsmpe,xsmpdepth):=BEGIN
+  LOCAL xsmpt,xsmpl,xsmpk,xsmpinfo;
+  IF xsmpdepth>=12 THEN RETURN 0; END;
+  xsmpt:=type(xsmpe);
+  IF xsmpt==DOM_IDENT THEN
+    xsmpinfo:=about(xsmpe);
+    RETURN type(xsmpinfo)==DOM_IDENT AND string(xsmpinfo)==string(xsmpe);
+  END;
+  IF xsmpt<>DOM_SYMBOLIC THEN RETURN 1; END;
+  xsmpl:=[op(xsmpe)];
+  FOR xsmpk FROM 1 TO size(xsmpl) DO
+    IF NOT xsmpunbound(xsmpl[xsmpk],xsmpdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN 1;
+END;
+
+// A certificate for denominators introduced by the whole-expression route.
+// The caller separately walks every operand; this certificate alone does not
+// validate an exp argument or establish that the whole tree is in scope.
+xsmpnonzero(xsmpe,xsmpdepth):=BEGIN
+  LOCAL xsmpt,xsmph,xsmpl,xsmpk;
+  IF xsmpdepth>=16 THEN RETURN 0; END;
+  xsmpt:=type(xsmpe);
+  IF xsmpt==DOM_INT OR xsmpt==DOM_RAT OR xsmpt==DOM_COMPLEX THEN RETURN xsmpe<>0; END;
+  IF xsmpt<>DOM_SYMBOLIC THEN RETURN 0; END;
+  xsmph:=xshead(xsmpe); xsmpl:=[op(xsmpe)];
+  IF xsmph==exp AND size(xsmpl)==1 THEN RETURN 1; END;
+  xsmph:=string(xsmph);
+  IF xsmph=="'inv'" OR xsmph=="inv" THEN
+    IF size(xsmpl)==1 THEN RETURN xsmpnonzero(xsmpl[1],xsmpdepth+1); END;
+  END;
+  IF xsmph=="'-'" OR xsmph=="-" THEN
+    IF size(xsmpl)==1 THEN RETURN xsmpnonzero(xsmpl[1],xsmpdepth+1); END;
+  END;
+  IF xsmph=="'^'" OR xsmph=="^" THEN
+    IF size(xsmpl)==2 AND type(xsmpl[2])==DOM_INT THEN
+      RETURN xsmpnonzero(xsmpl[1],xsmpdepth+1);
+    END;
+  END;
+  IF xsmph<>"'*'" AND xsmph<>"*" THEN RETURN 0; END;
+  FOR xsmpk FROM 1 TO size(xsmpl) DO
+    IF NOT xsmpnonzero(xsmpl[xsmpk],xsmpdepth+1) THEN RETURN 0; END;
+  END;
+  RETURN size(xsmpl)>0;
+END;
+
+// Return the node count, or -1 for unsupported syntax/size. Input phase 0
+// allows positive powers 1..8; candidate phase 1 also allows reciprocal
+// certified-nonzero factors. Internal phase 2 rejects a power inside a power
+// base. No phase permits branch functions or lists.
+xsmpwalk(xsmpe,xsmpdepth,xsmpbudget,xsmpphase):=BEGIN
+  LOCAL xsmpt,xsmph,xsmpl,xsmpk,xsmpcount,xsmpchild,xsmpmaxdepth,xsmphead,xsmpchildphase;
+  IF xsmpphase<>1 THEN xsmpmaxdepth:=12; ELSE xsmpmaxdepth:=16; END;
+  xsmpchildphase:=xsmpphase;
+  IF xsmpdepth>=xsmpmaxdepth OR xsmpbudget<1 THEN RETURN -1; END;
+  xsmpt:=type(xsmpe);
+  IF xsmpt==DOM_INT OR xsmpt==DOM_RAT OR xsmpt==DOM_COMPLEX THEN RETURN 1; END;
+  IF xsmpt==DOM_IDENT THEN RETURN 1; END;
+  IF xsmpt<>DOM_SYMBOLIC THEN RETURN -1; END;
+  xsmph:=xshead(xsmpe); xsmpl:=[op(xsmpe)]; xsmphead:=string(xsmph);
+  IF xsmph==sin OR xsmph==cos OR xsmph==sinh OR xsmph==cosh OR xsmph==exp THEN
+    IF size(xsmpl)<>1 THEN RETURN -1; END;
+  ELSE
+    IF xsmphead=="'^'" OR xsmphead=="^" THEN
+      IF size(xsmpl)<>2 OR type(xsmpl[2])<>DOM_INT THEN RETURN -1; END;
+      IF xsmpphase==2 THEN RETURN -1; END;
+      IF xsmpphase==0 THEN
+        IF xsmpl[2]<1 OR xsmpl[2]>8 THEN RETURN -1; END;
+        xsmpchildphase:=2;
+      ELSE
+        IF xsmpl[2]<-16 OR xsmpl[2]>16 THEN RETURN -1; END;
+        IF xsmpl[2]<=0 AND NOT xsmpnonzero(xsmpl[1],0) THEN RETURN -1; END;
+      END;
+    ELSE
+      IF xsmphead=="'inv'" OR xsmphead=="inv" THEN
+        IF xsmpphase<>1 OR size(xsmpl)<>1 THEN RETURN -1; END;
+        IF NOT xsmpnonzero(xsmpl[1],0) THEN RETURN -1; END;
+      ELSE
+      IF xsmphead=="'/'" OR xsmphead=="/" THEN
+        IF xsmpphase<>1 OR size(xsmpl)<>2 THEN RETURN -1; END;
+        IF NOT xsmpnonzero(xsmpl[2],0) THEN RETURN -1; END;
+      ELSE
+        IF NOT member(xsmphead,["'+'","+","'-'","-","'*'","*"]) THEN RETURN -1; END;
+        IF size(xsmpl)==0 THEN RETURN -1; END;
+      END;
+      END;
+    END;
+  END;
+  xsmpcount:=1;
+  FOR xsmpk FROM 1 TO size(xsmpl) DO
+    IF string(xsmpl[xsmpk])==string(xsmpe) THEN RETURN -1; END;
+    xsmpchild:=xsmpwalk(xsmpl[xsmpk],xsmpdepth+1,xsmpbudget-xsmpcount,xsmpchildphase);
+    IF xsmpchild<0 THEN RETURN -1; END;
+    xsmpcount:=xsmpcount+xsmpchild;
+  END;
+  RETURN xsmpcount;
+END;
+
+xsmptry(xsmpinput):=BEGIN
+  LOCAL xsmporiginal,xsmpcurrent,xsmpcandidate,xsmpbest,
+    xsmpbestscore,xsmpscore,xsmpstep,xsmptext,xsmpseen;
+  xsmporiginal:=xsmpinput;
+  IFERR
+    // These are route qualifications, never a rejection of native expressions.
+    IF size(string(xsmporiginal))>256 THEN RETURN xsmporiginal; END;
+    IF NOT xsmpisradian(0) THEN RETURN xsmporiginal; END;
+    IF xsmpwalk(xsmporiginal,0,64,0)<0 THEN RETURN xsmporiginal; END;
+    IF xsapproxstate(xsmporiginal,0)<>0 THEN RETURN xsmporiginal; END;
+    IF NOT xsmpunbound(xsmporiginal,0) THEN RETURN xsmporiginal; END;
+    xsmpbest:=xsmporiginal; xsmpcurrent:=xsmporiginal;
+    xsmpbestscore:=xsscore(xsmpbest);
+    xsmpseen:=[string(type(xsmpbest))+":"+string(xsmpbest)];
+    FOR xsmpstep FROM 1 TO 3 DO
+      IF type(xsmpcurrent)<>DOM_SYMBOLIC THEN RETURN xsmpbest; END;
+      IF xsmpstep==1 THEN xsmpcandidate:=hyp2exp(xsmpcurrent); END;
+      IF xsmpstep==2 THEN xsmpcandidate:=trig2exp(xsmpcurrent); END;
+      IF xsmpstep==3 THEN xsmpcandidate:=simplify(xsmpcurrent); END;
+      IF type(xsmpcandidate)==DOM_STRING OR size(string(xsmpcandidate))>1024 THEN RETURN xsmpbest; END;
+      IF has(xsmpcandidate,undef) OR has(xsmpcandidate,infinity) THEN RETURN xsmpbest; END;
+      IF xsapproxstate(xsmpcandidate,0)<>0 OR xsmpwalk(xsmpcandidate,0,256,1)<0 THEN RETURN xsmpbest; END;
+      xsmptext:=string(type(xsmpcandidate))+":"+string(xsmpcandidate);
+      IF NOT member(xsmptext,xsmpseen) THEN
+        xsmpseen:=append(xsmpseen,xsmptext);
+        xsmpscore:=xsscore(xsmpcandidate);
+        IF xsmpscore<xsmpbestscore THEN xsmpbest:=xsmpcandidate; xsmpbestscore:=xsmpscore; END;
+      END;
+      // Larger intermediates remain eligible inputs for the next fixed step.
+      xsmpcurrent:=xsmpcandidate;
+    END;
+    RETURN xsmpbest;
+  THEN
+    RETURN xsmporiginal;
+  END;
+END;
+
+// Trigger only for a short mixed trigonometric/hyperbolic scalar. A textual
+// false positive is harmless: xsmptry still validates the entire expression tree.
+xsmpauto(xsmpinput):=BEGIN
+  LOCAL xsmptext;
+  IF type(xsmpinput)<>DOM_SYMBOLIC THEN RETURN xsmpinput; END;
+  xsmptext:=string(xsmpinput);
+  IF size(xsmptext)>256 THEN RETURN xsmpinput; END;
+  IF inString(xsmptext,"h(")==0 AND inString(xsmptext,"H(")==0 THEN RETURN xsmpinput; END;
+  IF inString(xsmptext,"sinh(")==0 AND inString(xsmptext,"cosh(")==0 AND
+     inString(xsmptext,"SINH(")==0 AND inString(xsmptext,"COSH(")==0 THEN RETURN xsmpinput; END;
+  IF inString(xsmptext,"sin(")==0 AND inString(xsmptext,"cos(")==0 AND
+     inString(xsmptext,"SIN(")==0 AND inString(xsmptext,"COS(")==0 THEN RETURN xsmpinput; END;
+  RETURN xsmptry(xsmpinput);
+END;
